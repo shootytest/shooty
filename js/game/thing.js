@@ -635,11 +635,19 @@ export class Thing {
     this.shoot_children.push(b);
     // create bullet!
     b.create();
+
+    // also do stuff to body of thing
+    // do recoil
+    if (S.recoil != false && this.body != null) {
+      let recoil = (S.recoil == null) ? 1 : S.recoil;
+      recoil *= S.speed * b.body.mass * config.physics.force_factor * config.physics.recoil_factor;
+      this.push_to(this.target.facing, -recoil);
+    }
   }
 
   shoot_move(S) {
     if (!S.move || this.body == null) return;
-    this.push_to(this.target.facing, S.speed * this.body.mass * config.physics.speed_factor);
+    this.push_to(this.target.facing, S.speed * this.body.mass * config.physics.force_factor);
   }
 
   create() {
@@ -672,9 +680,9 @@ export class Thing {
       isBullet: this.is_bullet,
       collisionFilter: this.collision_filter,
       label: this.label,
-      density: this.density,
+      density: this.density * config.physics.density_factor,
       restitution: this.restitution,
-      frictionAir: this.friction,
+      frictionAir: this.friction * config.physics.friction_factor,
       friction: 0,
       frictionStatic: 0,
     };
@@ -770,6 +778,13 @@ export class Thing {
     if (y != null) v = Vector.create(x, y);
     else v = x;
     return Query.point([this.body], v);
+  }
+
+  move_force(v) {
+    const move_v = Vector.mult(v, this.speed * this.body.mass * config.physics.force_factor);
+    if (this.body != null) {
+      Body.applyForce(this.body, this.position, move_v);
+    }
   }
 
   move_to(position) {

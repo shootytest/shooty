@@ -145,16 +145,13 @@ export class Player extends Thing {
     // draw gun(s)...
   }
 
+  move_player(v) {
+    this.move_force(Vector.normalise(v));
+  }
+
   shoot() {
     if (this.player_dead) return;
     super.shoot();
-  }
-
-  move_player(v) {
-    const move_v = Vector.mult(Vector.normalise(v), this.speed * this.body.mass * config.physics.speed_factor);
-    if (this.body != null) {
-      Body.applyForce(this.body, this.position, move_v);
-    }
   }
 
   item_collect(type, number) {

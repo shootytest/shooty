@@ -13,7 +13,10 @@ export const config = {
   physics: {
     gravity_x: 0,
     gravity_y: 0,
-    speed_factor: 0.00005,
+    force_factor: 0.00005,
+    recoil_factor: 50.0,
+    friction_factor: 1.0,
+    density_factor: 1.0,
     velocity_shoot_boost: 0.5,
   },
   game: {
