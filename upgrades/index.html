@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#336dff">
+  <title>Upgrades - Shooty</title>
+  <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+  <link rel="preload" href="/lib/matter.js" as="script">
+  <script src="/lib/matter.js"></script>
+  <link rel="preload" href="/lib/chroma.js" as="script">
+  <script src="/lib/chroma.js"></script>
+  <style>
+    html, body {
+      touch-action: none;
+    }
+    body {
+      background-color: olivedrab;
+    }
+  </style>
+</head>
+
+<body background="">
+  <p id="loading">not done yet...</p>
+
+  <div class="noselect nopadding">
+    <canvas id="canvas" class="canvas"></canvas>
+    <p id="loading" style="display: none;">searching for an upgrade...</p>
+  </div>
+
+  <script type="module" src="upgrades.js"></script>
+
+</body>
+
+</html>

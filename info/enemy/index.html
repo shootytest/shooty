@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#336dff">
+  <title>Enemy - Shooty</title>
+  <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+  <link rel="preload" href="/lib/matter.js" as="script">
+  <script src="/lib/matter.js"></script>
+  <link rel="preload" href="/lib/chroma.js" as="script">
+  <script src="/lib/chroma.js"></script>
+  <style>
+    :root {
+      --hover-color: #00000000;
+    }
+    body {
+      background-color: #732510;
+    }
+    table {
+      border: 2px solid white;
+    }
+    tr {
+      transition: all .2s ease-in;
+    }
+    tbody tr:hover {
+      background-color: var(--hover-color);
+    }
+    tbody tr td:nth-child(1) {
+      text-align: right;
+      border-right: 2px solid white;
+    }
+    thead tr th {
+      border-bottom: 2px solid white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="main">
+
+  </div>
+
+  <script type="module" src="enemyinfo.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#336dff">
+  <title>Worlds - Shooty</title>
+  <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+  <style>
+    tr {
+      transition: all .2s ease-in;
+    }
+    tbody tr:hover {
+      background-color: #FFFFFF33;
+    }
+    body {
+      animation: background-fade ease-in-out 10s infinite alternate;
+    }
+    @keyframes background-fade {
+      0% { background-color: #4e5201; }
+      50% { background-color: #1b5201; }
+      100% { background-color: #4e5201; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="main" class="noselect">
+
+  </div>
+
+  <script type="module" src="worlds.js"></script>
+
+</body>
+
+</html>

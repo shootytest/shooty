@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#336dff">
+  <title>Login - Shooty</title>
+  <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+</head>
+
+<body>
+
+  <div class="loginbox">
+    <h1 id="title">Login</h1>
+    <p style="font-size: 12px;">Hi!<br><br><br></p>
+    <h1 id="title-fake" style="display: none;">HELLOANDWELCOMETOSHOOTYPLEASESIGNINTHANKYOU</h1> <!-- or register -->
+
+    <div id="login-div" style="display: block;">
+      <p><input type="text" id="username" placeholder="username" style="text-transform: lowercase;"></p>
+      <p><input type="password" id="password" placeholder="password" disabled="true"></p>
+      <p><input type="button" id="go" value="log in" disabled="true" tabindex="-1"></p>
+      <p id="output"></p>
+      <p id="output2"></p>
+      <p id="capslock-warning" style="color: red; display: none;">warning: caps lock is on</p>
+    </div>
+    <div id="register-div" style="display: block; padding-top: 70px;">
+      <p>Don't have an account? <a href="register1.html">Register</a> for shooty instead!</p>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+
+</body>
+
+</html>
