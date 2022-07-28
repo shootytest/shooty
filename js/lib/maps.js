@@ -47,6 +47,31 @@ maps.bouncycircles = {
   ],
 }
 
+maps.level0 = {
+  name: "Unnamed Map",
+  width: 500,
+  height: 500,
+  spawn: [
+    { x: -300, y: -300, },
+    { x: -300, y: 300, },
+    { x: 300, y: -300, },
+    { x: 300, y: 300, },
+  ],
+  shapes: [
+    { type: "circle", bouncy: false, x: 0.7, y: 0.7, r: 30, },
+    { type: "circle", bouncy: false, x: 0.7, y: -0.7, r: 30, },
+    { type: "circle", bouncy: false, x: -0.7, y: 0.7, r: 30, },
+    { type: "circle", bouncy: false, x: -0.7, y: -0.7, r: 30, },
+    { type: "rectangle", bouncy: false, x: -0.55, y: 0, w: 30, h: 150, },
+    { type: "rectangle", bouncy: false, x: 0.55, y: 0, w: 30, h: 150, },
+    { type: "rectangle", bouncy: false, x: 0, y: -0.55, w: 150, h: 30, },
+    { type: "rectangle", bouncy: false, x: 0, y: 0.55, w: 150, h: 30, },
+  ],
+  zones: [
+    { x: -500, y: -500, w: 1000, h: 1000, },
+  ],
+}
+
 maps.squaredonut = {
   name: "Square Donut",
   width: 600,

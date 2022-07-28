@@ -307,7 +307,7 @@ function init_index() {
 function main() {
   let pagename = "index";
   let capslock_check = false;
-  if (path[1] == "account" && path.length >= 3 && path[2] != "") {
+  if (path[1] === "account" && path.length >= 3 && path[2] !== "") {
     pagename = path[2];
   }
   console.log(pagename);

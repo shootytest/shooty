@@ -172,7 +172,7 @@ export class Player extends Thing {
 
   add_points(type, number, options) {
     let p = 0;
-    if (number == 0 || number == null) return;
+    if (number === 0 || number == null) return;
     if (type === "damage") {
       p = number * config.game.health_mult * config.game.damage_points_mult;
     } else if (type === "kill") {

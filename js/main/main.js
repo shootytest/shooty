@@ -18,7 +18,7 @@ import { controls } from "./controls.js";
 import { mobile } from "../util/mobile.js";
 import { gamesave } from "./gamesave.js";
 import { gamecheck } from "./gamecheck.js";
-import { check_if_logged_in } from "../util/localstorage.js";
+import { check_if_logged_in, get_account_username } from "../util/localstorage.js";
 import { mapmaker } from "../game/mapmaker.js";
 import { maps } from "../lib/maps.js";
 
@@ -118,11 +118,6 @@ function test() {
   add_key_listener("|", function() {
     config.controls.right = ["d"];
   });
-  for (let index = 0; index < config.dev.make_shortcuts.length; index++) {
-    add_key_listener("1234567890"[index], function() {
-      Enemy.create(config.dev.make_shortcuts[index]);
-    });
-  }
   add_key_listener("e", function() {
     player.player_autofire = !player.player_autofire;
   });
@@ -150,6 +145,7 @@ function test() {
     }
   });
   add_key_listener("x", function() {
+    return;
     if (ui.upgrade_overlay) {
       close_all_overlays();
     } else {
@@ -190,16 +186,25 @@ function test() {
   add_key_listener(",", function() {
     copy_screenshot();
   });
-  add_key_listener("?", function() {
-    return;
-    player.item_collect("coin", Infinity);
-  });
-  add_key_listener("~", function() {
-    player.upgrade_all();
-  });
   add_key_listener("v", function() {
     video_button_pressed();
   });
+  // hacks (only account "dev")
+  if (get_account_username() === "dev") {
+    add_key_listener("?", function() {
+      return;
+      player.item_collect("coin", Infinity);
+    });
+    add_key_listener("~", function() {
+      return;
+      player.upgrade_all();
+    });
+    for (let index = 0; index < config.dev.make_shortcuts.length; index++) {
+      add_key_listener("1234567890"[index], function() {
+        Enemy.create(config.dev.make_shortcuts[index]);
+      });
+    }
+  }
 }
 
 /* TESTING AREA */

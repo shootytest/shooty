@@ -102,7 +102,7 @@ if ("level0") {
     name: "Unnamed Level",
     key: "level0",
     description: "Well... it has a name, doesn't it?",
-    map: "bouncycircles",
+    map: "level0",
     bosses: 2,
     rounds: 20,
   };

@@ -23,7 +23,7 @@ random.gauss = function(mean, deviation) {
     x1 = 2 * Math.random() - 1;
     x2 = 2 * Math.random() - 1;
     w = x1 * x1 + x2 * x2;
-  } while (0 == w || w >= 1);
+  } while (0 === w || w >= 1);
 
   w = Math.sqrt(-2 * Math.log(w) / w);
   return mean + deviation * x1 * w;
