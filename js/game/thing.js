@@ -638,7 +638,7 @@ export class Thing {
 
     // also do stuff to body of thing
     // do recoil
-    if (S.recoil != false && this.body != null) {
+    if (S.recoil != false && this.body != null && S.speed) {
       let recoil = (S.recoil == null) ? 1 : S.recoil;
       recoil *= S.speed * b.body.mass * config.physics.force_factor * config.physics.recoil_factor;
       this.push_to(this.target.facing, -recoil);

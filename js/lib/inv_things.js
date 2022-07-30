@@ -27,8 +27,8 @@ inv_things.dirt = {
 }
 
 inv_things.dev_fragment = {
-  name: "Developer Fragment",
-  description: "A fragment of the developer... not sure what to do with this.",
+  name: "Developer Coin",
+  description: "Not sure what to do with so many coins.",
 }
 
 inv_things.mei_fragment = {

@@ -29,7 +29,7 @@ export const config = {
     clear_points_mult: 1,
     bonus_points_mult: 1,
     clear_wave_time_add: 1000,
-    clear_wave_normal_points: 10000,
+    clear_wave_normal_points: 9000,
     enemy_spawn_delay: 60,
   },
   controls: {
@@ -48,7 +48,21 @@ export const config = {
     size: 25,
   },
   dev: {
-    make_shortcuts: ["ram", "strong", "oct", "ramshoot", "small", "boss_tutorial", "boss_tutorial_2", "boss_oct", "escape", "invisible"],
+    make_shortcuts: [
+      "ram", // 1
+      "strong", // 2
+      "oct", // 3
+      "ramshoot", // 4
+      "small", // 5
+      "boss_tutorial", // 6
+      "boss_tutorial_2", // 7
+      "boss_oct", // 8
+      "escape", // 9
+      "invisible", // 0
+    ],
+  },
+  balance: {
+    bullet_tower_density_mult: 1.0,
   },
 };
 

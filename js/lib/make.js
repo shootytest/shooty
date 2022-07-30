@@ -191,7 +191,8 @@ make.bullet_homing = {
 
 make.bullet_tower = {
   parent: ["bullet"],
-  fixed: true,
+  fixed: false,
+  density: config.balance.bullet_tower_density_mult,
   shooting: true,
   rotation_controller: "homing",
   time_death: 60 * 10,
