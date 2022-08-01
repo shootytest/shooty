@@ -627,7 +627,8 @@ export class Thing {
         rot = Vector.angle(location, facing);
       }
     }
-    b.velocity = Vector.mult(Vector.create(Math.cos(rot), Math.sin(rot)), spd);
+    const rotvector = Vector.create(Math.cos(rot), Math.sin(rot));
+    b.velocity = Vector.mult(rotvector, spd);
     // target the correct location
     b.target.facing = facing;
     b.rotation = rot;
@@ -638,10 +639,10 @@ export class Thing {
 
     // also do stuff to body of thing
     // do recoil
-    if (S.recoil != false && this.body != null && S.speed) {
+    if (S.recoil != false && this.body != null && spd && S.speed) {
       let recoil = (S.recoil == null) ? 1 : S.recoil;
-      recoil *= S.speed * b.body.mass * config.physics.force_factor * config.physics.recoil_factor;
-      this.push_to(this.target.facing, -recoil);
+      recoil *= spd * b.body.mass * config.physics.force_factor * config.physics.recoil_factor;
+      this.push_to(Vector.add(this.position, rotvector), -recoil);
     }
   }
 

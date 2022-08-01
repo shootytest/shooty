@@ -143,6 +143,24 @@ if ("level0") {
       { type: "ramshoot", number: 5, interval: 350, },
       { type: "ram", number: 5, delay: 175, interval: 350, },
     ],
+    [ // 15
+      { type: "strong", number: 6, interval: 250, },
+      { type: "fast", number: 6, delay: 125, interval: 250, },
+    ],
+    [ // 16
+      { type: "homing", number: 5, interval: 50, },
+      { type: "slow", number: 2, delay: 300, interval: 200, },
+    ],
+    { type: "boss_tutorial", number: 3, interval: 400, },
+    [ // 19
+      { type: "oct", number: 4, interval: 250, },
+      { type: "ramshoot", number: 2, delay: 125, interval: 500, },
+    ],
+    [ // 19
+      { type: "basic", number: 11, interval: 50, },
+      { type: "ram", number: 5, delay: 75, interval: 100, },
+    ],
+    { type: "boss_oct", number: 1, boss: true, },
   ];
 
   waves_text.level0 = {
@@ -151,6 +169,11 @@ if ("level0") {
       { message: "Don't expect to pass the last 10 rounds of the level.", delay: 10, },
       { message: "Press q to start the first round.", delay: 20, },
       { message: "Good luck! I won't be talking any more.", delay: 30, },
+    ],
+    [20]: [
+      { message: "Very nice!", delay: 0, },
+      { message: "Good job!", delay: 10, },
+      { message: "Yay!", delay: 20, },
     ],
   };
 

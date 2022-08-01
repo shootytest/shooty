@@ -50,7 +50,7 @@ export const config = {
   dev: {
     make_shortcuts: [
       "ram", // 1
-      "strong", // 2
+      "homing", // 2
       "oct", // 3
       "ramshoot", // 4
       "small", // 5
