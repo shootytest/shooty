@@ -178,8 +178,8 @@ if ("level0") {
   };
 
   waves_points.level0 = {
-    points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5 ],
-    time: [ 0, 7, 20, 8, 15, 7, 10, 20, 30, 60, 15, 45, 50, 35, 50, 25, ],
+    points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5 ],
+    time: [ 0, 7, 25, 11, 9, 15, 20, 10, 25, 8, 8, 50, 60, 50, 35, 60, 50, 25, 40, /**/ 70, 10],
   };
 }
 
@@ -346,6 +346,32 @@ if ("oneround") {
 
 }
 
+if ("multiplayer") {
+
+  waves_info.multiplayer = {
+    name: "Multiplayer",
+    key: "multiplayer",
+    description: "The level used for multiplayer games.",
+    map: "level0",
+    bosses: 0,
+    rounds: 0,
+  };
+
+  waves.multiplayer = [
+    0,
+  ];
+
+  waves_text.multiplayer = {
+    [0]: [],
+  };
+
+  waves_points.multiplayer = {
+    points: [ 0, ],
+    time: [ 0, ],
+  };
+
+}
+
 if ("blank") {
 
   waves_info.blank = {
@@ -353,8 +379,8 @@ if ("blank") {
     key: "blank",
     description: "This level is totally blank!",
     map: "empty",
-    bosses: 1,
-    rounds: 1,
+    bosses: 0,
+    rounds: 0,
   };
 
   waves.blank = [

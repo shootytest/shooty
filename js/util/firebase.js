@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
-import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { getDatabase, ref, set, onValue, update, increment } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDPDdw78hG6FDQd-JGddqDet7KJ6bqk3po",
@@ -21,23 +21,37 @@ const db = getDatabase();
 export const firebase = {};
 
 firebase.listen = function(path, listener) {
-  onValue(ref(db, path), (snapshot) => {
+  return onValue(ref(db, path), (snapshot) => {
     listener(snapshot.val());
   });
 }
 
 firebase.get = function(path, getter_function) {
-  onValue(ref(db, path), (snapshot) => {
+  return onValue(ref(db, path), (snapshot) => {
     getter_function(snapshot.val());
   }, {
     onlyOnce: true,
   });
 }
 
+// not a ti-basic reference
+firebase.getkey = function(path, getter_function) {
+  return onValue(ref(db, path), (snapshot) => {
+    // there must be a more efficient way to do this
+    getter_function(Object.keys(snapshot.val()));
+  }, {
+    onlyOnce: true,
+  });
+}
+
 firebase.set = function(path, value) {
-  set(ref(db, path), value);
+  return set(ref(db, path), value);
 }
 
 firebase.update = function(updates) {
-  update(ref(db), updates);
+  return update(ref(db), updates);
+}
+
+firebase.increment = function(path, number = 1) {
+  return set(ref(db, path), increment(number));
 }

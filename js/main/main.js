@@ -21,6 +21,7 @@ import { gamecheck } from "./gamecheck.js";
 import { check_if_logged_in, get_account_username } from "../util/localstorage.js";
 import { mapmaker } from "../game/mapmaker.js";
 import { maps } from "../lib/maps.js";
+import { multiplayer } from "../game/multiplayer.js";
 
 const Engine = Matter.Engine,
       Runner = Matter.Runner,
@@ -67,6 +68,7 @@ function init_game() {
   // set level
   const new_game = parameters.get("new") === "true";
   const use = parameters.get("use") || "basic";
+  multiplayer.is_multiplayer = (parameters.get("multiplayer")) ? true : false;
   player.current_upgrade = use;
   if (!new_game && gamecheck.level()) {
     gamesave.load();
@@ -84,7 +86,7 @@ function init_game() {
     set_wave_name(level);
   }
   // if this is a new game
-  if (send.wave < 0) {
+  if (new_game && send.wave < 0) {
     next_wave();
     player.position = Player.random_spawn_location();
     gamesave.save(true);
@@ -101,30 +103,38 @@ function tick() {
     camera.tick();
     tick_send();
   }
+  // run even when game is paused (ho)
+  multiplayer.tick();
 }
 
-/* TESTING AREA */
+/* TESTING AREA (not really) */
 
 function test() {
+
   if (game_is_loaded) {
     // not a new game
     camera.jump_to_player();
   }
+  
   // create player
   player.create();
+
   // create map
   mapmaker.make(waves_info[send.wave_name].map);
 
   add_key_listener("|", function() {
-    config.controls.right = ["d"];
+    config.controls.right = ["d"]; // todo remove
   });
   add_key_listener("e", function() {
     player.player_autofire = !player.player_autofire;
   });
-  add_key_listener("q", function() {
-    if (game_is_paused()) return;
-    next_wave();
-  });
+  if (!multiplayer.is_multiplayer) {
+    // waves exist only when not multiplayer
+    add_key_listener("q", function() {
+      if (game_is_paused()) return;
+      next_wave();
+    });
+  }
   add_key_listener("p", function() {
     if (game_is_paused()) {
       close_all_overlays();
@@ -189,6 +199,16 @@ function test() {
   add_key_listener("v", function() {
     video_button_pressed();
   });
+
+  // hacks (only multiplayer mode)
+  if (multiplayer.is_multiplayer) {
+    console.log("m");
+    add_key_listener("m", function() {
+      // TODO (just a test for now)
+      Enemy.create_multiplayer("basic");
+    });
+  }
+
   // hacks (only account "dev")
   if (get_account_username() === "dev") {
     add_key_listener("?", function() {
@@ -205,6 +225,7 @@ function test() {
       });
     }
   }
+
 }
 
 /* TESTING AREA */
@@ -217,6 +238,7 @@ function init() {
   init_events();
   mobile.init();
   controls.init();
+  multiplayer.init();
   init_collide();
   init_send();
   test();

@@ -1,3 +1,5 @@
+import { Enemy } from "../game/enemy.js";
+import { multiplayer } from "../game/multiplayer.js";
 import { player } from "../game/player.js";
 import { send, set_wave_name, text_wave } from "../game/send.js";
 import { Thing } from "../game/thing.js";
@@ -33,18 +35,23 @@ const send_keys = [
 ];
 
 gamesave.save = function(force = false) {
-  if (!force && !send.game_ended && !send.wave_ended) return;
-  player.update_inventory();
+  if (!force && !send.game_ended && !send.wave_ended && !multiplayer.is_multiplayer) return;
   const o = {
     send: { },
     player: { },
     time: Thing.time,
   };
+  player.update_inventory();
   for (const k of player_keys) {
     o.player[k] = player[k];
   }
   for (const k of send_keys) {
     o.send[k] = send[k];
+  }
+  if (multiplayer.is_multiplayer) {
+    // multiplayer case
+    o.enemies = Enemy.enemy_type_list();
+    o.multiplayer = true;
   }
   set_gamesave(JSON.stringify(o));
   console.log("game saved!");
@@ -67,7 +74,17 @@ gamesave.load = function() {
     send[k] = o.send[k];
   }
   Thing.time = o.time || 0;
-  text_wave(o.send.wave || 0);
+  if (o.multiplayer) {
+    // multiplayer case
+    multiplayer.is_multiplayer = true;
+    multiplayer.suppress_gamesave = true;
+    for (const enemy_type of o.enemies) {
+      Enemy.create(enemy_type);
+    }
+    multiplayer.suppress_gamesave = false;
+  } else {
+    text_wave(o.send.wave || 0);
+  }
   player.make(make.player);
   player.make(player_make[player.current_upgrade]);
 }

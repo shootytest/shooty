@@ -2,7 +2,9 @@ import { config } from "../lib/config.js";
 import { make } from "../lib/make.js";
 import { maps } from "../lib/maps.js";
 import { waves_info } from "../lib/waves.js";
+import { gamesave } from "../main/gamesave.js";
 import { random } from "../util/random.js";
+import { multiplayer } from "./multiplayer.js";
 import { Player, player } from "./player.js";
 import { send, send_queue } from "./send.js";
 import { Thing } from "./thing.js";
@@ -38,7 +40,17 @@ export class Enemy extends Thing {
     e.target.facing = player.position;
     e.target.rotation = Vector.angle(e.position, e.target.facing);
     e.create_list();
-    //e.create();
+    // if multiplayer, save
+    if (multiplayer.is_multiplayer && !multiplayer.suppress_gamesave) {
+      gamesave.save();
+    }
+    return e;
+  }
+
+  static create_multiplayer(type, is_boss = false) {
+    const e = Enemy.create(type, is_boss);
+    e.send_after_death = true;
+    return e;
   }
 
   static check() {
@@ -60,6 +72,24 @@ export class Enemy extends Thing {
       total += e.health.health;
     }
     return (Enemy.total_wave_health === 0) ? 0 : total / Enemy.total_wave_health;
+  }
+
+  static ratio_cleared_realtime() {
+    let total_health = 0;
+    let total_capacity = 0;
+    for (const e of Thing.enemies) {
+      total_health += e.health.health;
+      total_capacity += e.health.capacity;
+    }
+    return (total_capacity === 0) ? 0 : total_health / total_capacity;
+  }
+
+  static enemy_type_list() {
+    let result = [ ];
+    for (const e of Thing.enemies) {
+      result.push(e.make_type.substring(6));
+    }
+    return result;
   }
 
   static start_wave(wave) {
@@ -102,6 +132,7 @@ export class Enemy extends Thing {
   }
 
   enemy_ram = false;
+  send_after_death = false;
   spawn_mark = null;
   spawn_mark_time = config.game.enemy_spawn_delay;
 
@@ -162,7 +193,14 @@ export class Enemy extends Thing {
   }
 
   remove() {
+    if (multiplayer.is_multiplayer && this.send_after_death) {
+      this.remove_if_multiplayer();
+    }
     super.remove();
+  }
+
+  remove_if_multiplayer() {
+    multiplayer.send_enemy(this.make_type.substring(6));
   }
 
   remove_mark() {

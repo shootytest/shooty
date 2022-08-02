@@ -17,7 +17,8 @@ import { math_util } from "../js/util/math.js";
 import { mobile } from "../js/util/mobile.js";
 
 const parameters = new URLSearchParams(document.location.search);
-const level = parameters.get("level") || (window.location.href = "/worlds/");
+const is_multiplayer = parameters.get("multiplayer") || false;
+const level = parameters.get("level") || (is_multiplayer ? "multiplayer" : window.location.href = "/worlds/");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const Vector = Matter.Vector;
@@ -32,7 +33,11 @@ const user = {
   unlocked_upgrades: [],
   reached_upgrades: [],
   play: function(selected) {
-    window.location.href = `/play/?level=${level}&new=true&use=${selected}`;
+    let new_location = `/play/?level=${level}&new=true&use=${selected}`;
+    if (is_multiplayer) {
+      new_location += "&multiplayer=true";
+    }
+    window.location.href = new_location;
   },
   buy: function(upgrade, scam) {
     const U = upgrades[upgrade];

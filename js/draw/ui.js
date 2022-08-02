@@ -1,4 +1,5 @@
 import { Enemy } from "../game/enemy.js";
+import { multiplayer } from "../game/multiplayer.js";
 import { player, player_user } from "../game/player.js";
 import { end_wave, next_wave, send } from "../game/send.js";
 import { Thing } from "../game/thing.js";
@@ -122,10 +123,11 @@ export const draw_ui_before = function(ctx) {
   ui.time++;
 
   if ("wave number") {
-    const number_text = "" + (send.wave + 0);
+    const number_text = (multiplayer.is_multiplayer) ? "|" : ("" + (send.wave + 0));
     const number_size = ((number_text.length > 2) ? 450 : 600) * _scale;
     const location = camera.object_position(Vector.create());
-    const clear_ratio = lerp(ui.enemy_clear_ratio, Enemy.ratio_cleared(), ui.enemy_clear_smoothness);
+    const current_clear_ratio = (multiplayer.is_multiplayer) ? Enemy.ratio_cleared_realtime() : Enemy.ratio_cleared();
+    const clear_ratio = lerp(ui.enemy_clear_ratio, current_clear_ratio, ui.enemy_clear_smoothness);
     ui.enemy_clear_ratio = clear_ratio;
     ctx.font = `bold ${number_size}px roboto mono`;
     ctx.textBaseline = "middle";
@@ -318,7 +320,7 @@ export const draw_ui = function(ctx) {
     }
   }
 
-  if ("wave button" && !game_is_paused()) {
+  if ("wave button" && !game_is_paused() && !multiplayer.is_multiplayer) {
     x = 30;
     y = _height - 80;
     w = 50;
