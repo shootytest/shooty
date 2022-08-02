@@ -70,6 +70,14 @@ function main(event) {
       button_go.click();
     }
   });
+  window.addEventListener("keydown", (event) => {
+    if (event.repeat) return;
+    console.log(document.activeElement.tagName);
+    if (document.activeElement.tagName.toLowerCase() === "input") return;
+    if (event.key.toLowerCase() === "m") {
+      window.location.href = "choose.html";
+    }
+  });
 }
 
 function main_firebase() {

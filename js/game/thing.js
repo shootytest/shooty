@@ -270,6 +270,18 @@ export class Thing {
     return this.health.invincible;
   }
 
+  get body_shape() {
+    let result = null;
+    if (this.shapes.length === 1) {
+      result = this.shapes[0];
+    } else {
+      for (const shape of this.shapes) {
+        if (shape.body) result = shape;
+      }
+    }
+    return result;
+  }
+
   set position(pos) {
     this.target.position = Vector.create(pos.x, pos.y);
   }
@@ -474,7 +486,11 @@ export class Thing {
     }
   }
 
-  draw_shape(ctx, scale, shape) {
+  /*
+   * Options:
+   * color, fill
+   */
+  draw_shape(ctx, scale, shape, options = { }) {
     ctx.lineWidth = (shape.width || 3);
     const type = shape.type;
     const location = this.draw_point_location(Vector.create(shape.x, shape.y), scale);
@@ -482,11 +498,11 @@ export class Thing {
     const y = location.y;
     const rot = (shape.rotation || 0) + this.rotation;
     let r, w, h, location2, x2, y2, c, fill;
-    c = shape.color || this.color;
-    fill = shape.fill || this.fill || C.transparent;
+    c = options.color || shape.color || this.color;
+    fill = options.fill || shape.fill || this.fill || C.transparent;
     const whiteness = ((this.invincible) ? 0.5 * (bounce(Thing.time, 10)) : 0);
-    ctx.strokeStyle = chroma.mix(c, C.white, whiteness);
-    ctx.fillStyle = chroma.mix(fill, C.white, whiteness);
+    ctx.strokeStyle = (whiteness === 0) ? c : chroma.mix(c, C.white, whiteness);
+    ctx.fillStyle = (whiteness === 0) ? fill : chroma.mix(fill, C.white, whiteness);
     if (type.includes("fade")) {
       const mix_fade = 1 - this.get_shoot_ratio(shape.shoot_index, shape.duration_reload);
       ctx.strokeStyle = chroma.mix(ctx.strokeStyle, shape.fade_color || C.transparent, mix_fade);

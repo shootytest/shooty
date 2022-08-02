@@ -9,6 +9,8 @@ export const config = {
     camera_smoothness: 0.1,
     // scale
     camera_scale: 0.0008,
+    // ok
+    multiplayer_send_after_death_highlight_color: "#00FFFF",
   },
   physics: {
     gravity_x: 0,

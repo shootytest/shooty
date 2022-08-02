@@ -18,7 +18,7 @@ import { controls } from "./controls.js";
 import { mobile } from "../util/mobile.js";
 import { gamesave } from "./gamesave.js";
 import { gamecheck } from "./gamecheck.js";
-import { check_if_logged_in, get_account_username } from "../util/localstorage.js";
+import { check_if_logged_in, get_account_username, get_multi_enemies } from "../util/localstorage.js";
 import { mapmaker } from "../game/mapmaker.js";
 import { maps } from "../lib/maps.js";
 import { multiplayer } from "../game/multiplayer.js";
@@ -202,15 +202,23 @@ function test() {
 
   // hacks (only multiplayer mode)
   if (multiplayer.is_multiplayer) {
-    console.log("m");
+    /*
     add_key_listener("m", function() {
       // TODO (just a test for now)
       Enemy.create_multiplayer("basic");
     });
+    */
+    const multi_enemies = get_multi_enemies();
+    for (let c of "1234567890") {
+      console.log(c);
+      add_key_listener(c, function() {
+        Enemy.create_multiplayer(multi_enemies[c]);
+      });
+    }
   }
 
   // hacks (only account "dev")
-  if (get_account_username() === "dev") {
+  if (get_account_username() === "dev" && !multiplayer.is_multiplayer) {
     add_key_listener("?", function() {
       return;
       player.item_collect("coin", Infinity);

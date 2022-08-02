@@ -174,6 +174,11 @@ export class Enemy extends Thing {
   draw(ctx, scale = camera.scale) {
     if (this.spawn_mark_time > 0) return;
     super.draw(ctx, scale);
+    if (this.send_after_death) {
+      ctx.globalAlpha = 0.5;
+      this.draw_shape(ctx, scale * 1.25, this.body_shape, { color: config.ui.multiplayer_send_after_death_highlight_color, });
+      ctx.globalAlpha = 1;
+    }
   }
 
   shoot() {

@@ -176,16 +176,9 @@ export const draw_ui_middle = function(ctx) {
       if (!e.exists) {
         if (!ui.enemy_selected.exists) ui.enemy_selected = null;
       } else {
-        let s;
-        if (e.shapes.length === 1) {
-          s = e.shapes[0];
-        } else {
-          for (const shape of e.shapes) {
-            if (shape.body) s = shape;
-          }
-        }
+        let s = e.body_shape;
         ctx.globalAlpha = 0.5;
-        e.draw_shape(ctx, _scale / 0.8, s);
+        e.draw_shape(ctx, _scale * 1.25, s);
         ctx.globalAlpha = 1;
         if (ui.new_rclick && ui.enemy_selected != null) {
           window.open(`/info/enemy/?enemy=${e.make_type.substring(6)}`, "_blank");
