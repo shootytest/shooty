@@ -24,11 +24,13 @@ export const multiplayer = {
   // functions
 
   init: function() {
-    if (user == null) return;
+    if (user == null || !multiplayer.is_multiplayer) return;
+    multiplayer.clear_all_sends();
     multiplayer_listeners();
   },
 
   send: function(o) {
+    if (!multiplayer.is_multiplayer) return;
     if (o.enemy) {
       if (o.type && typeof o.type === "string" && o.type.length) {
         const target_user = multi.players[user];
@@ -47,17 +49,26 @@ export const multiplayer = {
   },
 
   receive_enemy: function(type, number = 1) {
+    if (!multiplayer.is_multiplayer) return;
     // basically a decrement
     firebase.increment(`/multi/sends/${user}/${type}`, -number);
   },
 
+  clear_all_sends: function() {
+    if (!multiplayer.is_multiplayer) return;
+    // basically a decrement
+    firebase.set(`/multi/sends/${user}`, {});
+  },
+
   // things to run even when game is paused
   tick: function() {
+    if (!multiplayer.is_multiplayer) return;
     // ?
   },
 
   // things to run whenever multi is changed
   onchange: function() {
+    if (!multiplayer.is_multiplayer) return;
     // focus on sends/user
     const received = multi.sends[user];
     for (const k in received) {

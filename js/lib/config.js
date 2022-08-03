@@ -26,7 +26,7 @@ export const config = {
     respawn_invincibility: 180,
     health_mult: 10,
     damage_points_mult: 10,
-    kill_points_mult: 100,
+    kill_points_mult: 100, // unused???
     item_points_mult: 50,
     clear_points_mult: 1,
     bonus_points_mult: 1,

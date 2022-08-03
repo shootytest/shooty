@@ -212,7 +212,9 @@ function test() {
     for (let c of "1234567890") {
       console.log(c);
       add_key_listener(c, function() {
-        Enemy.create_multiplayer(multi_enemies[c]);
+        const t = multi_enemies[c];
+        if (t == null || t === "") return;
+        Enemy.create_multiplayer(t);
       });
     }
   }

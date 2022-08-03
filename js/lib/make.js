@@ -299,7 +299,7 @@ make.enemy_escape = {
   density: 0.001,
   size: 18,
   always_shoot: true,
-  target_player: false,
+  target_player: true,
   rotation_controller: "escape",
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
@@ -404,7 +404,7 @@ make.enemy_small = {
 
 make.enemy_ramshoot = {
   parent: ["enemy"],
-  name: "Shooty Rammer",
+  name: "Rammer+",
   density: 0.001,
   size: 23,
   always_shoot: true,
@@ -556,16 +556,38 @@ make.enemy_homing = {
   ],
   shoots: [
     { parent: shoots.e_homing, rotation: 0 },
-    { parent: shoots.e_homing, rotation: 90 },
-    { parent: shoots.e_homing, rotation: 180 },
-    { parent: shoots.e_homing, rotation: 270 },
   ],
   health: {
-    capacity: 16,
+    capacity: 17,
     damage: 0.008,
   },
   items: [
-    { type: "normal", number: 2, },
+    { type: "normal", number: 1, },
+    { type: "big", number: 1, },
+  ],
+};
+
+make.enemy_homing_4 = {
+  parent: ["enemy"],
+  name: "Homing (x4)",
+  always_shoot: true,
+  size: 23,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "line_extend", x2: 1, y2: 0, },
+  ],
+  shoots: [
+    { parent: shoots.e_homing_4, rotation: 0 },
+    { parent: shoots.e_homing_4, rotation: 90 },
+    { parent: shoots.e_homing_4, rotation: 180 },
+    { parent: shoots.e_homing_4, rotation: 270 },
+  ],
+  health: {
+    capacity: 21,
+    damage: 0.008,
+  },
+  items: [
+    { type: "normal", number: 3, },
     { type: "big", number: 1, },
   ],
 };
@@ -651,6 +673,7 @@ make.test = {
 };
 
 for (const make_key in make) {
+  if (!make.hasOwnProperty(make_key)) continue;
   make[make_key].make_type = make_key;
 }
 

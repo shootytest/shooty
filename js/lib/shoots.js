@@ -80,7 +80,8 @@ shoots.e_small = { type: "basic", reload: 60 * 0.25, size: 5, speed: 9, damage: 
 shoots.e_ramshoot_ram = { type: "ram", reload: 60 * 2, move: true, speed: 50, duration: 60 * 3, };
 shoots.e_ramshoot_shoot = { type: "basic", reload: 60 * 0.7, size: 6, speed: 10, damage: 0.8, time: 360, };
 shoots.e_oct = { type: "basic", reload: 60 * 0.5, size: 7, speed: 6, spread: 0.05, damage: 1, time: 320, };
-shoots.e_homing = { type: "homing", reload: 60 * 2.5, size: 9, speed: 8, damage: 1, options: { homing_amount: 0.05, speed_death: 5, } };
+shoots.e_homing = { type: "homing", reload: 60 * 1.4, size: 10, speed: 8, damage: 1.1, options: { homing_amount: 0.06, speed_death: 5, } };
+shoots.e_homing_4 = { type: "homing", reload: 60 * 2.5, size: 9, speed: 8, damage: 0.8, options: { homing_amount: 0.05, speed_death: 5, } };
 
 // bosses!
 shoots.e_boss_tutorial = { type: "grow", reload: 60 * 0.2, size: 10, speed: 5, spread: 0.05, damage: 1, time: 120, options: { grow_amount: 0.012, }, };

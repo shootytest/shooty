@@ -39,6 +39,7 @@ function main() {
     const a = getlink(7);
     a.innerHTML = `login`;
     a.setAttribute("href", "/account/login.html");
+    disable(8);
   }
 }
 

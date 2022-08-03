@@ -16,10 +16,6 @@ for (const k of keys) {
 const button_ready = document.getElementById("ready");
 const user = get_account_username();
 
-const default_multi_enemies = {
-  ["1"]: "basic", ["2"]: "basic", ["3"]: "basic", ["4"]: "basic", ["5"]: "basic",
-  ["6"]: "basic", ["7"]: "basic", ["8"]: "basic", ["9"]: "basic", ["0"]: "basic",
-}
 const multi_enemies = get_multi_enemies();
 
 function update(k) {
@@ -47,21 +43,22 @@ function main() {
 
 function generate() {
 
-  const enemy_types = [];
+  const enemy_type_names = [];
 
   for (const mk in make) { // mk: make_key
     const M = realmake(mk);
     if (!M.enemy) continue;
-    if (mk.startsWith("enemy_")) {
-      enemy_types.push(mk.substring(6));
+    if (mk.startsWith("enemy_") && !mk.includes("boss")) {
+      enemy_type_names.push([mk.substring(6), M.name]); // TODO
     }
   }
 
-  enemy_types.sort();
+  enemy_type_names.sort();
 
   let options = `<option value="">none</option>`;
-  for (const t of enemy_types) {
-    options += `<option value="${t}">${t}</option>`;
+  for (let i = 0; i < enemy_type_names.length; i++) {
+    const pair = enemy_type_names[i];
+    options += `<option value="${pair[0]}">${pair[1]}</option>`;
   }
   
   for (const k of keys) {

@@ -52,6 +52,7 @@ function go() {
 function main(event) {
   if (target_user !== "") {
     input_username.value = target_user;
+    update();
   }
   main_firebase();
   // kick out if not logged in

@@ -19,6 +19,11 @@ export const set_account_password = function(password) {
   return localStorage.setItem(PASSWORD_KEY, password);
 }
 
+const default_multi_enemies = {
+  ["1"]: "basic", ["2"]: "basic", ["3"]: "basic", ["4"]: "basic", ["5"]: "basic",
+  ["6"]: "basic", ["7"]: "basic", ["8"]: "basic", ["9"]: "basic", ["0"]: "basic",
+};
+
 export const get_multi_enemies = function() {
   const raw_multi_enemies = localStorage.getItem(MULTIENEMIES_KEY);
   const multi_enemies = raw_multi_enemies ? JSON.parse(raw_multi_enemies) : default_multi_enemies;

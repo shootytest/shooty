@@ -244,12 +244,12 @@ function draw_stuff() {
         ctx.strokeStyle = C.green_dark;
         draw_upgrade_shape(U, x, y, size);
         ctx.stroke();
-      } else if (reached && (user.coins >= U.cost)) {
-        ctx.strokeStyle = chroma.mix(C.blue, C.green_bullet, bounce(ui.time, 50));
-        draw_upgrade_shape(U, x, y, size);
-        ctx.stroke();
       } else if (reached && scam) {
         ctx.strokeStyle = chroma.mix(C.blue, C.yellow_bullet, bounce(ui.time, 10));
+        draw_upgrade_shape(U, x, y, size);
+        ctx.stroke();
+      } else if (reached && (user.coins >= U.cost)) {
+        ctx.strokeStyle = chroma.mix(C.blue, C.green_bullet, bounce(ui.time, 50));
         draw_upgrade_shape(U, x, y, size);
         ctx.stroke();
       }
