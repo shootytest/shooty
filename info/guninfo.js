@@ -1,7 +1,7 @@
 import { make, realmake, realshoots } from "../js/lib/make.js";
 import { math_util } from "../js/util/math.js";
 
-const table_width_cells = 9;
+const table_width_cells = 10;
 
 const get_info = function(o) {
   const result = [];
@@ -37,6 +37,10 @@ const get_info = function(o) {
     name: "Time",
     title: "maximum bullet time",
     value: ((o.time == null) ? Infinity : (o.time || 0)),
+  }, {
+    name: "Delay",
+    title: "shoot delay",
+    value: o.delay || 0,
   });
   return result;
 };

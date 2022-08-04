@@ -2,6 +2,10 @@ import { C } from "./color.js";
 import { category, config } from "./config.js";
 import { shoots, shoot_rotate } from "./shoots.js";
 
+const SQRT_2 = Math.sqrt(2);
+const SQRT_3 = Math.sqrt(3);
+const SQRT_5 = Math.sqrt(5);
+
 export const make = {};
 
 make.default = {
@@ -125,7 +129,14 @@ make.bullet_triangle = {
 make.bullet_pentagon = {
   parent: ["bullet"],
   shapes: [
-    { type: "polygon", sides: 4, r: 1, body: true, },
+    { type: "polygon", sides: 5, r: 1, body: true, },
+  ],
+};
+
+make.bullet_hexagon = {
+  parent: ["bullet"],
+  shapes: [
+    { type: "polygon", sides: 6, r: 1, body: true, },
   ],
 };
 
@@ -185,7 +196,7 @@ make.bullet_homing = {
   rotation_controller: "homing",
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
-    { type: "line", x2: 1, y2: 0, },
+    { type: "line", x: 0, y: 0, x2: 1, y2: 0, },
   ],
 };
 
@@ -248,6 +259,8 @@ make.enemy = {
   target_player: true,
 };
 
+// ##normal enemies
+
 make.enemy_basic = {
   parent: ["enemy"],
   name: "Basic",
@@ -268,55 +281,99 @@ make.enemy_basic = {
   ],
 };
 
-make.enemy_ram = {
+make.enemy_basic_double = {
   parent: ["enemy"],
-  name: "Rammer",
-  density: 0.001,
-  size: 18,
-  always_shoot: true,
+  name: "Basic ×2",
+  size: 23,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
-    { type: "circle", x: 0.5, y: 0.35, r: 0.15 },
-    { type: "circle", x: 0.5, y: -0.35, r: 0.15 },
-    { type: "circle_fade", x: 0.5, y: 0.35, r: 0.15, color: C.purple },
-    { type: "circle_fade", x: 0.5, y: -0.35, r: 0.15, color: C.purple },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
   ],
   shoots: [
-    { parent: shoots.e_ram, },
+    { parent: shoots.e_basic_double, },
+    { parent: shoots.e_basic_double, delay: 30, },
   ],
   health: {
-    capacity: 10,
-    damage: 0.025,
-  },
-  items: [
-    { type: "normal", number: 2, },
-  ],
-};
-
-make.enemy_escape = {
-  parent: ["enemy"],
-  name: "Escaper",
-  density: 0.001,
-  size: 18,
-  always_shoot: true,
-  target_player: true,
-  rotation_controller: "escape",
-  shapes: [
-    { type: "circle", x: 0, y: 0, body: true, },
-    { type: "circle", x: 0.5, y: 0.35, r: 0.15 },
-    { type: "circle", x: 0.5, y: -0.35, r: 0.15 },
-    { type: "circle_fade", x: 0.5, y: 0.35, r: 0.15, color: C.pink },
-    { type: "circle_fade", x: 0.5, y: -0.35, r: 0.15, color: C.pink },
-  ],
-  shoots: [
-    { parent: shoots.e_ram_escape, },
-  ],
-  health: {
-    capacity: 10,
-    damage: 0.018,
+    capacity: 25,
+    damage: 0.0045,
   },
   items: [
     { type: "normal", number: 4, },
+  ],
+};
+
+make.enemy_basic_hexagon = {
+  parent: ["enemy"],
+  name: "Basic ×6",
+  size: 22,
+  shapes: [
+    { type: "polygon", sides: 6, r: 1, body: true, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_basic_hexagon, },
+    { parent: shoots.e_basic_hexagon, delay: 5, },
+    { parent: shoots.e_basic_hexagon, delay: 10, },
+    { parent: shoots.e_basic_hexagon, delay: 15, },
+    { parent: shoots.e_basic_hexagon, delay: 20, },
+    { parent: shoots.e_basic_hexagon, delay: 25, },
+  ],
+  health: {
+    capacity: 25,
+    damage: 0.0045,
+  },
+  items: [
+    { type: "normal", number: 4, },
+  ],
+};
+
+make.enemy_triple = {
+  parent: ["enemy"],
+  name: "Triple",
+  size: 23,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0.5, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.25, y: SQRT_3 * 0.25, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.25, y: -SQRT_3 * 0.25, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_triple, x: 0.5, y: 0, },
+    { parent: shoots.e_triple, x: -0.25, y: SQRT_3 * 0.25, rotation: 20, },
+    { parent: shoots.e_triple, x: -0.25, y: -SQRT_3 * 0.25, rotation: -20, },
+  ],
+  health: {
+    capacity: 18,
+    damage: 0.005,
+  },
+  items: [
+    { type: "normal", number: 3, },
+  ],
+};
+
+make.enemy_quadruple = {
+  parent: ["enemy"],
+  name: "Quadruple",
+  size: 26,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0.25 * SQRT_2, y: 0.25 * SQRT_2, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.25 * SQRT_2, y: -0.25 * SQRT_2, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.25 * SQRT_2, y: 0.25 * SQRT_2, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.25 * SQRT_2, y: -0.25 * SQRT_2, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_quadruple, x: 0.25 * SQRT_2, y: 0.25 * SQRT_2, rotation: 0, },
+    { parent: shoots.e_quadruple, x: 0.25 * SQRT_2, y: -0.25 * SQRT_2, rotation: 0, },
+    { parent: shoots.e_quadruple, x: -0.25 * SQRT_2, y: 0.25 * SQRT_2, rotation: 0, delay: 0, },
+    { parent: shoots.e_quadruple, x: -0.25 * SQRT_2, y: -0.25 * SQRT_2, rotation: 0, delay: 0, },
+  ],
+  health: {
+    capacity: 25,
+    damage: 0.004,
+  },
+  items: [
+    { type: "normal", number: 5, },
   ],
 };
 
@@ -402,6 +459,33 @@ make.enemy_small = {
   ],
 };
 
+// ##ram enemies
+
+make.enemy_ram = {
+  parent: ["enemy"],
+  name: "Rammer",
+  density: 0.001,
+  size: 18,
+  always_shoot: true,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle", x: 0.5, y: 0.35, r: 0.15 },
+    { type: "circle", x: 0.5, y: -0.35, r: 0.15 },
+    { type: "circle_fade", x: 0.5, y: 0.35, r: 0.15, color: C.purple },
+    { type: "circle_fade", x: 0.5, y: -0.35, r: 0.15, color: C.purple },
+  ],
+  shoots: [
+    { parent: shoots.e_ram, },
+  ],
+  health: {
+    capacity: 10,
+    damage: 0.025,
+  },
+  items: [
+    { type: "normal", number: 2, },
+  ],
+};
+
 make.enemy_ramshoot = {
   parent: ["enemy"],
   name: "Rammer+",
@@ -429,6 +513,8 @@ make.enemy_ramshoot = {
   ],
 };
 
+// ##scatter enemies
+
 make.enemy_oct = {
   parent: ["enemy"],
   name: "Octopus",
@@ -455,25 +541,7 @@ make.enemy_oct = {
   ],
 };
 
-make.enemy_invisible = {
-  parent: ["enemy"],
-  name: "Invisible",
-  size: 16,
-  shapes: [
-    { type: "circle", x: 0, y: 0, body: true, color: C.camo, },
-    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.camo, },
-  ],
-  shoots: [
-    { parent: shoots.e_basic, color: C.camo },
-  ],
-  health: {
-    capacity: 7,
-    damage: 0.012,
-  },
-  items: [
-    { type: "normal", number: 4, },
-  ],
-};
+// ##boss enemies
 
 make.enemy_boss_oct = {
   parent: ["enemy"],
@@ -545,6 +613,8 @@ make.enemy_boss_tutorial_2 = {
   ],
 };
 
+// ##special enemies
+
 make.enemy_homing = {
   parent: ["enemy"],
   name: "Homing",
@@ -589,6 +659,55 @@ make.enemy_homing_4 = {
   items: [
     { type: "normal", number: 3, },
     { type: "big", number: 1, },
+  ],
+};
+
+// ##very special enemies (???)
+
+make.enemy_escape = {
+  parent: ["enemy"],
+  name: "Escaper",
+  density: 0.001,
+  size: 18,
+  always_shoot: true,
+  target_player: true,
+  rotation_controller: "escape",
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle", x: 0.5, y: 0.35, r: 0.15 },
+    { type: "circle", x: 0.5, y: -0.35, r: 0.15 },
+    { type: "circle_fade", x: 0.5, y: 0.35, r: 0.15, color: C.pink },
+    { type: "circle_fade", x: 0.5, y: -0.35, r: 0.15, color: C.pink },
+  ],
+  shoots: [
+    { parent: shoots.e_ram_escape, },
+  ],
+  health: {
+    capacity: 10,
+    damage: 0.018,
+  },
+  items: [
+    { type: "normal", number: 4, },
+  ],
+};
+
+make.enemy_invisible = {
+  parent: ["enemy"],
+  name: "Invisible",
+  size: 16,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, color: C.camo, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.camo, },
+  ],
+  shoots: [
+    { parent: shoots.e_basic, color: C.camo },
+  ],
+  health: {
+    capacity: 7,
+    damage: 0.012,
+  },
+  items: [
+    { type: "normal", number: 4, },
   ],
 };
 

@@ -13,8 +13,8 @@ export const shoots = {};
 
 shoots.p_basic = { type: "basic", reload: 30, size: 10, speed: 5, spread: 0.04, damage: 3, time: 240, };
 // multi path
-shoots.p_triple = { type: "basic", reload: 35, size: 9, speed: 4.5, spread: 0.05, damage: 2.2, time: 210, };
-shoots.p_penta = { type: "basic", reload: 40, size: 8, speed: 4.5, spread: 0.055, damage: 1.75, time: 180, };
+shoots.p_triple = { type: "basic", reload: 40, size: 9, speed: 4.5, spread: 0.02, damage: 1.7, time: 210, };
+shoots.p_penta = { type: "basic", reload: 45, size: 8, speed: 4.5, spread: 0.02, damage: 1.45, time: 180, };
 shoots.p_oct = { type: "basic", reload: 26, size: 7.5, speed: 6, spread: 0.045, damage: 2.2, time: 240, };
 shoots.p_jellyfish = { type: "basic", reload: 36, size: 8, speed: 3.5, spread: 0.035, damage: 1.8, time: 100, };
 shoots.p_lobster = { type: "basic", reload: 22, size: 7, speed: 3, spread: 0.04, damage: 0.9, time: 150, };
@@ -71,15 +71,22 @@ shoots.p_tower = { type: "tower_basic", reload: 60, size: 10, speed: 5, damage: 
 
 // enemies!
 shoots.e_basic = { type: "basic", reload: 60 * 1.5, size: 10, speed: 5, damage: 1, time: 360, };
-shoots.e_ram = { type: "ram", reload: 60 * 2, move: true, speed: 60, duration: 60 * 3, };
-shoots.e_ram_escape = { type: "ram", reload: 1, move: true, speed: 60, duration: 10000000, };
+shoots.e_basic_double = { type: "basic", reload: 60 * 1.8, size: 9, speed: 5, damage: 0.8, time: 300, };
+shoots.e_basic_hexagon = { type: "basic", reload: 60 * 1.2, size: 7.5, speed: 5.5, damage: 0.2, time: 320, };
+shoots.e_triple = { type: "basic", reload: 60 * 1.5, size: 8.5, speed: 5.5, damage: 0.8, time: 280, };
+shoots.e_quadruple = { type: "basic", reload: 60 * 1.6, size: 8, speed: 5.6, damage: 0.6, time: 320, };
 shoots.e_fast = { type: "square", reload: 60 * 0.6, size: 8, speed: 8, damage: 0.8, time: 240, };
 shoots.e_slow = { type: "basic", reload: 60 * 1.5, size: 18, speed: 3.5, damage: 2, time: 480, };
 shoots.e_strong = { type: "basic", reload: 60 * 1.6, size: 12, speed: 15, damage: 1.6, time: 180, };
 shoots.e_small = { type: "basic", reload: 60 * 0.25, size: 5, speed: 9, damage: 0.5, time: 500, };
+
+shoots.e_ram = { type: "ram", reload: 60 * 2, move: true, speed: 60, duration: 60 * 2.5, };
+shoots.e_ram_escape = { type: "ram", reload: 1, move: true, speed: 60, duration: 10000000, };
 shoots.e_ramshoot_ram = { type: "ram", reload: 60 * 2, move: true, speed: 50, duration: 60 * 3, };
 shoots.e_ramshoot_shoot = { type: "basic", reload: 60 * 0.7, size: 6, speed: 10, damage: 0.8, time: 360, };
+
 shoots.e_oct = { type: "basic", reload: 60 * 0.5, size: 7, speed: 6, spread: 0.05, damage: 1, time: 320, };
+
 shoots.e_homing = { type: "homing", reload: 60 * 1.4, size: 10, speed: 8, damage: 1.1, options: { homing_amount: 0.06, speed_death: 5, } };
 shoots.e_homing_4 = { type: "homing", reload: 60 * 2.5, size: 9, speed: 8, damage: 0.8, options: { homing_amount: 0.05, speed_death: 5, } };
 

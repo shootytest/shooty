@@ -210,7 +210,6 @@ function test() {
     */
     const multi_enemies = get_multi_enemies();
     for (let c of "1234567890") {
-      console.log(c);
       add_key_listener(c, function() {
         const t = multi_enemies[c];
         if (t == null || t === "") return;

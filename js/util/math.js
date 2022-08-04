@@ -1,6 +1,10 @@
 
 export const math_util = { };
 
+export const SQRT_2 = Math.sqrt(2);
+export const SQRT_3 = Math.sqrt(3);
+export const SQRT_5 = Math.sqrt(5);
+
 const Vector = Matter.Vector;
 
 math_util.regpoly = function(sides, size, angle = 0, x = 0, y = 0) {

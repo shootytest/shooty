@@ -26,9 +26,9 @@ player_make.triple = {
   ],
   shoots: [
     "delete",
-    { parent: shoots.p_triple, rotation: 25, delay: 17, },
+    { parent: shoots.p_triple, rotation: 10, delay: 2, },
     { parent: shoots.p_triple, rotation: 0, },
-    { parent: shoots.p_triple, rotation: -25, delay: 17, },
+    { parent: shoots.p_triple, rotation: -10, delay: 2, },
   ],
 };
 
@@ -44,11 +44,11 @@ player_make.penta = {
   ],
   shoots: [
     "delete",
-    { parent: shoots.p_penta, rotation: 30, color: C.player_bullet, delay: 10, },
-    { parent: shoots.p_penta, rotation: 15, color: C.player_bullet, delay: 5, },
+    { parent: shoots.p_penta, rotation: 18, color: C.player_bullet, delay: 10, },
+    { parent: shoots.p_penta, rotation: 9, color: C.player_bullet, delay: 5, },
     { parent: shoots.p_penta, rotation: 0, color: C.player_bullet, },
-    { parent: shoots.p_penta, rotation: -15, color: C.player_bullet, delay: 5, },
-    { parent: shoots.p_penta, rotation: -30, color: C.player_bullet, delay: 10, },
+    { parent: shoots.p_penta, rotation: -9, color: C.player_bullet, delay: 5, },
+    { parent: shoots.p_penta, rotation: -18, color: C.player_bullet, delay: 10, },
   ],
 };
 
