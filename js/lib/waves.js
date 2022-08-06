@@ -5,6 +5,23 @@ export const waves = {};
 export const waves_text = {};
 export const waves_points = {};
 
+export const wave_ratings = [
+// there are 11 main ratings from 1 to 11
+// ratings 0 and 12 are exactly 100% and 0% respectively
+// 0     1    2     3     4    5     6     7    8     9    10   11    X
+  "★", "S+", "S", "S-", "A+", "A", "A-", "B+", "B", "B-", "C", "D", "✖",
+];
+export const wave_ratings_colors = [
+  // stars
+  "#ffc987", "#ffda6b", "#ffd61f", "#c9cf0f", 
+  // a
+  "#7fc123", "#56b830", "#00b28e",
+  // b
+  "#00a0c9", "#0085cc", "#006bf7",
+  // cdx
+  "#6924ff", "#7900bf", "#e8005d",
+];
+
 // tutorial
 
 if ("tutorial") {
@@ -93,6 +110,7 @@ if ("tutorial") {
   waves_points.tutorial = {
     points: [ 0, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, ],
     time: [ 0, 10, 20, 30, 25, 15, 10, 25, 40, 60, 20, ],
+    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
   };
 
 }
@@ -180,6 +198,7 @@ if ("level0") {
   waves_points.level0 = {
     points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5 ],
     time: [ 0, 7, 25, 11, 9, 15, 20, 10, 25, 8, 8, 50, 60, 50, 35, 60, 50, 25, 40, /**/ 70, 10],
+    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
   };
 }
 
@@ -313,6 +332,7 @@ if ("tutorialold") {
   waves_points.tutorialold = {
     points: [ 0, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5 ],
     time: [ 0, 7, 20, 8, 15, 7, 10, 20, 30, 60, 15, 45, 50, 35, 50, 25, ],
+    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
   };
 
 }
@@ -342,6 +362,7 @@ if ("oneround") {
   waves_points.oneround = {
     points: [ 0, 1, ],
     time: [ 0, 250, ],
+    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
   };
 
 }

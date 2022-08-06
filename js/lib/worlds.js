@@ -1,15 +1,6 @@
 
 export const worlds = { };
 
-export const level_ranks = [
-  { name: "S+",
-    color: "",
-  },
-  { name: "S",
-    color: "",
-  }
-];
-
 worlds.zero = {
   name: "World Zero",
   // background_: "#007c8a",
@@ -39,11 +30,11 @@ worlds.zero = {
   ],
 };
 
-worlds.one = {
+worlds.test = {
   name: "Test",
   // background_: "#00338a",
   levels: {
-    tutorial: {
+    oneround: {
       key: "oneround",
       char: "1r",
       x: 0,

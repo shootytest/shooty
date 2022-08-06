@@ -835,3 +835,22 @@ export const realshoots = function(k) {
   }
   return final;
 }
+
+export const realitems = function(k) {
+  let object_items = [];
+  const result_items = {};
+  function recurse(a) {
+    if (a.hasOwnProperty("parent")) {
+      for (let p of a.parent) {
+        recurse(make[p]);
+      }
+    }
+    object_items = a.items;
+  }
+  recurse(make[k]);
+  for (const item of object_items) {
+    const I = make["item_" + item.type];
+    result_items[I.give_type] = (result_items[I.give_type] || 0) + I.give_number * item.number;
+  }
+  return result_items;
+}

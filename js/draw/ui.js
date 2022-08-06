@@ -8,7 +8,7 @@ import { config } from "../lib/config.js";
 import { make } from "../lib/make.js";
 import { player_make } from "../lib/playermake.js";
 import { upgrades } from "../lib/upgrades.js";
-import { waves_points } from "../lib/waves.js";
+import { waves_points, wave_ratings, wave_ratings_colors } from "../lib/waves.js";
 import { controls } from "../main/controls.js";
 import { check_keys } from "../main/key.js";
 import { math_util } from "../util/math.js";
@@ -16,6 +16,7 @@ import { mobile } from "../util/mobile.js";
 import { PriorityQueue } from "../util/priorityqueue.js";
 import { camera } from "./camera.js";
 import { draw } from "./draw.js";
+import { draw_svg } from "./svg.js";
 
 const Vector = Matter.Vector;
 
@@ -53,6 +54,13 @@ export const ui = {
   inventory_overlay: false,
   // end
   end_overlay: false,
+  end_score: 0,
+  end_score_target: 0,
+  end_rounds: 0,
+  end_rounds_target: 0,
+  end_rating: wave_ratings.length - 1,
+  end_rating_target: 0,
+  end_stuff_smoothness: 0.05,
   // enemy
   enemy_selected: null,
   // popups
@@ -140,15 +148,15 @@ export const draw_ui_before = function(ctx) {
     ctx.beginPath();
     ctx.rect(0, y, _width, _height - y);
     ctx.clip();
-    ctx.fillStyle = chroma(C.red).alpha(0.15);
+    ctx.fillStyle = math_util.set_color_alpha(C.red, 0.15);
     draw.fill_text(ctx, number_text, location.x, location.y + text_offset);
     ctx.restore();
     if (!Enemy.check() && Enemy.total_wave_health > 0) {
-      ctx.fillStyle = chroma(C.green_dark).alpha(0.1);
+      ctx.fillStyle = math_util.set_color_alpha(C.green_dark, 0.1);
       draw.fill_rect(ctx, 0, 0, _width, _height);
       end_wave();
     }
-    ctx.fillStyle = chroma((clear_ratio < 0.001) ? C.green_bullet : C.white).alpha(0.15);
+    ctx.fillStyle = math_util.set_color_alpha((clear_ratio < 0.001) ? C.green_bullet : C.white, 0.15);
     draw.fill_text(ctx, number_text, location.x, location.y + text_offset);
   }
 }
@@ -217,7 +225,7 @@ export const draw_ui = function(ctx) {
     ui.health_ratio = health_ratio;
     w = _width / 2;
     h = 20;
-    ctx.fillStyle = chroma(C.white).alpha(0.3);
+    ctx.fillStyle = math_util.set_color_alpha(C.white, 0.3);
     draw.fill_rectangle(ctx, _width / 2, _height - 50, w + 13, h + 13);
     ctx.strokeStyle = C.white;
     ctx.lineWidth = 3;
@@ -233,7 +241,7 @@ export const draw_ui = function(ctx) {
     // red flash
     if (Thing.time - player.health.hit_time < player.health.hit_clear) {
       const hit_time_ratio = 1 - (Thing.time - player.health.hit_time) / player.health.hit_clear
-      ctx.fillStyle = chroma(C.red_health).alpha(0.2 * hit_time_ratio);
+      ctx.fillStyle = math_util.set_color_alpha(C.red_health, 0.2 * hit_time_ratio);
       draw.fill_rect(ctx, 0, 0, _width, _height);
     }
   }
@@ -246,7 +254,7 @@ export const draw_ui = function(ctx) {
     ctx.font = "20px roboto mono";
     ctx.textBaseline = "middle";
     ctx.textAlign = "center";
-    ctx.fillStyle = chroma(C.background).alpha(0.7);
+    ctx.fillStyle = math_util.set_color_alpha(C.background, 0.7);
     draw.fill_rectangle(ctx, _width / 2, 30, ctx.measureText(points_text).width + 30, 30);
     ctx.fillStyle = C.white;
     draw.fill_text(ctx, points_text, _width / 2, 30);
@@ -260,7 +268,7 @@ export const draw_ui = function(ctx) {
     ctx.font = "20px roboto mono";
     ctx.textBaseline = "middle";
     ctx.textAlign = "right";
-    ctx.fillStyle = chroma(C.background).alpha(0.7);
+    ctx.fillStyle = math_util.set_color_alpha(C.background, 0.7);
     w = ctx.measureText(timer_text).width;
     draw.fill_rect(ctx, _width - 35 - w, _height - 45, w + 30, 30);
     ctx.fillStyle = C.white;
@@ -276,7 +284,7 @@ export const draw_ui = function(ctx) {
     w = ctx.measureText(timer_text).width;
     w += ctx.measureText(clock_emoji).width;
     // back rectangle
-    ctx.fillStyle = chroma(C.background).alpha(0.7);
+    ctx.fillStyle = math_util.set_color_alpha(C.background, 0.7);
     draw.fill_rect(ctx, _width - 30 - w, _height - 95, w + 30, 30);
     ctx.fillStyle = C.white;
     w -= ctx.measureText(clock_emoji).width;
@@ -291,7 +299,7 @@ export const draw_ui = function(ctx) {
     ctx.font = "20px roboto mono";
     ctx.textBaseline = "middle";
     ctx.textAlign = "right";
-    ctx.fillStyle = chroma(C.background).alpha(0.7);
+    ctx.fillStyle = math_util.set_color_alpha(C.background, 0.7);
     w = ctx.measureText(item_text).width;
     draw.fill_rect(ctx, _width - 50 - w - 30, 15, w + 70, 30);
     ctx.strokeStyle = C.gold;
@@ -325,7 +333,7 @@ export const draw_ui = function(ctx) {
         next_wave();
       }
     }
-    ctx.fillStyle = chroma(c).alpha(0.6);
+    ctx.fillStyle = math_util.set_color_alpha(c, 0.6);
     draw.fill_rect(ctx, x, y, w, h);
     // wave symbol?
   }
@@ -342,7 +350,7 @@ export const draw_ui = function(ctx) {
         ui.upgrade_overlay = true;
       }
     }
-    ctx.fillStyle = chroma(c).alpha(0.6);
+    ctx.fillStyle = math_util.set_color_alpha(c, 0.6);
     draw.fill_rect(ctx, x, y, w, h);
     // upgrade symbol?
   }
@@ -363,9 +371,9 @@ export const draw_ui = function(ctx) {
       const ratio = (Thing.time - m.send_time) / (m.time - m.send_time);
       const alpha = (1 - ratio > ui.message_threshold) ? 1 : (1 - ratio) / ui.message_threshold;
       y = 12 + 50 * i;
-      ctx.fillStyle = chroma(m.color).alpha(0.3 * alpha);
+      ctx.fillStyle = math_util.set_color_alpha(m.color, 0.3 * alpha);
       draw.fill_rect(ctx, 16, y, ctx.measureText(m.message).width + 26, 34);
-      ctx.fillStyle = chroma(m.color).alpha(alpha);
+      ctx.fillStyle = math_util.set_color_alpha(m.color, alpha);
       draw.fill_text(ctx, m.message, 30, 30 + 50 * i);
       i++;
     }
@@ -376,9 +384,9 @@ export const draw_ui = function(ctx) {
         clear_messages();
       }
     }
-    ctx.fillStyle = chroma(c).alpha(0.3);
+    ctx.fillStyle = math_util.set_color_alpha(c, 0.3);
     draw.fill_rect(ctx, 16, y + 50, 36, 36);
-    ctx.strokeStyle = chroma(c).alpha(1);
+    ctx.strokeStyle = math_util.set_color_alpha(c, 1);
     ctx.lineWidth = 3;
     draw.x_cross(ctx, 16, y + 50, 36, 36, 0.7);
   }
@@ -390,23 +398,23 @@ export const draw_ui = function(ctx) {
     if (config.joystick.dynamic || true) {
       const j = controls.joystick;
       if (j.left) {
-        ctx.fillStyle = chroma(C.joystick_left).alpha(0.3);;
+        ctx.fillStyle = math_util.set_color_alpha(C.joystick_left, 0.3);;
         draw.circle(ctx, j.left.x, j.left.y, circle_size);
         ctx.fill();
         if (j.left.v) {
           const v = Vector.mult(Vector.normalise(j.left.v), circle_size * (2 / 3));
-          ctx.fillStyle = chroma(C.joystick_left).alpha(0.5);
+          ctx.fillStyle = math_util.set_color_alpha(C.joystick_left, 0.5);
           draw.circle(ctx, j.left.x + v.x, j.left.y + v.y, circle_size / 3);
           ctx.fill();
         }
       }
       if (j.right) {
-        ctx.fillStyle = chroma(C.joystick_right).alpha(0.3);
+        ctx.fillStyle = math_util.set_color_alpha(C.joystick_right, 0.3);
         draw.circle(ctx, j.right.x, j.right.y, circle_size);
         ctx.fill();
         if (j.right.v) {
           const v = Vector.mult(Vector.normalise(j.right.v), circle_size * (2 / 3));
-          ctx.fillStyle = chroma(C.joystick_right).alpha(0.5);
+          ctx.fillStyle = math_util.set_color_alpha(C.joystick_right, 0.5);
           draw.circle(ctx, j.right.x + v.x, j.right.y + v.y, circle_size / 3);
           ctx.fill();
         }
@@ -422,10 +430,10 @@ export const draw_ui = function(ctx) {
 
   if ("dead overlay" && !ui.end_overlay) {
     if (player.player_dead) {
-      ctx.fillStyle = chroma(C.background).alpha(0.7);
+      ctx.fillStyle = math_util.set_color_alpha(C.background, 0.7);
       draw.fill_rect(ctx, 0, 0, _width, _height);
       const time_text = "" + Math.max(0, 1 + Math.floor((player.player_dead_time - Thing.time) / 60));
-      ctx.fillStyle = chroma(C.white);
+      ctx.fillStyle = C.white;
       ctx.font = "bold 400px roboto mono";
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
@@ -434,10 +442,10 @@ export const draw_ui = function(ctx) {
   }
 
   if ("paused" && ui.paused) {
-    ctx.fillStyle = chroma(C.white).alpha(0.8);
+    ctx.fillStyle = math_util.set_color_alpha(C.white, 0.8);
     draw.fill_rect(ctx, 0, 0, _width, _height);
     const pause_text = "paused";
-    ctx.fillStyle = chroma(C.background);
+    ctx.fillStyle = C.background;
     ctx.font = "bold 200px roboto mono";
     ctx.textBaseline = "middle";
     ctx.textAlign = "center";
@@ -445,13 +453,13 @@ export const draw_ui = function(ctx) {
   }
 
   if ("shop" && ui.shop_overlay) {
-    ctx.fillStyle = chroma(C.green).alpha(0.85);
+    ctx.fillStyle = math_util.set_color_alpha(C.green, 0.85);
     draw.fill_rect(ctx, 0, 0, _width, _height);
   }
 
   if ("upgrade" && ui.upgrade_overlay && false) {
     ///// draw backgrounds
-    ctx.fillStyle = chroma(C.background).alpha(0.8);
+    ctx.fillStyle = math_util.set_color_alpha(C.background, 0.8);
     draw.fill_rect(ctx, 0, 0, _width, _height);
     // calculate upgrade divide
     ui.upgrade_divide_target = (ui.upgrade_selected) ? (mobile.screen_mobile ? 0 : 0.7) : 1;
@@ -462,10 +470,10 @@ export const draw_ui = function(ctx) {
     let upgrade_selected_old = ui.upgrade_selected;
     let upgrade_selected_clear = ui.new_click && camera.mouse_in_rect(0, 0, divide_x, _height);
     // draw divided background
-    ctx.fillStyle = chroma(C.blue).alpha(0.5);
+    ctx.fillStyle = math_util.set_color_alpha(C.blue, 0.5);
     draw.fill_rect(ctx, divide_x, 0, _width - divide_x, _height);
     // draw the divider line
-    ctx.strokeStyle = chroma(C.white);
+    ctx.strokeStyle = C.white;
     draw.line(ctx, divide_x, 0, divide_x, _height);
     ///// move the camera using arrow keys
     const move_x = (check_keys(config.controls.right) ? 1 : 0) - (check_keys(config.controls.left) ? 1 : 0);
@@ -690,9 +698,9 @@ export const draw_ui = function(ctx) {
       w = 40;
       h = 40;
       const hover = camera.mouse_in_rect(x, y, w, h);
-      ctx.fillStyle = chroma(C.red).alpha(hover ? 0.7 : 0.4);
+      ctx.fillStyle = math_util.set_color_alpha(C.red, hover ? 0.7 : 0.4);
       draw.fill_rect(ctx, x, y, w, h);
-      ctx.strokeStyle = chroma(C.red);
+      ctx.strokeStyle = C.red;
       draw.x_cross(ctx, x, y, w, h, 0.7);
       if (hover && ui.new_click) {
         if (ui.upgrade_divide_target === 1) {
@@ -711,28 +719,88 @@ export const draw_ui = function(ctx) {
   }
 
   if ("inventory" && ui.inventory_overlay) {
-    ctx.fillStyle = chroma(C.gold).alpha(0.8);
+    ctx.fillStyle = math_util.set_color_alpha(C.gold, 0.8);
     draw.fill_rect(ctx, 0, 0, _width, _height);
   }
 
   if ("end" && ui.end_overlay) {
+
     // background
-    ctx.fillStyle = chroma(C.purple).alpha(0.95);
+    ctx.fillStyle = math_util.set_color_alpha(C.background, 0.75);
     draw.fill_rect(ctx, 0, 0, _width, _height);
     // texts
-    x = _width / 2;
+    size = _height * 0.025;
     ctx.textBaseline = "middle";
-    ctx.textAlign = "center";
     ctx.fillStyle = C.white;
-    ctx.font = "bold 20px roboto condensed";
-    draw.fill_text(ctx, "TOTAL SCORE", x, 60);
-    ctx.font = "bold 80px roboto mono";
-    draw.fill_text(ctx, "" + math_util.round(player.points, 0), x, 120);
-    ctx.font = "bold 20px roboto condensed";
-    draw.fill_text(ctx, "ROUNDS", x, 200);
-    ctx.font = "bold 80px roboto mono";
-    draw.fill_text(ctx, "" + send.wave, x, 260);
-    
+    ctx.strokeStyle = C.white;
+    ctx.lineWidth = 5;
+    ctx.textAlign = "right";
+    ctx.font = `bold ${size}px roboto condensed`;
+    let line_x = Math.max(150, _width * 0.2);
+    let line_y = size * 20;
+    draw.line(ctx, line_x, 0, line_x, size * 20);
+    draw.line(ctx, 0, line_y, _width, line_y);
+    draw.fill_text(ctx, "POINTS", line_x * 0.75, size * 4);
+    draw.fill_text(ctx, "ROUNDS", line_x * 0.75, size * 10);
+    draw.fill_text(ctx, "GRADE", line_x * 0.75, size * 16);
+    ctx.textAlign = "center";
+    ctx.font = `bold ${size * 4}px roboto mono`;
+    ctx.lineWidth = 1;
+    x = (_width - line_x) / 2 + line_x;
+    draw.stroke_text(ctx, "" + Math.round(ui.end_score), x, size * 4);
+    draw.stroke_text(ctx, "" + Math.round(ui.end_rounds + 0.3), x, size * 10);
+    const end_rating = Math.round(ui.end_rating);
+    ctx.strokeStyle = wave_ratings_colors[end_rating];
+    draw.stroke_text(ctx, wave_ratings[end_rating], x, size * 16);
+    if (end_rating == ui.end_rating_target) {
+      ctx.fillStyle = chroma.mix(C.white, ctx.strokeStyle, bounce(ui.time, 50)).hex();
+      draw.fill_text(ctx, wave_ratings[end_rating], x, size * 16);
+      draw.stroke_text(ctx, wave_ratings[end_rating], x, size * 16);
+      ctx.fillStyle = C.white;
+    }
+    ctx.strokeStyle = C.white;
+    // lerp scores
+    ui.end_score = lerp(ui.end_score, ui.end_score_target, ui.end_stuff_smoothness);
+    ui.end_rounds = lerp(ui.end_rounds, ui.end_rounds_target, ui.end_stuff_smoothness);
+    ui.end_rating = lerp(ui.end_rating, ui.end_rating_target, ui.end_stuff_smoothness * 0.4);
+    // draw buttons
+    y = _height * 0.75;
+    r = Math.min(100, Math.min(_width * 0.125, _height * 0.125));
+    let hover, click;
+    let gap = (_width - r * 6) / 4;
+    let button_words = ["back", "restart", "home"];
+    for (let i = 0; i < 3; i++) {
+      x = gap + (gap + 2 * r) * i + r;
+      hover = camera.mouse_in_circle(x, y, r);
+      click = (hover && ui.new_click);
+      // actually draw the button
+      ctx.fillStyle = chroma.mix(C.green, C.red, (i + 1) / 4).hex();
+      ctx.strokeStyle = C.white;
+      if (hover) {
+        ctx.fillStyle = chroma(ctx.fillStyle).brighten(0.5);
+      }
+      ctx.lineWidth = 4;
+      draw.circle(ctx, x, y, r);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = C.white;
+      ctx.strokeStyle = C.white;
+      draw_svg(ctx, button_words[i], x, y, r);
+      if (hover) {
+        // draw word
+        ctx.font = `bold ${size}px roboto mono`;
+        draw.fill_text(ctx, button_words[i], x, y + r + size);
+      }
+      if (click) {
+        if (i === 0) {
+          window.location.href = "/worlds";
+        } else if (i === 1) {
+          window.location.href = "/choose/?level=" + send.wave_name;
+        } else if (i === 2) {
+          window.location.href = "/";
+        }
+      }
+    }
   }
 
   if ("popup" && ui.popup.show) {
@@ -744,7 +812,7 @@ export const draw_ui = function(ctx) {
     size = 7 * _scale;
     x = mousepos.x;
     y = mousepos.y;
-    ctx.strokeStyle = chroma(C.green).alpha(0.6);
+    ctx.strokeStyle = math_util.set_color_alpha(C.green, 0.6);
     ctx.shadowBlur = 10;
     ctx.shadowColor = C.green;
     draw.circle(ctx, x, y, size);

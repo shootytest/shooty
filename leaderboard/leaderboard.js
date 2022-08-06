@@ -73,6 +73,7 @@ function init(leaderboard) {
       used: entry.used,
     });
   }
+  // sort ranks by score
   ranks.sort( (a, b) => b.score - a.score );
   let rank = 1;
   for (const entry of ranks) {

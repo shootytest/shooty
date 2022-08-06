@@ -32,6 +32,8 @@ export const config = {
     bonus_points_mult: 1,
     clear_wave_time_add: 1000,
     clear_wave_normal_points: 9000,
+    clear_wave_without_losing_health_points: 5000,
+    clear_wave_without_losing_health_coins: 10,
     enemy_spawn_delay: 60,
   },
   controls: {

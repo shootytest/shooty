@@ -611,7 +611,9 @@ export class Thing {
     b.make(make["bullet_" + S.type]);
     // bullet properties (optional, might have already been set up in the previous step)
     if (S.size != null) {
-      b.size = S.size;
+      let spreadsize = S.spreadsize || 0;
+      let size = spreadsize === 0 ? S.size : random.gauss(S.size, spreadsize);
+      b.size = size;
     }
     if (S.damage != null) {
       b.damage = S.damage;
@@ -633,7 +635,8 @@ export class Thing {
     // shoot the bullet with correct rotation and speed
     let rot = random.gauss(this.rotation + (Vector.deg_to_rad(S.rotation || 0)), S.spread || 0);
     let facing = this.target.facing;
-    let spd = random.gauss(S.speed, S.spreadv || 0);
+    let spreadv = S.spreadv || 0;
+    let spd = spreadv === 0 ? S.speed : random.gauss(S.speed, spreadv);
     const thing_velocity = Vector.rotate(this.velocity, -rot).x;
     if (spd !== 0) spd += thing_velocity * config.physics.velocity_shoot_boost;
     if (S.target_type != null) {

@@ -95,7 +95,7 @@ function init_game() {
   firebase.get("visits/play", (num) => firebase.set("visits/play", (num || 0) + 1));
 }
 
-function tick() {
+function tick(time) {
   controls.tick();
   camera.draw(ctx);
   if (!game_is_paused()) {
@@ -105,6 +105,7 @@ function tick() {
   }
   // run even when game is paused (ho)
   multiplayer.tick();
+  requestAnimationFrame(tick);
 }
 
 /* TESTING AREA (not really) */
@@ -255,7 +256,7 @@ function init() {
 
 function main() {
   init();
-  setInterval(tick, 16);
+  requestAnimationFrame(tick);
   done();
 }
 

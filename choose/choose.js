@@ -65,7 +65,9 @@ const ui = {
   upgrade_camera: Vector.create(),
   upgrade_camera_speed: 10,
   upgrade_camera_smoothness: 0.1,
+  upgrade_min_tile_size: 80,
   upgrade_tile_size: 80,
+  upgrade_scale: 1,
   upgrade_selected: "",
   upgrade_things: {},
 };
@@ -92,12 +94,23 @@ const tick_before = function() {
   }
 };
 
+function default_scale() {
+  const _width = window.innerWidth, _height = window.innerHeight;
+  ui.upgrade_tile_size = Math.max(ui.upgrade_min_tile_size, Math.min(_width, _height) * 0.1);
+  ui.upgrade_scale = ui.upgrade_tile_size / ui.upgrade_min_tile_size;
+}
+
+function change_scale(ds) {
+  ui.upgrade_tile_size *= ds;
+  ui.upgrade_scale = ui.upgrade_tile_size / ui.upgrade_min_tile_size;
+}
+
 function draw_stuff() {
   const _width = window.innerWidth, _height = window.innerHeight;
   let x, y, w, h, r, size, c;
 
   ///// draw backgrounds
-  ctx.fillStyle = chroma(C.background).alpha(0.8);
+  ctx.fillStyle = math_util.set_color_alpha(C.background, 0.8);
   draw.fill_rect(ctx, 0, 0, _width, _height);
   // calculate upgrade divide
   ui.upgrade_divide_target = (ui.upgrade_selected) ? (mobile.screen_mobile ? 0 : 0.7) : 1;
@@ -108,10 +121,10 @@ function draw_stuff() {
   let upgrade_selected_old = ui.upgrade_selected;
   let upgrade_selected_clear = ui.new_click && camera.mouse_in_rect(0, 0, divide_x, _height);
   // draw divided background
-  ctx.fillStyle = chroma(C.blue).alpha(0.5);
+  ctx.fillStyle = math_util.set_color_alpha(C.blue, 0.5);
   draw.fill_rect(ctx, divide_x, 0, _width - divide_x, _height);
   // draw the divider line
-  ctx.strokeStyle = chroma(C.white);
+  ctx.strokeStyle = C.white;
   draw.line(ctx, divide_x, 0, divide_x, _height);
   ///// move the camera using arrow keys
   const move_x = (check_keys(config.controls.right) ? 1 : 0) - (check_keys(config.controls.left) ? 1 : 0);
@@ -144,7 +157,7 @@ function draw_stuff() {
   ctx.clip();
   // draw grid
   if ("grid") {
-    ctx.strokeStyle = chroma(C.white).alpha(0.1);
+    ctx.strokeStyle = math_util.set_color_alpha(C.white, 0.1);
     ctx.lineWidth = 2.5;
     size = ui.upgrade_tile_size;
     x = (size / 2 + _width / 2 - ui.upgrade_camera.x) % size;
@@ -180,6 +193,7 @@ function draw_stuff() {
     x = U.x * ui.upgrade_tile_size - u_camera.x + _width / 2;
     y = U.y * ui.upgrade_tile_size - u_camera.y + _height / 2;
     size = U.size || 30;
+    size *= ui.upgrade_scale;
     c = U.color || C.blue; // (current) ? chroma.mix(U.color || C.blue, C.white, bounce(ui.time, 50) * 0.2) : U.color;
     if (reached && camera.mouse_in_circle(x, y, size)) {
       focused = U;
@@ -192,7 +206,7 @@ function draw_stuff() {
     // draw stuff
     if ("draw stuff") {
       ctx.strokeStyle = c;
-      ctx.fillStyle = chroma(c).alpha(chroma(c).alpha() * (focused === U ? 0.5 : 0.2));
+      ctx.fillStyle = math_util.set_color_alpha(c, math_util.get_color_alpha(c) * (focused === U ? 0.5 : 0.2));
       ctx.lineWidth = 3;
       if (user.unlocked_upgrades.includes(upgrade_key)) {
         ctx.shadowBlur = 30;
@@ -234,7 +248,7 @@ function draw_stuff() {
         p.rotation = Math.PI * (ui.time % 200) / 100;
         p.tick();
         // draw with a scale of 1
-        p.draw(ctx, 1);
+        p.draw(ctx, ui.upgrade_scale);
       }
       if (upgrade_key === ui.upgrade_selected) {
         ctx.strokeStyle = C.red_health;
@@ -260,14 +274,14 @@ function draw_stuff() {
         const connect_reached = (user.reached_upgrades.includes(connect_key) && reached);
         c = (connect_reached) ? C.white : C.red_dark;
         const connect_alpha = ((U.connections_faded || []).includes(connect_key)) ? 0.4 : (connect_reached ? 1 : 0.4);
-        ctx.strokeStyle = chroma(c).alpha(connect_alpha);
+        ctx.strokeStyle = math_util.set_color_alpha(c, connect_alpha);
         ctx.fillStyle = ctx.strokeStyle;
         ctx.lineWidth = 3;
         let v1 = Vector.create(x, y);
         let v2 = Vector.create(U2.x * ui.upgrade_tile_size - u_camera.x + _width / 2, U2.y * ui.upgrade_tile_size - u_camera.y + _height / 2);
         let mag = Vector.magnitude(Vector.sub(v1, v2));
-        let v3 = Vector.lerp(v1, v2, ((U.size || 30) + 1) / mag);
-        let v4 = Vector.lerp(v2, v1, ((U2.size || 30) + 1) / mag);
+        let v3 = Vector.lerp(v1, v2, ((U.size || 30) * ui.upgrade_scale + 1) / mag);
+        let v4 = Vector.lerp(v2, v1, ((U2.size || 30) * ui.upgrade_scale + 1) / mag);
         let v5 = Vector.lerp(v3, v4, (ui.time % 50) / 50);
         draw.line(ctx, v3.x, v3.y, v4.x, v4.y);
         draw.circle(ctx, v5.x, v5.y, 4);
@@ -364,9 +378,9 @@ function draw_stuff() {
     w = 40;
     h = 40;
     const hover = camera.mouse_in_rect(x, y, w, h);
-    ctx.fillStyle = chroma(C.red).alpha(hover ? 0.7 : 0.4);
+    ctx.fillStyle = math_util.set_color_alpha(C.red, hover ? 0.7 : 0.4);
     draw.fill_rect(ctx, x, y, w, h);
-    ctx.strokeStyle = chroma(C.red);
+    ctx.strokeStyle = C.red;
     draw.x_cross(ctx, x, y, w, h, 0.7);
     if (hover && ui.new_click) {
       upgrade_selected_clear = true;
@@ -420,6 +434,17 @@ function fire() {
   });
 }
 
+function tick(time) {
+  ui.time++;
+  tick_before();
+  controls.tick();
+  camera.tick();
+  Thing.tick_things();
+  Thing.draw_things();
+  draw_stuff(ctx);
+  requestAnimationFrame(tick);
+}
+
 function main() {
   fire();
   init_canvas(canvas);
@@ -427,19 +452,17 @@ function main() {
   choose_events();
   controls.init();
   mobile.init();
-  setInterval(function() {
-    ui.time++;
-    tick_before();
-    controls.tick();
-    camera.tick();
-    Thing.tick_things();
-    Thing.draw_things();
-    draw_stuff(ctx);
-  }, 16);
+  default_scale();
+  requestAnimationFrame(tick);
 };
 
 window.addEventListener("load", main);
 window.addEventListener("resize", function(event) {
   canvas_resize(canvas);
+});
+window.addEventListener('wheel', function(event) {
+  if (event.deltaY === 0) return;
+  const direction = event.deltaY / Math.abs(event.deltaY);
+  change_scale((direction < 0) ? (1.1) : (1 / 1.1));
 });
 window.ui = ui;

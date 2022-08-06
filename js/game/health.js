@@ -47,7 +47,7 @@ export class Health {
     const old_health = this.health;
     this.health -= damage;
     this.hit_time = Thing.time;
-    const real_damage = Math.min(damage, old_health);
+    const real_damage = Math.max(0, Math.min(damage, old_health));
     if (this.thing.player) {
       player.wave_health_lost += real_damage;
     }

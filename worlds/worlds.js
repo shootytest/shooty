@@ -6,7 +6,7 @@ const descending = parameters.get("desc") === "true";
 const div_main = document.getElementById("main");
 
 const list_of_worlds = [
-  "zero", "one",
+  "zero", "test",
 ];
 let sorted_worlds = [ ];
 

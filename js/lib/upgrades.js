@@ -4,13 +4,13 @@
 
 upgrade rating:
 upgrades.key = {
-  key: key (internal, same as the key used above)
-  name: upgrade name, will show up in all menus.
+  key: key (internal, it has to be the same as the key used above)
+  name: upgrade name, will show up in all menus
   desc: upgrade description (can be long)
-  cost: the cost of the upgrade
-  connections: ["key1", "key2", "key3"],
-  x: the x position of the tile
-  y: the y position of the tile
+  cost: the cost of the upgrade (in coins)
+  connections: ["key1", "key2", "key3"], // keys of other upgrades it connects to
+  x: the x position of the upgrade tile
+  y: the y position of the upgrade tile
 };
 
 */
@@ -40,7 +40,7 @@ upgrades.triple = {
 upgrades.penta = {
   key: "penta",
   name: "Penta",
-  desc: "Shouldn't it be called quintuple?",
+  desc: "Shouldn't it be called quintuple?", // TODO: quintuple -> penta -> pentagon
   cost: 555,
   connections: ["lobster"],
   x: 5,
@@ -112,7 +112,7 @@ upgrades.burster = {
   key: "burster",
   name: "Burstttt",
   cost: 1000,
-  desc: "½ bullets, ½ emptiness!",
+  desc: "½ of the time!",
   connections: [],
   x: -2,
   y: -6,
@@ -121,7 +121,7 @@ upgrades.burster = {
 upgrades.scatter1 = {
   key: "scatter1",
   name: "Scatter",
-  desc: "Squares are yummy!",
+  desc: "Squares are yummy! (why)",
   cost: 400,
   connections: ["scatter2", "scatterspam", "squarer", "shotgun"],
   x: -2,
@@ -133,7 +133,7 @@ upgrades.scatter2 = {
   name: "Scattererer",
   desc: "More squares?",
   cost: 650,
-  connections: [],
+  connections: [ ], // TODO: "scatterspam", "flamethrower"
   x: -4,
   y: 1,
 };
@@ -221,7 +221,7 @@ upgrades.autooo = {
 upgrades.sniper = {
   key: "sniper",
   name: "Sniper",
-  desc: "PEW",
+  desc: "Hello!",
   cost: 600,
   connections: ["sniperscatter", "sniperauto"],
   x: 0,
@@ -231,7 +231,7 @@ upgrades.sniper = {
 upgrades.sniperauto = {
   key: "sniperauto",
   name: "Sniper + Auto",
-  desc: "triangle + circle = ok",
+  desc: "triangle + circle",
   cost: 500,
   connections: [],
   x: -2,
@@ -241,7 +241,7 @@ upgrades.sniperauto = {
 upgrades.sniperscatter = {
   key: "sniperscatter",
   name: "Sniper + Scatter",
-  desc: "triangle + square = good",
+  desc: "triangle + square",
   cost: 700,
   connections: [],
   x: -4,

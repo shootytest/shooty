@@ -56,3 +56,23 @@ math_util.round_to = function(value, multiple) {
 math_util.fix_precision = function(value) {
   return math_util.round(value, 10);
 }
+
+math_util.get_color_component = (number_from_0_to_1) => {
+  let result = Math.floor(number_from_0_to_1 * 255).toString(16);
+  result = result.length == 1 ? "0" + result : result;
+  return result;
+}
+
+math_util.get_color_alpha = (hex) => {
+  if (hex.length === 8) {
+    return Integer.parseInt(hex.substring(6), 16) / 255;
+  } else if (hex.length === 4) {
+    return Integer.parseInt(hex.substring(3), 16) / 16;
+  } else {
+    return 0;
+  }
+}
+
+math_util.set_color_alpha = (hex, alpha) => {
+  return hex + math_util.get_color_component(alpha);
+}
