@@ -18,7 +18,9 @@ import { mobile } from "../js/util/mobile.js";
 
 const parameters = new URLSearchParams(document.location.search);
 const is_multiplayer = parameters.get("multiplayer") || false;
-const level = parameters.get("level") || (is_multiplayer ? "multiplayer" : window.location.href = "/worlds/");
+const is_viewmode = parameters.get("viewmode") || false;
+const level = parameters.get("level") || // why
+  (is_multiplayer ? "multiplayer" : (is_viewmode ? "viewmode" : window.location.href = "/worlds/"));
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const Vector = Matter.Vector;
@@ -67,7 +69,8 @@ const ui = {
   upgrade_camera_smoothness: 0.1,
   upgrade_min_tile_size: 80,
   upgrade_tile_size: 80,
-  upgrade_scale: 1,
+  upgrade_scale: 10,
+  upgrade_scale_target: 1,
   upgrade_selected: "",
   upgrade_things: {},
 };
@@ -97,17 +100,24 @@ const tick_before = function() {
 function default_scale() {
   const _width = window.innerWidth, _height = window.innerHeight;
   ui.upgrade_tile_size = Math.max(ui.upgrade_min_tile_size, Math.min(_width, _height) * 0.1);
-  ui.upgrade_scale = ui.upgrade_tile_size / ui.upgrade_min_tile_size;
+  ui.upgrade_scale_target = ui.upgrade_tile_size / ui.upgrade_min_tile_size;
 }
 
 function change_scale(ds) {
   ui.upgrade_tile_size *= ds;
-  ui.upgrade_scale = ui.upgrade_tile_size / ui.upgrade_min_tile_size;
+  ui.upgrade_scale_target = math_util.bound(ui.upgrade_tile_size / ui.upgrade_min_tile_size, 0.4, 5);
+}
+
+function get_tile_size() {
+  return ui.upgrade_min_tile_size * ui.upgrade_scale;
 }
 
 function draw_stuff() {
   const _width = window.innerWidth, _height = window.innerHeight;
   let x, y, w, h, r, size, c;
+
+  // lerp scale
+  ui.upgrade_scale = lerp(ui.upgrade_scale, ui.upgrade_scale_target, ui.upgrade_camera_smoothness);
 
   ///// draw backgrounds
   ctx.fillStyle = math_util.set_color_alpha(C.background, 0.8);
@@ -159,7 +169,7 @@ function draw_stuff() {
   if ("grid") {
     ctx.strokeStyle = math_util.set_color_alpha(C.white, 0.1);
     ctx.lineWidth = 2.5;
-    size = ui.upgrade_tile_size;
+    size = get_tile_size();
     x = (size / 2 + _width / 2 - ui.upgrade_camera.x) % size;
     y = (size / 2 + _height / 2 - ui.upgrade_camera.y) % size;
     for (; x < _width; x += size) {
@@ -190,8 +200,8 @@ function draw_stuff() {
     const U = upgrades[upgrade_key];
     const current = user.current_upgrade === upgrade_key;
     const reached = user.reached_upgrades.includes(upgrade_key);
-    x = U.x * ui.upgrade_tile_size - u_camera.x + _width / 2;
-    y = U.y * ui.upgrade_tile_size - u_camera.y + _height / 2;
+    x = U.x * get_tile_size() - u_camera.x + _width / 2;
+    y = U.y * get_tile_size() - u_camera.y + _height / 2;
     size = U.size || 30;
     size *= ui.upgrade_scale;
     c = U.color || C.blue; // (current) ? chroma.mix(U.color || C.blue, C.white, bounce(ui.time, 50) * 0.2) : U.color;
@@ -278,7 +288,7 @@ function draw_stuff() {
         ctx.fillStyle = ctx.strokeStyle;
         ctx.lineWidth = 3;
         let v1 = Vector.create(x, y);
-        let v2 = Vector.create(U2.x * ui.upgrade_tile_size - u_camera.x + _width / 2, U2.y * ui.upgrade_tile_size - u_camera.y + _height / 2);
+        let v2 = Vector.create(U2.x * get_tile_size() - u_camera.x + _width / 2, U2.y * get_tile_size() - u_camera.y + _height / 2);
         let mag = Vector.magnitude(Vector.sub(v1, v2));
         let v3 = Vector.lerp(v1, v2, ((U.size || 30) * ui.upgrade_scale + 1) / mag);
         let v4 = Vector.lerp(v2, v1, ((U2.size || 30) * ui.upgrade_scale + 1) / mag);
@@ -290,8 +300,8 @@ function draw_stuff() {
     } // end draw
     // check if not offscreen
     if ("check if not offscreen") {
-      let targetx = U.x * ui.upgrade_tile_size - u_camera.x + _width / 2;
-      let targety = U.y * ui.upgrade_tile_size - u_camera.y + _height / 2;
+      let targetx = U.x * get_tile_size() - u_camera.x + _width / 2;
+      let targety = U.y * get_tile_size() - u_camera.y + _height / 2;
       if (math_util.in_rect(targetx, targety, 0, 0, divide_x, _height)) {
         is_everything_offscreen = false;
       }

@@ -71,7 +71,7 @@ export const end_game = function(finished = false) {
   // update leaderboard
   firebase.get(`/leaderboard/`, function(boards) {
     if (boards[send.wave_name] == null) {
-      console.log(`/leaderboard/${send.wave_name}`);
+      // console.log(`/leaderboard/${send.wave_name}`);
       firebase.set(`/leaderboard/${send.wave_name}/${get_account_username()}/score`, 0);
     }
     const entry = (boards[send.wave_name] || { })[get_account_username()] || { score: 0, };
@@ -79,7 +79,7 @@ export const end_game = function(finished = false) {
     const oldscore = entry.score;
     const newscore = Math.round(player.points);
     if (newscore >= oldscore) {
-      console.log(newscore);
+      // console.log(newscore);
       firebase.set(`/leaderboard/${send.wave_name}/${get_account_username()}`, {
         score: newscore,
         rounds: ((finished) ? waveinfo.rounds : (send.wave - 1)),

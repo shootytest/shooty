@@ -7,8 +7,9 @@ export const config = {
     show_mouse_position: false,
     // smoothing
     camera_smoothness: 0.1,
-    // scale
     camera_scale: 0.0008,
+    camera_mouse_offset_factor: 0.2,
+    camera_mouse_offset_smoothness: 0.1,
     // ok
     multiplayer_send_after_death_highlight_color: "#00FFFF",
   },

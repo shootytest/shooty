@@ -57,6 +57,10 @@ math_util.fix_precision = function(value) {
   return math_util.round(value, 10);
 }
 
+math_util.bound = function(n, minimum, maximum) {
+  return Math.min(maximum, Math.max(minimum, n));
+}
+
 math_util.get_color_component = (number_from_0_to_1) => {
   let result = Math.floor(number_from_0_to_1 * 255).toString(16);
   result = result.length == 1 ? "0" + result : result;

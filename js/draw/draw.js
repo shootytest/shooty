@@ -97,7 +97,8 @@ draw.regular_polygon = function(ctx, sides, r, x, y, angle = 0) {
   ctx.beginPath();
   let a = angle;
   ctx.moveTo(x + r * Math.cos(a), y + r * Math.sin(a));
-  for (let i = 0; i < sides; ++i) {
+  // draw one more side because lineCap is weird
+  for (let i = 0; i < sides + 1; ++i) {
     a += Math.PI * 2 / sides;
     ctx.lineTo(x + r * Math.cos(a), y + r * Math.sin(a));
   }

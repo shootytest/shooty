@@ -73,7 +73,6 @@ function main(event) {
   });
   window.addEventListener("keydown", (event) => {
     if (event.repeat) return;
-    console.log(document.activeElement.tagName);
     if (document.activeElement.tagName.toLowerCase() === "input") return;
     if (event.key.toLowerCase() === "m") {
       window.location.href = "choose.html";

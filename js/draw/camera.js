@@ -13,6 +13,7 @@ export class Camera {
   width = window.innerWidth;
   height = window.innerHeight;
   mouse = Vector.create();
+  mouse_offset = Vector.create();
   scale = 1;
 
   constructor() {
@@ -20,7 +21,7 @@ export class Camera {
   }
 
   get location() {
-    return Vector.sub(this.position, this.halfscreen);
+    return Vector.add(Vector.sub(this.position, this.halfscreen), this.mouse_offset);
   }
 
   get x() {
@@ -37,6 +38,10 @@ export class Camera {
 
   get mouse_position() {
     return this.camera_position(this.mouse);
+  }
+
+  get mouse_offset_target() {
+    return Vector.mult(Vector.sub(this.mouse, this.halfscreen), config.ui.camera_mouse_offset_factor);
   }
 
   object_position(v) { // object to screen
@@ -66,6 +71,7 @@ export class Camera {
   move_to_player() {
     const smooth = config.ui.camera_smoothness;
     this.position = Vector.add(Vector.mult(this.position, 1 - smooth), Vector.mult(player.position, smooth * this.scale));
+    this.mouse_offset = Vector.lerp(this.mouse_offset, this.mouse_offset_target, config.ui.camera_mouse_offset_smoothness);
   }
 
   jump_to_player() {

@@ -123,9 +123,11 @@ function test() {
   // create map
   mapmaker.make(waves_info[send.wave_name].map);
 
+  /*
   add_key_listener("|", function() {
-    config.controls.right = ["d"]; // todo remove
+    config.controls.right = ["d"];
   });
+  */
   add_key_listener("e", function() {
     player.player_autofire = !player.player_autofire;
   });
