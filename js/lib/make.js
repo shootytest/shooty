@@ -287,11 +287,12 @@ make.enemy_basic_double = {
   size: 23,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
-    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.3, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.3, y: 0, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
   ],
   shoots: [
-    { parent: shoots.e_basic_double, },
-    { parent: shoots.e_basic_double, delay: 30, },
+    { parent: shoots.e_basic_double, x: 0.3, y: 0, delay: 0, },
+    { parent: shoots.e_basic_double, x: -0.3, y: 0, delay: 25, },
   ],
   health: {
     capacity: 25,
@@ -334,8 +335,8 @@ make.enemy_triple = {
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
     { type: "circle_fade", x: 0.5, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
-    { type: "circle_fade", x: -0.25, y: SQRT_3 * 0.25, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
-    { type: "circle_fade", x: -0.25, y: -SQRT_3 * 0.25, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.25, y: SQRT_3 * 0.25, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.25, y: -SQRT_3 * 0.25, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
   ],
   shoots: [
     { parent: shoots.e_triple, x: 0.5, y: 0, },

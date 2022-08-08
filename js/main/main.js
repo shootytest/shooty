@@ -105,7 +105,6 @@ function tick(time) {
   }
   // run even when game is paused (ho)
   multiplayer.tick();
-  requestAnimationFrame(tick);
 }
 
 /* TESTING AREA (not really) */
@@ -258,7 +257,7 @@ function init() {
 
 function main() {
   init();
-  requestAnimationFrame(tick);
+  setInterval(tick, 16);
   done();
 }
 

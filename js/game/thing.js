@@ -467,7 +467,11 @@ export class Thing {
     if (this.shoots.length <= 0) return 0;
     if (is_duration) return this.get_shoot_duration_ratio(shoot_index);
     shoot_index = shoot_index || 0;
-    return Math.min(1, this.shoots_time[shoot_index] / this.shoots[shoot_index].reload);
+    const reload = this.shoots[shoot_index].reload || 0;
+    const delay = this.shoots[shoot_index].delay || 0;
+    if (reload === 0) return 0;
+    const result = ((this.shoots_time[shoot_index] - delay + reload * 1000) % reload) / reload;
+    return math_util.bound(result, 0, 1);
   }
 
   get_shoot_duration_ratio(shoot_index) {
