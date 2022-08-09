@@ -15,7 +15,7 @@ shoots.p_basic = { type: "basic", reload: 30, size: 10, speed: 5, spread: 0.04, 
 // multi path
 shoots.p_triple = { type: "basic", reload: 40, size: 9, speed: 4.5, spread: 0.02, damage: 1.7, time: 210, };
 shoots.p_penta = { type: "basic", reload: 45, size: 8, speed: 4.5, spread: 0.02, damage: 1.45, time: 180, };
-shoots.p_oct = { type: "basic", reload: 26, size: 7.5, speed: 6, spread: 0.045, damage: 2.2, time: 240, };
+shoots.p_oct = { type: "basic", reload: 28, size: 7.2, speed: 6.4, spread: 0.048, damage: 1.75, time: 240, };
 shoots.p_jellyfish = { type: "basic", reload: 36, size: 8, speed: 3.5, spread: 0.035, damage: 1.8, time: 100, };
 shoots.p_lobster = { type: "basic", reload: 22, size: 7, speed: 4, spread: 0.04, damage: 0.9, time: 150, };
 // burst path

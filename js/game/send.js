@@ -131,12 +131,22 @@ export const end_wave = function() {
   const time_taken = Thing.time - send.wave_time;
   const point_multiplier = wp.points[send.wave];
   if (point_multiplier == null || send.wave === 0) return;
-  const points = Math.round(point_multiplier * (config.game.clear_wave_time_add + Math.max(0, config.game.clear_wave_normal_points / Math.max(1, time_taken / 60 / wp.time[send.wave])))); // don't give nothing!
+  // calculate wave points
+  const points = Math.round(point_multiplier * 
+    (config.game.clear_wave_time_add + // don't give nothing!
+      Math.max(0, config.game.clear_wave_normal_points / 
+      Math.max(1, time_taken / 60 / wp.time[send.wave]))
+    )
+  );
   const p = player.add_points("clear", points);
   send_message(`You passed the round and gained ${p} points!`, /* (points === Math.round(wp.points[send.wave] * config.game.clear_wave_time_add)) ? C.message_text_green : */ C.message_text_aqua, -1, 45);
-  if (player.wave_health_lost < 0.000001) {
-    const bonus_points = Math.round(config.game.clear_wave_without_losing_health_points * point_multiplier);
-    const bonus_coins = Math.round(config.game.clear_wave_without_losing_health_coins * point_multiplier);
+  // calculate bonus health points
+  if (player.wave_health_lost < config.game.player_health * 1000000) {
+    const bonus_ratio = 1 / Math.pow(1 + player.wave_health_lost / config.game.player_health, 0.75);
+    const bonus_points = Math.round(point_multiplier * bonus_ratio *
+      config.game.clear_wave_without_losing_health_points);
+    const bonus_coins = Math.round(point_multiplier * bonus_ratio *
+      config.game.clear_wave_without_losing_health_coins);
     player.add_points("bonus", bonus_points);
     // drop 10 coins too
     for (let index = 0; index < bonus_coins; index++) {
@@ -144,7 +154,7 @@ export const end_wave = function() {
       i.make(make.item_normal);
       i.create();
     }
-    send_message(`You did not lose any health for the round and gained ${bonus_points} points!`, C.message_text_gold, -1, 55);
+    send_message(`You lost ${math_util.round_to(player.wave_health_lost * config.game.health_mult, 0.01)} health for the round and gained ${bonus_points} points!`, C.message_text_gold, -1, 55);
   }
   // save the game
   gamesave.save();

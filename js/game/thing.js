@@ -465,12 +465,20 @@ export class Thing {
 
   get_shoot_ratio(shoot_index, is_duration) {
     if (this.shoots.length <= 0) return 0;
+    if (this.dummy) return 1;
     if (is_duration) return this.get_shoot_duration_ratio(shoot_index);
     shoot_index = shoot_index || 0;
     const reload = this.shoots[shoot_index].reload || 0;
     const delay = this.shoots[shoot_index].delay || 0;
-    if (reload === 0) return 0;
-    const result = ((this.shoots_time[shoot_index] - delay + reload * 1000) % reload) / reload;
+    const shoots_time = this.shoots_time[shoot_index];
+    if (reload === 0 || shoots_time === 0) return 0;
+    let result;
+    if (delay === 0) {
+      result = this.shoots_time[shoot_index] / reload;
+    } else {
+      result = ((this.shoots_time[shoot_index] - delay + reload * 1000) % reload) / reload;
+    }
+    if (result === 0) return 1;
     return math_util.bound(result, 0, 1);
   }
 

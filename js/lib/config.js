@@ -23,6 +23,9 @@ export const config = {
     velocity_shoot_boost: 0.5,
   },
   game: {
+    player_health: 5,
+    player_regen: 0.5, // health per second
+    player_regen_delay: 3, // in seconds
     respawn_time: 180,
     respawn_invincibility: 180,
     health_mult: 10,

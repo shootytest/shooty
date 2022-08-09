@@ -25,9 +25,9 @@ make.player = {
   color: C.blue,
   layer: 10,
   health: {
-    capacity: 5,
-    regen: 0.01,
-    regen_time: 180,
+    capacity: config.game.player_health,
+    regen: config.game.player_regen / 60,
+    regen_time: config.game.player_regen_delay * 60,
   },
 };
 
