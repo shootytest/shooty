@@ -75,6 +75,9 @@ const ui = {
     ui.camera_movement = lerp(ui.camera_movement, ui.camera_movement_target, smoothness);
     ui.camera_movement_target = Vector.magnitude(Vector.sub(ui.camera, old_camera));
   },
+  change_camera_scale: function(ds) {
+    ui.camera_scale_target = math_util.bound(ui.camera_scale_target * ds, 0.4, 5);
+  },
   click_tick: function() {
     if (check_click()) {
       ui.new_click = !ui.old_click;
@@ -136,7 +139,8 @@ function get_background_color(x, y) {
   return result;
 }
 
-function draw_background() {
+/*
+function old_draw_background___took_much_time_to_make_but_lags_the_screen_quite_a_lot() {
   const w = 150;
   const h = 150;
   canvas2.width = w;
@@ -159,6 +163,11 @@ function draw_background() {
   }
   ctx2.putImageData(image_data, 0, 0);
   draw.clear_transparent(ctx);
+}
+*/
+
+function draw_background() {
+  draw.clear(ctx, W.background);
 }
 
 function select_level(L) {
@@ -207,15 +216,15 @@ function draw_level(L) {
   if (camera_in_circle(L.x, L.y, size + 15)) {
     open_sidebar(L);
   }
-  ctx.fillStyle = L.fill || "gold";
-  ctx.strokeStyle = is_selected ? "red" : (L.stroke || "black");
-  ctx.lineWidth = 2;
+  ctx.fillStyle = L.fill || C.gold;
+  ctx.strokeStyle = is_selected ? C.red : (L.stroke || W.text);
+  ctx.lineWidth = 3;
   draw.circle(ctx, v.x, v.y, size);
   ctx.fill();
   ctx.stroke();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillStyle = "black";
+  ctx.fillStyle = L.text || W.background;
   ctx.font = "35px roboto mono";
   draw.fill_text(ctx, L.char, v.x, v.y + 2);
   // ok
@@ -231,7 +240,7 @@ function draw_level(L) {
       let va = ui.world_to_screen(v3.x, v3.y);
       let vb = ui.world_to_screen(v4.x, v4.y);
       let vc = Vector.lerp(va, vb, 0.5);
-      ctx.strokeStyle = "black";
+      ctx.strokeStyle = W.text;
       draw.line(ctx, va.x, va.y, vb.x, vb.y);
     }
   }
@@ -273,7 +282,7 @@ function draw_ui(delta_time) {
     // draw sidebar
     ctx.fillStyle = W.sidebar;
     draw.fill_rect(ctx, _w - ui.sidebar, 0, ui.sidebar, _h);
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = C.white;
     draw.line(ctx, _w - ui.sidebar, 0, _w - ui.sidebar, _h);
     // stuff inside the sidebar
     if (ui.sidebar_target > 0) {
@@ -282,7 +291,7 @@ function draw_ui(delta_time) {
       y = 30;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillStyle = "black";
+      ctx.fillStyle = W.text;
       ctx.font = "30px roboto mono";
       draw.fill_text(ctx, info.name, x, y);
       // play button
@@ -324,7 +333,7 @@ function tick(time) {
   ui.click_tick();
   controls.tick();
   draw_main(delta);
-  requestAnimationFrame(tick);
+  //requestAnimationFrame(tick);
 }
 
 function init() {
@@ -336,7 +345,7 @@ function init() {
 
 function main() {
   init();
-  requestAnimationFrame(tick);
+  setInterval(tick, 16);
 }
 
 window.addEventListener("load", main);
@@ -344,5 +353,10 @@ window.addEventListener("resize", function(event) {
   canvas_resize(canvas);
   ui.width = window.innerWidth;
   ui.height = window.innerHeight;
+});
+window.addEventListener('wheel', function(event) {
+  if (event.deltaY === 0) return;
+  const direction = event.deltaY / Math.abs(event.deltaY);
+  ui.change_camera_scale((direction < 0) ? (1.1) : (1 / 1.1));
 });
 window.ui = ui;

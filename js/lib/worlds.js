@@ -3,7 +3,6 @@ export const worlds = { };
 
 worlds.zero = {
   name: "World Zero",
-  // background_: "#007c8a",
   levels: {
     tutorial: {
       key: "tutorial",
@@ -21,18 +20,24 @@ worlds.zero = {
       y: -50,
     },
   },
-  background: "#000000",
-  sidebar: "#fca2a2",
+  background: "#05000d",
+  // sidebar: "#fca2a2",
+  sidebar: "#3c009c",
+  text: "#ffffff",
+  shapes: [
+
+  ],
+  /*
   colors: [
     { x: 0, y: 0, c: "#a2ddfc", r: 500, },
     { x: -750, y: 750, c: "#a2f3fc", r: 500, },
     { x: -1750, y: -1750, c: "#a2fce6", r: 500, },
   ],
+  */
 };
 
 worlds.test = {
   name: "Test",
-  // background_: "#00338a",
   levels: {
     oneround: {
       key: "oneround",
@@ -59,12 +64,18 @@ worlds.test = {
       y: 400,
     },
   },
-  background: "#000000",
-  sidebar: "#fca2a2",
+  background: "#201924",
+  sidebar: "#643d7a",
+  text: "#ffffff",
+  shapes: [
+    
+  ],
+  /*
   colors: [
     { x: 0, y: 0, c: "#a2ddfc", r: 500, },
     { x: -300, y: 350, c: "#cc12aa", r: 100, },
     { x: -750, y: 750, c: "#a2f3fc", r: 500, },
     { x: -1750, y: -1750, c: "#a2fce6", r: 500, },
   ],
+  */
 };

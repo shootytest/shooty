@@ -7,6 +7,9 @@ yarn-error.log*
 firebase-debug.log*
 firebase-debug.*.log*
 
+# Surge
+.surgeignore
+
 # Firebase cache
 .firebase/
 
@@ -15,7 +18,9 @@ firebase-debug.*.log*
 # Uncomment this if you'd like others to create their own Firebase project.
 # For a team working on the same Firebase project(s), it is recommended to leave
 # it commented so all members can deploy to the same project(s) in .firebaserc.
-# .firebaserc
+.firebaserc
+firebase.json
+database.rules.json
 
 # Runtime data
 pids
