@@ -115,17 +115,17 @@ if ("tutorial") {
 
 }
 
-if ("level0") {
-  waves_info.level0 = {
+if ("level0test") {
+  waves_info.level0test = {
     name: "Unnamed Level",
-    key: "level0",
+    key: "level0test",
     description: "Well... it has a name, doesn't it?",
-    map: "level0",
+    map: "multiplayer",
     bosses: 2,
     rounds: 20,
   };
 
-  waves.level0 = [
+  waves.level0test = [
     0,
     { type: "basic", number: 2, interval: 180, },
     { type: "basic", number: 5, interval: 200, },
@@ -181,7 +181,7 @@ if ("level0") {
     { type: "boss_oct", number: 1, boss: true, },
   ];
 
-  waves_text.level0 = {
+  waves_text.level0test = {
     [0]: [
       { message: "Welcome to the first real level, I don't have a name for it yet...", delay: 0, },
       { message: "Don't expect to pass the last 10 rounds of the level.", delay: 10, },
@@ -195,10 +195,11 @@ if ("level0") {
     ],
   };
 
-  waves_points.level0 = {
+  waves_points.level0test = {
     points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5 ],
     time: [ 0, 7, 25, 11, 9, 15, 20, 10, 25, 8, 8, 50, 60, 50, 35, 60, 50, 25, 40, /**/ 70, 10],
-    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
+    // ratings: [ 1, 0.90909, 0.81818, 0.72727, 0.63636, 0.54545, 0.45454, 0.36363, 0.27272, 0.18181, 0.09091, 0 ],
+    ratings: [ 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.05, 0 ],
   };
 }
 
@@ -373,7 +374,7 @@ if ("multiplayer") {
     name: "Multiplayer",
     key: "multiplayer",
     description: "The level used for multiplayer games.",
-    map: "level0",
+    map: "multiplayer",
     bosses: 0,
     rounds: 0,
   };

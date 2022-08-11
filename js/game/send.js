@@ -68,22 +68,62 @@ export const end_game = function(finished = false) {
   send.game_ended = true;
   gamesave.save(true);
   ui_end_overlay_function();
+  const wavename = send.wave_name;
+  const rating = get_rating_number(wavename, player.points);
+  const username = get_account_username();
   // update leaderboard
-  firebase.get(`/leaderboard/`, function(boards) {
-    if (boards[send.wave_name] == null) {
-      // console.log(`/leaderboard/${send.wave_name}`);
-      firebase.set(`/leaderboard/${send.wave_name}/${get_account_username()}/score`, 0);
+  /*
+  firebase.get(`/leaderboard/${wavename}`, function(board) {
+    if (board == null) {
+      // console.log(`/leaderboard/${wavename}`);
+      firebase.set(`/leaderboard/${wavename}/${username}/score`, 0);
     }
-    const entry = (boards[send.wave_name] || { })[get_account_username()] || { score: 0, };
-    const waveinfo = waves_info[send.wave_name];
-    const oldscore = entry.score;
-    const newscore = Math.round(player.points);
-    if (newscore >= oldscore) {
-      // console.log(newscore);
-      firebase.set(`/leaderboard/${send.wave_name}/${get_account_username()}`, {
-        score: newscore,
+    const entry = (board || { })[username] || { score: 0, };
+    const waveinfo = waves_info[wavename];
+    const oldpoints = entry.score;
+    const newpoints = Math.round(player.points);
+    if (newpoints >= oldpoints) {
+      // console.log(newpoints);
+      firebase.set(`/leaderboard/${wavename}/${username}`, {
+        score: newpoints,
+        rating: rating,
         rounds: ((finished) ? waveinfo.rounds : (send.wave - 1)),
         used: player.current_upgrade,
+      });
+    }
+  });
+  */
+  // update score
+  const playertype = player.current_upgrade;
+  firebase.get(`/scores/${username}/${wavename}/${playertype}/`, function(entry) {
+    if (entry == null || entry.points == null) {
+      entry = { points: 0, };
+    }
+    const waveinfo = waves_info[wavename];
+    const oldpoints = entry.points;
+    const newpoints = Math.round(player.points);
+    if (newpoints >= oldpoints) {
+      firebase.set(`/scores/${username}/${wavename}/${playertype}/`, {
+        points: newpoints,
+        rating: rating,
+        rounds: ((finished) ? waveinfo.rounds : (send.wave - 1)),
+      }); 
+    }
+  });
+  // update best score
+  firebase.get(`/scores/${username}/${wavename}/best/`, function(entry) {
+    if (entry == null || entry.points == null) {
+      entry = { points: 0, };
+    }
+    const waveinfo = waves_info[wavename];
+    const oldpoints = entry.points;
+    const newpoints = Math.round(player.points);
+    if (newpoints >= oldpoints) {
+      firebase.set(`/scores/${username}/${wavename}/best/`, {
+        points: newpoints,
+        rating: rating,
+        rounds: ((finished) ? waveinfo.rounds : (send.wave - 1)),
+        use: playertype,
       });
     }
   });

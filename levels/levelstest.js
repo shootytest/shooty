@@ -31,9 +31,269 @@ const bounce = function(time, period) {
   return Math.abs(period - time % (period * 2)) / period;
 };
 
+const halfscreen = function() {
+  return Vector.create(window.innerWidth / 2, window.innerHeight / 2);
+}
+
 const check_click = function() {
   return check_keys(config.controls.click);
 };
+
+class Shape {
+
+  static shapes = [];
+
+  // ticks all current active shapes
+  // call this before Shape.draw()
+  static tick() {
+    for (const shape of Shape.shapes) {
+      if (!shape.active) continue;
+      shape.tick();
+    }
+  }
+
+  // draws all current active shapes
+  // call this after Shape.tick()
+  static draw() {
+    for (const shape of Shape.shapes) {
+      if (!shape.active) continue;
+      shape.draw(ctx);
+    }
+  }
+
+  // draws all shapes below the level select map
+  static draw_before() {
+    for (const shape of Shape.shapes) {
+      if (!shape.active || shape.depth < 1) continue;
+      shape.draw(ctx);
+    }
+  }
+
+  // draws all shapes above the level select map
+  static draw_after() {
+    for (const shape of Shape.shapes) {
+      if (!shape.active || shape.depth >= 1) continue;
+      shape.draw(ctx);
+    }
+  }
+
+  // returns a new list of created shapes
+  static create(list) {
+    const result = [];
+    for (const o of list) {
+      result.push(new Shape(o));
+    }
+    return result;
+  }
+
+  // boolean stuff
+  active = true;
+  visible = true;
+  producer = false;
+
+  // auto stuff
+  create_time = 0;
+
+  // general stuff
+  shape = "polygon";
+  sides = 0;
+  size = 0;
+  alpha = 1;
+  depth = 1;
+  stroke = "#ffffff";
+  fill = null;
+  linewidth = 2;
+
+  // producer stuff
+  reload = 600;
+  produce = { };
+  /*
+  things in produce:
+  {
+    properties of final thingy
+    
+  }
+  */
+
+  // physics stuff
+  position = Vector.create();
+  velocity = Vector.create();
+  acceleration = Vector.create();
+  friction = 0.03;
+  rotation = 0;
+  rotvelocity = 0;
+  rotfriction = 0;
+
+  make(o) { // yes, copied from thing.js
+
+    // inheritance first
+    if (o.hasOwnProperty("parent")) {
+      for (let make_thing of o.parent) {
+        this.make(make[make_thing]);
+      }
+    }
+
+    for (let k in o) {
+      if (o[k] != null && o.hasOwnProperty(k)) {
+        this[k] = o[k]; // ok
+      }
+    }
+
+  }
+
+  constructor(o = null) {
+    if (o != null) {
+      this.make(o);
+    }
+    this.create_time = ui.time;
+    Shape.shapes.push(this);
+  }
+
+  get realposition() {
+    if (this.depth === 0) return Vector.create(0, 0);
+    return Vector.add(halfscreen(), Vector.mult(Vector.sub(this.position, ui.camera), 1 / this.depth)); // todo
+  }
+
+  get realx() {
+    return this.realposition.x;
+  }
+
+  get realy() {
+    return this.realposition.y;
+  }
+
+  get x() {
+    return this.position.x;
+  }
+
+  get y() {
+    return this.position.y;
+  }
+
+  get vx() {
+    return this.velocity.x;
+  }
+
+  get vy() {
+    return this.velocity.y;
+  }
+
+  get angle() {
+    return this.rotation;
+  }
+
+  get angularvelocity() {
+    return this.rotvelocity;
+  }
+
+  get accel() {
+    return this.acceleration;
+  }
+
+  get time() {
+    return ui.time - this.create_time;
+  }
+
+  set x(newx) {
+    this.position = Vector.create(newx, this.y);
+  }
+
+  set y(newy) {
+    this.position = Vector.create(this.x, newy);
+  }
+
+  set vx(newx) {
+    this.velocity = Vector.create(newx, this.vy);
+  }
+
+  set vy(newy) {
+    this.velocity = Vector.create(this.vx, newy);
+  }
+
+  set angle(a) {
+    this.rotation = a;
+  }
+
+  tick() {
+    if (!this.active) return;
+    // make other shapes
+    if (this.producer) this.produce();
+    // physics
+    this.position = Vector.add(this.position, this.velocity);
+    this.velocity = Vector.mult(Vector.add(this.velocity, this.acceleration), 1 - this.friction);
+    this.rotation += this.rotvelocity;
+    this.rotvelocity *= (1 - this.rotfriction);
+    // draw on screen
+    if (this.visible) this.draw();
+    // produce
+    if (this.time % Math.round(this.reload) === 0) {
+      this.do_produce();
+    }
+  }
+
+  draw() {
+    if (!this.visible) return;
+    this.draw_set_fill_stroke();
+    // draw shape
+    switch (this.shape) {
+      case "polygon":
+        this.draw_polygon();
+        break;
+      case "star":
+        // todo
+        break;
+      default:
+        console.error("invalid shape: " + this.shape);
+    }
+  }
+
+  draw_set_fill_stroke() {
+    // note: try not to set globalAlpha? instead use my math_util
+    if (this.alpha >= 1) {
+      if (this.stroke) ctx.strokeStyle = this.stroke;
+      if (this.fill) ctx.fillStyle = this.fill;
+    } else {
+      if (this.stroke) ctx.strokeStyle = math_util.set_color_alpha(this.stroke, this.alpha);
+      if (this.fill) ctx.fillStyle = math_util.set_color_alpha(this.fill, this.alpha);
+    }
+    ctx.lineWidth = this.linewidth;
+  }
+
+  draw_polygon() {
+    if (this.sides < 0) {
+      // negative sides = star, so change shape into a star
+      this.shape = "star";
+      this.sides = -this.sides;
+      return;
+    } else if (this.sides < 2) {
+      // circle
+      draw.circle(ctx, this.realx, this.realy, this.size);
+    } else if (this.sides === 2) {
+      // line
+    } else if (this.sides === 3) {
+      draw.regular_polygon(ctx, this.sides, this.size, this.realx, this.realy, this.rotation);
+    }
+    if (this.fill) ctx.fill();
+    if (this.stroke) ctx.stroke();
+  }
+
+  do_produce() {
+    if (!this.producer) return;
+    const P = this.produce;
+
+  }
+
+  remove() {
+    this.active = false;
+    this.producer = false;
+    this.visible = false;
+    const index = Shape.shapes.indexOf(this);
+    if (index != null && index > -1) {
+      Shape.shapes.splice(index, 1);
+    }
+  }
+
+}
 
 const ui = {
   // main
@@ -107,6 +367,11 @@ const ui = {
 
 const memo = {};
 
+
+/*  the old code for the gradient fill draw_background:
+    it didn't fit shooty's theme (outline instead of fill)
+    looked nice while it lasted, though
+
 function get_background_color(x, y) {
   x = math_util.round_to(x, 10);
   y = math_util.round_to(y, 10);
@@ -124,13 +389,12 @@ function get_background_color(x, y) {
     const d = dist2(C);
     const num = ((d === 0) ? 100000000 : C.r / d);
     let color = C.c;
-    /* // range (fade to black)
-    if (d > C.r * C.r) {
-      const range = (C.range == null) ? C.r * 2 : C.range;
-      const ratio = (Math.sqrt(d) - C.r) / (range - C.r);
-      color = chroma.mix(color, W.background, ratio);
-    }
-    */
+    // range (fade to black)
+    // if (d > C.r * C.r) {
+    //  const range = (C.range == null) ? C.r * 2 : C.range;
+    //  const ratio = (Math.sqrt(d) - C.r) / (range - C.r);
+    //  color = chroma.mix(color, W.background, ratio);
+    // }
     numbers.push(num);
     colors.push(color);
   }
@@ -139,7 +403,6 @@ function get_background_color(x, y) {
   return result;
 }
 
-/*
 function old_draw_background___took_much_time_to_make_but_lags_the_screen_quite_a_lot() {
   const w = 150;
   const h = 150;
@@ -320,7 +583,9 @@ function draw_ui(delta_time) {
 function draw_main(delta_time) {
 
   draw_background();
+  Shape.draw_before();
   draw_levels();
+  Shape.draw_after();
   draw_ui(delta_time);
 
 }
@@ -332,6 +597,7 @@ function tick(time) {
   ui.sidebar_tick();
   ui.click_tick();
   controls.tick();
+  Shape.tick();
   draw_main(delta);
   //requestAnimationFrame(tick);
 }
@@ -341,6 +607,7 @@ function init() {
   init_canvas(canvas2);
   init_key();
   controls.init();
+  Shape.create(W.shapes);
 }
 
 function main() {
@@ -359,4 +626,7 @@ window.addEventListener('wheel', function(event) {
   const direction = event.deltaY / Math.abs(event.deltaY);
   ui.change_camera_scale((direction < 0) ? (1.1) : (1 / 1.1));
 });
+
+// debug: todo remove
 window.ui = ui;
+window.Shape = Shape;

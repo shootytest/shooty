@@ -47,7 +47,7 @@ maps.bouncycircles = {
   ],
 }
 
-maps.level0 = {
+maps.multiplayer = {
   name: "Unnamed Map",
   width: 500,
   height: 500,

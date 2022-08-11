@@ -2,7 +2,7 @@
 export const worlds = { };
 
 worlds.zero = {
-  name: "World Zero",
+  name: "Zero",
   levels: {
     tutorial: {
       key: "tutorial",
@@ -10,11 +10,11 @@ worlds.zero = {
       x: 0,
       y: 0,
       lines: [
-        { key: "level0", },
+        { key: "level0test", },
       ],
     },
-    level0: {
-      key: "level0",
+    level0test: {
+      key: "level0test",
       char: "0",
       x: 200,
       y: -50,
@@ -25,15 +25,12 @@ worlds.zero = {
   sidebar: "#3c009c",
   text: "#ffffff",
   shapes: [
-
+    { // 0
+      x: 0, y: 0,
+      vx: 5, vy: 5,
+      size: 50,
+    },
   ],
-  /*
-  colors: [
-    { x: 0, y: 0, c: "#a2ddfc", r: 500, },
-    { x: -750, y: 750, c: "#a2f3fc", r: 500, },
-    { x: -1750, y: -1750, c: "#a2fce6", r: 500, },
-  ],
-  */
 };
 
 worlds.test = {
@@ -70,12 +67,4 @@ worlds.test = {
   shapes: [
     
   ],
-  /*
-  colors: [
-    { x: 0, y: 0, c: "#a2ddfc", r: 500, },
-    { x: -300, y: 350, c: "#cc12aa", r: 100, },
-    { x: -750, y: 750, c: "#a2f3fc", r: 500, },
-    { x: -1750, y: -1750, c: "#a2fce6", r: 500, },
-  ],
-  */
 };
