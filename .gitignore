@@ -9,6 +9,7 @@ firebase-debug.*.log*
 
 # Surge
 .surgeignore
+CNAME
 
 # Firebase cache
 .firebase/

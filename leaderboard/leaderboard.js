@@ -171,7 +171,8 @@ function fire() {
     firebase.get(`/users/LIST/`, function(list) {
       const LIST = list;
       for (const user of LIST) {
-        // listen -> responsive leaderboard!
+        // listen = responsive leaderboard
+        // get = unresponsive leaderboard
         firebase.listen(`/scores/${user}/${level}/best`, function(entry) {
           if (entry == null) return;
           entries[user] = entry;

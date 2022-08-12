@@ -1,6 +1,6 @@
+import { Enemy } from "../game/enemy.js";
 import { firebase } from "../util/firebase.js";
 import { get_account_username } from "../util/localstorage.js";
-import { Enemy } from "./enemy.js";
 
 let oldmulti = null; // unused for now
 let multi = null;

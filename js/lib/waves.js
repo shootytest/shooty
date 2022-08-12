@@ -109,7 +109,9 @@ if ("tutorial") {
 
   waves_points.tutorial = {
     points: [ 0, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, ],
-    time: [ 0, 10, 20, 30, 25, 15, 10, 25, 40, 60, 20, ],
+    // time: [ 0, 10, 20, 30, 25, 15, 10, 25, 40, 60, 20, ],
+    // new time (halved for extra challenge)
+    time: [ 0, 5, 10, 15, 15, 10, 5, 13, 20, 30, 10, ],
     ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
   };
 
@@ -362,7 +364,7 @@ if ("oneround") {
 
   waves_points.oneround = {
     points: [ 0, 1, ],
-    time: [ 0, 250, ],
+    time: [ 0, 20, ], // ho ho ho, only 20 seconds
     ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
   };
 

@@ -1,5 +1,4 @@
 import { Enemy } from "../game/enemy.js";
-import { multiplayer } from "../game/multiplayer.js";
 import { player, player_user } from "../game/player.js";
 import { end_wave, next_wave, send } from "../game/send.js";
 import { Thing } from "../game/thing.js";
@@ -11,6 +10,7 @@ import { upgrades } from "../lib/upgrades.js";
 import { waves_points, wave_ratings, wave_ratings_colors } from "../lib/waves.js";
 import { controls } from "../main/controls.js";
 import { check_keys } from "../main/key.js";
+import { multiplayer } from "../main/multiplayer.js";
 import { math_util } from "../util/math.js";
 import { mobile } from "../util/mobile.js";
 import { PriorityQueue } from "../util/priorityqueue.js";

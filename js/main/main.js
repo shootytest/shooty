@@ -15,13 +15,12 @@ import { download_screenshot, copy_screenshot } from "../util/screenshot.js";
 import { video_button_pressed } from "../util/video.js";
 import { waves, waves_info } from "../lib/waves.js";
 import { controls } from "./controls.js";
+import { multiplayer } from "./multiplayer.js";
 import { mobile } from "../util/mobile.js";
 import { gamesave } from "./gamesave.js";
 import { gamecheck } from "./gamecheck.js";
 import { check_if_logged_in, get_account_username, get_multi_enemies } from "../util/localstorage.js";
 import { mapmaker } from "../game/mapmaker.js";
-import { maps } from "../lib/maps.js";
-import { multiplayer } from "../game/multiplayer.js";
 
 const Engine = Matter.Engine,
       Runner = Matter.Runner,

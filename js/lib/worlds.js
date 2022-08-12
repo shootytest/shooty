@@ -12,12 +12,16 @@ worlds.zero = {
       lines: [
         { key: "level0test", },
       ],
+      conditions: [],
     },
     level0test: {
       key: "level0test",
       char: "0",
       x: 200,
       y: -50,
+      conditions: [
+        { level: "tutorial", rounds: 10, },
+      ],
     },
   },
   background: "#05000d",
@@ -44,6 +48,7 @@ worlds.test = {
       lines: [
         { key: "tutorialold", },
       ],
+      conditions: [],
     },
     tutorialold: {
       key: "tutorialold",
@@ -52,6 +57,9 @@ worlds.test = {
       y: 300,
       lines: [
         { key: "blank", },
+      ],
+      conditions: [
+        { level: "oneround", rating: 6, },
       ],
     },
     blank: {

@@ -1,8 +1,8 @@
 import { Enemy } from "../game/enemy.js";
-import { multiplayer } from "../game/multiplayer.js";
 import { player } from "../game/player.js";
 import { send, set_wave_name, text_wave } from "../game/send.js";
 import { Thing } from "../game/thing.js";
+import { multiplayer } from "../main/multiplayer.js";
 import { make } from "../lib/make.js";
 import { player_make } from "../lib/playermake.js";
 import { get_gamesave, set_gamesave } from "../util/localstorage.js";
