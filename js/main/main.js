@@ -141,6 +141,7 @@ function test() {
       close_all_overlays();
     } else {
       ui.paused = true;
+      ui.pause_time = ui.time;
     }
   });
   add_key_listener("z", function() {
@@ -182,6 +183,7 @@ function test() {
   add_key_listener("Escape", function() {
     if (!game_is_paused()) {
       ui.paused = true;
+      ui.pause_time = ui.time;
     } else {
       close_all_overlays();
     }

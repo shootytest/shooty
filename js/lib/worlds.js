@@ -20,7 +20,7 @@ worlds.zero = {
       x: 200,
       y: -50,
       conditions: [
-        { level: "tutorial", rounds: 10, },
+        { type: "level", level: "tutorial", rounds: 10, },
       ],
     },
   },
@@ -59,7 +59,7 @@ worlds.test = {
         { key: "blank", },
       ],
       conditions: [
-        { level: "oneround", rating: 6, },
+        { type: "level", level: "oneround", rating: 6, },
       ],
     },
     blank: {

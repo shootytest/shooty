@@ -1,13 +1,13 @@
 import { Enemy } from "../game/enemy.js";
 import { player, player_user } from "../game/player.js";
-import { end_wave, next_wave, send } from "../game/send.js";
+import { end_game, end_wave, next_wave, send } from "../game/send.js";
 import { Thing } from "../game/thing.js";
 import { C } from "../lib/color.js";
 import { config } from "../lib/config.js";
 import { make } from "../lib/make.js";
 import { player_make } from "../lib/playermake.js";
 import { upgrades } from "../lib/upgrades.js";
-import { waves_points, wave_ratings, wave_ratings_colors } from "../lib/waves.js";
+import { waves, waves_points, wave_ratings, wave_ratings_colors } from "../lib/waves.js";
 import { controls } from "../main/controls.js";
 import { check_keys } from "../main/key.js";
 import { multiplayer } from "../main/multiplayer.js";
@@ -38,6 +38,7 @@ export const ui = {
   message_threshold: 0.3,
   // paused?
   paused: false,
+  pause_time: 0,
   // shop
   shop_overlay: false,
   // upgrades
@@ -331,6 +332,7 @@ export const draw_ui = function(ctx) {
       c = C.green_health;
       if (ui.new_click) {
         next_wave();
+        ui.new_click = false;
       }
     }
     ctx.fillStyle = math_util.set_color_alpha(c, 0.6);
@@ -348,6 +350,7 @@ export const draw_ui = function(ctx) {
       c = C.bright_blue;
       if (ui.new_click) {
         ui.upgrade_overlay = true;
+        ui.new_click = false;
       }
     }
     ctx.fillStyle = math_util.set_color_alpha(c, 0.6);
@@ -382,6 +385,7 @@ export const draw_ui = function(ctx) {
       c = C.red_health;
       if (check_click()) {
         clear_messages();
+        ui.new_click = false;
       }
     }
     ctx.fillStyle = math_util.set_color_alpha(c, 0.3);
@@ -442,14 +446,59 @@ export const draw_ui = function(ctx) {
   }
 
   if ("paused" && ui.paused) {
+    const pause_time = ui.time - ui.pause_time;
+    const pause_animation_progress = math_util.bound((pause_time - 60) / 30, 0, 1);
     ctx.fillStyle = math_util.set_color_alpha(C.white, 0.8);
     draw.fill_rect(ctx, 0, 0, _width, _height);
     const pause_text = "paused";
     ctx.fillStyle = C.background;
-    ctx.font = "bold 200px roboto mono";
+    ctx.font = `bold ${200 - Math.round(pause_animation_progress * 100)}px roboto mono`;
     ctx.textBaseline = "middle";
     ctx.textAlign = "center";
-    draw.fill_text(ctx, pause_text, _width * 0.5, _height * 0.5);
+    draw.fill_text(ctx, pause_text, _width * 0.5, _height * (0.5 - pause_animation_progress * 0.35));
+    if (pause_animation_progress >= 0.5) {
+      // draw buttons (from end_overlay)
+      size = _height * 0.025;
+      y = _height * (0.75 - (pause_animation_progress * 2 - 1) * 0.15);
+      r = Math.min(100, Math.min(_width * 0.125, _height * 0.125)) * (pause_animation_progress * 2 - 1);
+      let hover, click;
+      let gap = (_width - r * 6) / 4;
+      let button_words = ["resume", "restart", "end game"];
+      for (let i = 0; i < 3; i++) {
+        x = gap + (gap + 2 * r) * i + r;
+        hover = camera.mouse_in_circle(x, y, r);
+        click = (hover && ui.new_click);
+        // actually draw the button
+        ctx.fillStyle = chroma.mix(C.green, C.red, (i * 2) / 4).hex();
+        ctx.strokeStyle = C.white;
+        if (hover) {
+          ctx.fillStyle = chroma(ctx.fillStyle).brighten(0.5);
+        }
+        ctx.lineWidth = 4;
+        draw.circle(ctx, x, y, r);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = C.white;
+        ctx.strokeStyle = C.white;
+        draw_svg(ctx, button_words[i], x, y, r, (i === 2) ? 45 : undefined);
+        if (hover) {
+          // draw word
+          ctx.font = `bold ${size * 1.2}px roboto mono`;
+          draw.fill_text(ctx, button_words[i], x, y + r + size * 2);
+        }
+        if (click) {
+          if (i === 0) {
+            close_all_overlays();
+          } else if (i === 1) {
+            window.location.href = "/choose/?level=" + send.wave_name;
+          } else if (i === 2) {
+            close_all_overlays();
+            end_game(waves[send.wave_name][send.wave + 1] == null);
+          }
+          ui.new_click = false;
+        }
+      }
+    }
   }
 
   if ("shop" && ui.shop_overlay) {
@@ -799,6 +848,7 @@ export const draw_ui = function(ctx) {
         } else if (i === 2) {
           window.location.href = "/";
         }
+        ui.new_click = false;
       }
     }
   }
