@@ -1,12 +1,14 @@
 import { camera } from "../js/draw/camera.js";
 import { canvas_resize, init_canvas } from "../js/draw/canvas.js";
 import { draw } from "../js/draw/draw.js";
+import { draw_svg } from "../js/draw/svg.js";
 import { C } from "../js/lib/color.js";
 import { config } from "../js/lib/config.js";
 import { waves_info } from "../js/lib/waves.js";
 import { worlds } from "../js/lib/worlds.js";
 import { controls } from "../js/main/controls.js";
 import { check_keys, init_key, keys } from "../js/main/key.js";
+import { progress } from "../js/main/progress.js";
 import { math_util } from "../js/util/math.js";
 
 const parameters = new URLSearchParams(document.location.search);
@@ -16,6 +18,9 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const canvas2 = document.getElementById("canvas2");
 const ctx2 = canvas2.getContext("2d");
+
+// storage variables
+const is_level_unlocked = { };
 
 const Vector = Matter.Vector;
 
@@ -352,12 +357,12 @@ const ui = {
     ui.mousedrag_change = controls.mousedrag_change;
   },
   // levels
-  selected: null,
+  selected: "",
   click_outside: false,
   // sidebar
   sidebar: 0,
   sidebar_target: 0,
-  sidebar_level: null,
+  sidebar_level: "",
   sidebar_when_mousedown: 0,
   sidebar_tick: function() {
     const smoothness = 0.1;
@@ -433,19 +438,20 @@ function draw_background() {
   draw.clear(ctx, W.background);
 }
 
-function select_level(L) {
-  ui.selected = L;
+function select_level(level_key) {
+  const L = W.levels[level_key];
+  ui.selected = level_key;
   ui.camera_target = Vector.create(L.x, L.y);
   ui.click_outside = false;
 }
 
 function unselect_level() {
-  ui.selected = null;
+  ui.selected = "";
 }
 
-function open_sidebar(L) {
+function open_sidebar(level_key) {
   ui.sidebar_target = ui.width * 0.3;
-  ui.sidebar_level = L;
+  ui.sidebar_level = level_key;
 }
 
 function close_sidebar() {
@@ -461,35 +467,52 @@ function draw_levels() {
   ui.click_outside = ui.new_click;
   close_sidebar();
   for (const level_key in W.levels) {
-    draw_level(W.levels[level_key]);
+    const L = W.levels[level_key];
+    is_level_unlocked[level_key] = progress.are_conditions_met(L.conditions);
+  }
+  for (const level_key in W.levels) {
+    draw_level(level_key);
   }
   if (ui.click_outside) {
-    unselect_level()
+    unselect_level();
   }
 }
 
-function draw_level(L) {
+function draw_level(level_key) {
+  const L = W.levels[level_key];
   if (L.x == null || L.y == null) return;
-  const is_selected = (L === ui.selected);
+  const unlocked = is_level_unlocked[level_key];
+  const is_selected = (level_key === ui.selected);
   const v = ui.world_to_screen(L.x, L.y);
   const size = ((L.size == null) ? 40 : L.size);
   if (ui.new_click && camera.mouse_in_circle(v.x, v.y, size)) {
-    select_level(L);
+    select_level(level_key);
   }
   if (camera_in_circle(L.x, L.y, size + 15)) {
-    open_sidebar(L);
+    open_sidebar(level_key);
   }
-  ctx.fillStyle = L.fill || C.gold;
-  ctx.strokeStyle = is_selected ? C.red : (L.stroke || W.text);
-  ctx.lineWidth = 3;
-  draw.circle(ctx, v.x, v.y, size);
-  ctx.fill();
-  ctx.stroke();
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillStyle = L.text || W.background;
-  ctx.font = "35px roboto mono";
-  draw.fill_text(ctx, L.char, v.x, v.y + 2);
+  if (unlocked) {
+    ctx.fillStyle = L.fill || C.gold;
+    ctx.strokeStyle = is_selected ? C.red : (L.stroke || W.text);
+    ctx.lineWidth = 3;
+    draw.circle(ctx, v.x, v.y, size);
+    ctx.fill();
+    ctx.stroke();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = L.text || W.background;
+    ctx.font = `${size * 0.75}px roboto mono`;
+    draw.fill_text(ctx, L.char, v.x, v.y + 2);
+  } else {
+    ctx.fillStyle = C.grey;
+    ctx.strokeStyle = is_selected ? C.red_dark : (L.stroke || W.text);
+    ctx.lineWidth = 3;
+    draw.circle(ctx, v.x, v.y, size);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = L.text || W.background;
+    draw_svg(ctx, "lock", v.x, v.y, size * 0.8);
+  }
   // ok
   if (L.lines != null) {
     for (const line of L.lines) {
@@ -503,7 +526,7 @@ function draw_level(L) {
       let va = ui.world_to_screen(v3.x, v3.y);
       let vb = ui.world_to_screen(v4.x, v4.y);
       let vc = Vector.lerp(va, vb, 0.5);
-      ctx.strokeStyle = W.text;
+      ctx.strokeStyle = is_level_unlocked[line.key] ? W.text : C.red_dark;
       draw.line(ctx, va.x, va.y, vb.x, vb.y);
     }
   }
@@ -515,7 +538,7 @@ function draw_ui(delta_time) {
   let x, y, w, h, r, s, c, hovering, clicking;
 
   // >2 frames of lag!
-  if (delta_time > 100) {
+  if (delta_time > 120) {
     ctx.fillStyle = "white";
     draw.fill_rectangle(ctx, _w / 2, _h / 2, 600, 100);
     ctx.textAlign = "center";
@@ -540,12 +563,14 @@ function draw_ui(delta_time) {
   }
 
   if ("sidebar") {
-    const L = ui.sidebar_level;
+    const level_key = ui.sidebar_level;
+    const unlocked = is_level_unlocked[level_key];
+    const L = W.levels[level_key];
     const info = waves_info[L.key];
     // draw sidebar
-    ctx.fillStyle = W.sidebar;
+    ctx.fillStyle = unlocked ? W.sidebar : math_util.set_color_alpha(W.sidebar, 0.7);
     draw.fill_rect(ctx, _w - ui.sidebar, 0, ui.sidebar, _h);
-    ctx.strokeStyle = C.white;
+    ctx.strokeStyle = unlocked ? C.white : C.red_dark;
     draw.line(ctx, _w - ui.sidebar, 0, _w - ui.sidebar, _h);
     // stuff inside the sidebar
     if (ui.sidebar_target > 0) {
@@ -557,12 +582,18 @@ function draw_ui(delta_time) {
       ctx.fillStyle = W.text;
       ctx.font = "30px roboto mono";
       draw.fill_text(ctx, info.name, x, y);
+      // level information
+      if (unlocked) {
+        // todo: level stats
+      } else {
+        // todo: level conditions
+      }
       // play button
       y = _h - 100;
       r = 50;
       hovering = camera.mouse_in_circle(x, y, r);
       clicking = (hovering && ui.new_click) || check_keys(config.controls.uienter);
-      ctx.fillStyle = hovering ? C.green_bullet : C.green;
+      ctx.fillStyle = unlocked ? (hovering ? C.green_bullet : C.green) : C.grey;
       ctx.strokeStyle = chroma(W.sidebar).darken();
       ctx.lineWidth = 2;
       draw.circle(ctx, x, y, r);
@@ -572,7 +603,7 @@ function draw_ui(delta_time) {
       ctx.lineWidth = 0;
       draw.regular_polygon(ctx, 3, r * 0.45, x, y, 0);
       ctx.fill();
-      if (clicking) {
+      if (unlocked && clicking) {
         window.location.href = "/choose/?level=" + L.key;
       }
     }
@@ -607,6 +638,7 @@ function init() {
   init_canvas(canvas2);
   init_key();
   controls.init();
+  progress.init(world_key);
   Shape.create(W.shapes);
 }
 
