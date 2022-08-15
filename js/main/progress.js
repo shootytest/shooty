@@ -55,7 +55,7 @@ progress.check_condition = function(condition) {
   const scores = progress.user_scores;
 
   if (condition.type === "player") {
-    return 0; // todo: player condition
+    return 0; // TODO: player condition
   } else { // condition.type === "level"
     const level_key = condition.level;
     const use_key = condition.use || "best";
@@ -105,7 +105,7 @@ progress.are_conditions_met = function(conditions) {
 progress.level_condition_text = function(condition) {
   let result = "";
   if (condition.type === "player") {
-    // todo: player condition
+    // TODO: player condition
   } else { // condition.type === "level"
     if (condition.rating != null) {
       const rating_name = wave_ratings[condition.rating];
@@ -124,5 +124,5 @@ progress.level_condition_text = function(condition) {
   return result;
 }
 
-// todo remove: debug
+// TODO: remove (just for debugging)
 window.progress = progress;

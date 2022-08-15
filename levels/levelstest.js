@@ -245,7 +245,7 @@ class Shape {
         this.draw_polygon();
         break;
       case "star":
-        // todo
+        // TODO
         break;
       default:
         console.error("invalid shape: " + this.shape);
@@ -584,9 +584,9 @@ function draw_ui(delta_time) {
       draw.fill_text(ctx, info.name, x, y);
       // level information
       if (unlocked) {
-        // todo: level stats
+        // TODO: level stats
       } else {
-        // todo: level conditions
+        // TODO: level conditions
       }
       // play button
       y = _h - 100;
@@ -659,6 +659,6 @@ window.addEventListener('wheel', function(event) {
   ui.change_camera_scale((direction < 0) ? (1.1) : (1 / 1.1));
 });
 
-// debug: todo remove
+// TODO: remove
 window.ui = ui;
 window.Shape = Shape;

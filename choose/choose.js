@@ -211,6 +211,7 @@ function draw_stuff() {
       if (ui.new_click) {
         ui.upgrade_selected = upgrade_key;
         selected = U;
+        ui.new_click = false;
       }
     }
     // draw stuff
@@ -348,6 +349,7 @@ function draw_stuff() {
       draw.fill_text(ctx, "" + U.cost, x + 10, y);
       if (hover && ui.new_click) {
         user.buy(U.key, scam);
+        ui.new_click = false;
       }
     } else if (user.current_upgrade !== U.key) {
       // select button
@@ -358,6 +360,7 @@ function draw_stuff() {
       draw.fill_text(ctx, `select`, x, y);
       if (hover && ui.new_click) {
         user.current_upgrade = U.key;
+        ui.new_click = false;
       }
     } else {
       // play!
@@ -368,6 +371,7 @@ function draw_stuff() {
       draw.fill_text(ctx, "play!", x, y);
       if (hover && ui.new_click) {
         user.play(U.key);
+        ui.new_click = false;
       }
     }
     // click?
@@ -394,6 +398,7 @@ function draw_stuff() {
     draw.x_cross(ctx, x, y, w, h, 0.7);
     if (hover && ui.new_click) {
       upgrade_selected_clear = true;
+      ui.new_click = false;
     }
   }
   // coins
