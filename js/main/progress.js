@@ -85,6 +85,7 @@ progress.check_condition = function(condition) {
 // for convenience (returns a list of percentages)
 // the callback will called n times (with values "index, ratio")
 progress.check_conditions = function(conditions) {
+  if (conditions == null) return [];
   const result = [ ];
   for (const condition of conditions) {
     result.push(progress.check_condition(condition));

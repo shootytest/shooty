@@ -110,9 +110,8 @@ if ("tutorial") {
   waves_points.tutorial = {
     points: [ 0, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, ],
     // time: [ 0, 10, 20, 30, 25, 15, 10, 25, 40, 60, 20, ],
-    // new time (halved for extra challenge)
     time: [ 0, 5, 10, 15, 15, 10, 5, 13, 20, 30, 10, ],
-    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
+    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0 ],
   };
 
 }
@@ -172,7 +171,7 @@ if ("level0test") {
       { type: "slow", number: 2, delay: 300, interval: 200, },
     ],
     { type: "boss_tutorial", number: 3, interval: 400, },
-    [ // 19
+    [ // 18
       { type: "oct", number: 4, interval: 250, },
       { type: "ramshoot", number: 2, delay: 125, interval: 500, },
     ],
@@ -200,12 +199,13 @@ if ("level0test") {
   waves_points.level0test = {
     points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5 ],
     time: [ 0, 7, 25, 11, 9, 15, 20, 10, 25, 8, 8, 50, 60, 50, 35, 60, 50, 25, 40, /**/ 70, 10],
+    // equally spaced out ratings?
     // ratings: [ 1, 0.90909, 0.81818, 0.72727, 0.63636, 0.54545, 0.45454, 0.36363, 0.27272, 0.18181, 0.09091, 0 ],
     ratings: [ 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.05, 0 ],
   };
 }
 
-// old/unused/useless/ridiculous stuff
+// old/unused/useless/ridiculous/testing stuff (put these in the "Test" world)
 
 if ("tutorialold") {
 
@@ -316,16 +316,17 @@ if ("tutorialold") {
       { message: "Can you survive this round?", delay: 0, },
     ],
     [12]: [
-      { message: "When your health reaches zero, a life is consumed.", delay: 0, },
+      { message: "When your health reaches zero, a life is consumed.", delay: 0, }, // if you haven't noticed by now...
     ],
     [13]: [
-      { message: "New enemy!", delay: 0, },
+      { message: "A new enemy!", delay: 0, },
     ],
     [14]: [
       { message: "Another new enemy!", delay: 0, },
       { message: "Get ready for the final round!", delay: 0, after: true, },
     ],
     [15]: [
+      // { message: "Yet another new enemy!", delay: 0, },
       { message: "The final round of the tutorial!", delay: 0, },
       { message: "This boss has large homing bullets... but if it can't see you, the bullets get quite confused.", delay: 10, },
       { message: "Well done! You have completed the tutorial!", delay: 0, after: true, },
@@ -335,7 +336,7 @@ if ("tutorialold") {
   waves_points.tutorialold = {
     points: [ 0, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5 ],
     time: [ 0, 7, 20, 8, 15, 7, 10, 20, 30, 60, 15, 45, 50, 35, 50, 25, ],
-    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
+    ratings: [ 1, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.15, 0.1, 0.05, 0 ],
   };
 
 }
@@ -364,8 +365,45 @@ if ("oneround") {
 
   waves_points.oneround = {
     points: [ 0, 1, ],
-    time: [ 0, 20, ], // ho ho ho, only 20 seconds
-    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0 ],
+    time: [ 0, 20, ], // ho ho ho, only 20 seconds!
+    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.5, 0.3, 0.1, 0.05, 0 ],
+  };
+
+}
+
+if ("tworounds") {
+
+  waves_info.tworounds = {
+    name: "Two Rounds",
+    key: "tworounds",
+    description: "This level has only two rounds!",
+    map: "empty",
+    bosses: 0,
+    rounds: 2,
+  };
+
+  waves.tworounds = [
+    0,
+    { type: "homing", number: 5, interval: 12, },
+    { type: "homing_4", number: 5, interval: 12, },
+  ];
+
+  waves_text.tworounds = {
+    [0]: [
+      { message: "Wow, only two rounds?", delay: 0, },
+    ],
+    [1]: [
+      { message: "Wow, homing bullets?", delay: 0, },
+    ],
+    [2]: [
+      { message: "Wow, it's done?", delay: 0, after: true, },
+    ],
+  };
+
+  waves_points.tworounds = {
+    points: [ 0, 1, 1.5, ],
+    time: [ 0, 20, 30, ], // ho ho ho, only 20 seconds!
+    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.3, 0.1, 0.05, 0 ],
   };
 
 }

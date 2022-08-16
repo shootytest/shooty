@@ -47,8 +47,19 @@ worlds.test = {
       y: 0,
       lines: [
         { key: "tutorialold", },
+        { key: "tworounds", },
       ],
       conditions: [],
+    },
+    tworounds: {
+      key: "tworounds",
+      char: "2r",
+      x: 150,
+      y: 50,
+      lines: [],
+      conditions: [
+        { type: "level", level: "oneround", use: "basic", rating: 1, },
+      ],
     },
     tutorialold: {
       key: "tutorialold",
@@ -59,7 +70,7 @@ worlds.test = {
         { key: "blank", },
       ],
       conditions: [
-        { type: "level", level: "oneround", rating: 6, },
+        { type: "level", level: "oneround", rating: 4, },
       ],
     },
     blank: {
@@ -67,6 +78,9 @@ worlds.test = {
       char: " ",
       x: -300,
       y: 400,
+      conditions: [
+        { type: "level", level: "tutorialold", rating: 6, },
+      ],
     },
   },
   background: "#201924",

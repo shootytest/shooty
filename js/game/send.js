@@ -267,3 +267,7 @@ export const get_rating_number = function(wave_name, points) {
   }
   return wave_ratings.length - 1;
 }
+
+// TODO: remove
+window.level_total_points = level_total_points;
+window.get_rating_number = get_rating_number;

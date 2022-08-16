@@ -205,7 +205,7 @@ function draw_stuff() {
     size = U.size || 30;
     size *= ui.upgrade_scale;
     c = U.color || C.blue; // (current) ? chroma.mix(U.color || C.blue, C.white, bounce(ui.time, 50) * 0.2) : U.color;
-    if (reached && camera.mouse_in_circle(x, y, size)) {
+    if (reached && camera.mouse_in_circle(x, y, size) && camera.mouse_in_rect(0, 0, divide_x, _height)) {
       focused = U;
       upgrade_selected_clear = false;
       if (ui.new_click) {

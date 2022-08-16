@@ -505,7 +505,7 @@ function draw_level(level_key) {
     draw.fill_text(ctx, L.char, v.x, v.y + 2);
   } else {
     ctx.fillStyle = C.grey;
-    ctx.strokeStyle = is_selected ? C.red_dark : (L.stroke || W.text);
+    ctx.strokeStyle = is_selected ? C.red : (L.stroke || C.red_dark);
     ctx.lineWidth = 3;
     draw.circle(ctx, v.x, v.y, size);
     ctx.fill();
