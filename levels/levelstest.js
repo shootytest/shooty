@@ -602,7 +602,7 @@ function draw_ui(delta_time) {
         window.location.href = "/choose/?level=" + L.key;
       }
       // level information
-      if (unlocked) {
+      if (false && unlocked) {
         // TODO: level stats
       } else {
         // TODO: level conditions

@@ -82,7 +82,7 @@ controls.init = function() {
       // non-mobile
       function register_controls(x, y) {
         camera.set_mouse(x, y);
-        player.target.facing = camera.mouse_position;
+        // player.target.facing = camera.mouse_position;
         if (mousedown && controls.mousedown_pos) {
           const new_mousedrag = Vector.sub(Vector.create(x, y), controls.mousedown_pos);
           controls.mousedrag = new_mousedrag;

@@ -140,16 +140,10 @@ make.bullet_hexagon = {
   ],
 };
 
-make.bullet_launcher = {
+make.bullet_heptagon = {
   parent: ["bullet"],
-  shooting: true,
-  keep_children: true,
   shapes: [
-    { type: "circle", body: true, },
-    { type: "circle_fade", r: "shootsize*1", color: C.bright_blue, },
-  ],
-  shoots: [
-    { parent: shoots.p_launcher_small, color: C.bright_blue, },
+    { type: "polygon", sides: 7, r: 1, body: true, },
   ],
 };
 
@@ -227,6 +221,8 @@ make.bullet_tower_grow = {
   ],
 };
 
+// ##player projectiles
+
 make.bullet_tower_placer = {
   parent: ["bullet_tower"],
   keep_children: true,
@@ -242,6 +238,30 @@ make.bullet_tower_rammer = {
   rotation_controller: "autotarget",
   shoots: [
     { parent: shoots.p_rammer_tower, },
+  ],
+};
+
+make.bullet_launcher = {
+  parent: ["bullet"],
+  shooting: true,
+  keep_children: true,
+  shapes: [
+    { type: "circle", body: true, },
+    { type: "circle_fade", r: "shootsize*1", color: C.bright_blue, },
+  ],
+  shoots: [
+    { parent: shoots.p_launcher_small, color: C.bright_blue, },
+  ],
+};
+
+// ##enemy projectiles
+
+make.bullet_enemy_tower_placer = {
+  parent: ["bullet_tower"],
+  keep_children: true,
+  rotation_controller: "autotarget",
+  shoots: [
+    { parent: shoots.e_placer_tower, },
   ],
 };
 
@@ -295,8 +315,32 @@ make.enemy_basic_double = {
     { parent: shoots.e_basic_double, x: -0.3, y: 0, delay: 25, },
   ],
   health: {
-    capacity: 25,
-    damage: 0.0045,
+    capacity: 22,
+    damage: 0.0047,
+  },
+  items: [
+    { type: "normal", number: 4, },
+  ],
+};
+
+make.enemy_basic_triple = {
+  parent: ["enemy"],
+  name: "Basic ×3",
+  size: 24,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0.33, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 1, r: "shootsize*1", color: C.orangered_bullet, },
+    { type: "circle_fade", x: -0.33, y: 0, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_basic_triple, x: 0.33, y: 0, delay: 0, },
+    { parent: shoots.e_basic_triple, x: 0, y: 0, delay: 20, color: C.orangered_bullet, },
+    { parent: shoots.e_basic_triple, x: -0.33, y: 0, delay: 40, },
+  ],
+  health: {
+    capacity: 29,
+    damage: 0.0044,
   },
   items: [
     { type: "normal", number: 4, },
@@ -320,8 +364,8 @@ make.enemy_basic_hexagon = {
     { parent: shoots.e_basic_hexagon, delay: 25, },
   ],
   health: {
-    capacity: 25,
-    damage: 0.0045,
+    capacity: 26,
+    damage: 0.004,
   },
   items: [
     { type: "normal", number: 4, },
@@ -345,7 +389,7 @@ make.enemy_triple = {
   ],
   health: {
     capacity: 18,
-    damage: 0.005,
+    damage: 0.0045,
   },
   items: [
     { type: "normal", number: 3, },
@@ -370,11 +414,39 @@ make.enemy_quadruple = {
     { parent: shoots.e_quadruple, x: -0.25 * SQRT_2, y: -0.25 * SQRT_2, rotation: 0, delay: 0, },
   ],
   health: {
-    capacity: 25,
+    capacity: 24,
     damage: 0.004,
   },
   items: [
     { type: "normal", number: 5, },
+  ],
+};
+
+make.enemy_quintuple = {
+  parent: ["enemy"],
+  name: "Quintuple",
+  size: 25,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0.55, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.17, y: -0.5231, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.17, y: 0.5231, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.445, y: -0.3233, shoot_index: 3, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.445, y: 0.3233, shoot_index: 4, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_quintuple, x: 0.5, y: 0, },
+    { parent: shoots.e_quintuple, x: 0.17, y: -0.5231, rotation: -3, },
+    { parent: shoots.e_quintuple, x: 0.17, y: 0.5231, rotation: 3, },
+    { parent: shoots.e_quintuple, x: -0.445, y: -0.3233, rotation: -8, },
+    { parent: shoots.e_quintuple, x: -0.445, y: 0.3233, rotation: 8, },
+  ],
+  health: {
+    capacity: 25,
+    damage: 0.0055,
+  },
+  items: [
+    { type: "normal", number: 3, },
   ],
 };
 

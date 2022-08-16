@@ -72,10 +72,12 @@ shoots.p_tower = { type: "tower_basic", reload: 60, size: 10, speed: 5, damage: 
 // enemies!
 // basic type
 shoots.e_basic = { type: "basic", reload: 60 * 1.5, size: 10, speed: 5, damage: 1, time: 360, };
-shoots.e_basic_double = { type: "basic", reload: 60 * 1.6, size: 9, speed: 5, damage: 0.9, time: 300, };
+shoots.e_basic_double = { type: "basic", reload: 60 * 1.6, size: 9, speed: 5.5, damage: 0.9, time: 300, };
+shoots.e_basic_triple = { type: "basic", reload: 60 * 1.75, size: 8.5, speed: 6, damage: 0.8, time: 275, };
 shoots.e_basic_hexagon = { type: "basic", reload: 60 * 1.2, size: 7.5, speed: 5.5, damage: 0.25, time: 330, };
 shoots.e_triple = { type: "basic", reload: 60 * 1.5, size: 8.5, speed: 5.5, damage: 0.8, time: 280, };
 shoots.e_quadruple = { type: "basic", reload: 60 * 1.6, size: 8, speed: 5.6, damage: 0.6, time: 320, };
+shoots.e_quintuple = { type: "basic", reload: 60 * 1.8, size: 11, speed: 4.5, damage: 0.7, time: 380, };
 shoots.e_fast = { type: "square", reload: 60 * 0.6, size: 8, speed: 8, damage: 0.75, time: 240, };
 shoots.e_slow = { type: "basic", reload: 60 * 1.5, size: 18, speed: 3.5, damage: 2, time: 480, };
 shoots.e_strong = { type: "basic", reload: 60 * 1.6, size: 12, speed: 15, damage: 1.6, time: 180, };
@@ -87,6 +89,8 @@ shoots.e_ramshoot_ram = { type: "ram", reload: 60 * 2, move: true, speed: 50, du
 shoots.e_ramshoot_shoot = { type: "basic", reload: 60 * 0.7, size: 6, speed: 10, damage: 0.8, time: 360, };
 // scatter type
 shoots.e_oct = { type: "basic", reload: 60 * 0.5, size: 7, speed: 6, spread: 0.05, damage: 1, time: 320, };
+// placer type
+shoots.e_placer_tower = { type: "basic", reload: 60 * 2, size: 9, speed: 4, damage: 1, time: 250, };
 // special type?
 shoots.e_homing = { type: "homing", reload: 60 * 1.4, size: 10, speed: 8, damage: 1.1, options: { homing_amount: 0.06, speed_death: 5, } };
 shoots.e_homing_4 = { type: "homing", reload: 60 * 2.5, size: 9, speed: 8, damage: 0.8, options: { homing_amount: 0.05, speed_death: 5, } };

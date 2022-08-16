@@ -106,9 +106,11 @@ function tick(time) {
   multiplayer.tick();
 }
 
-/* TESTING AREA (not really) */
+/* TESTING AREA (not anymore) */
 
 function test() {
+
+  const wave_info = waves_info[send.wave_name];
 
   if (game_is_loaded) {
     // not a new game
@@ -117,9 +119,13 @@ function test() {
   
   // create player
   player.create();
+  // do funny thing
+  if (wave_info.moveshoot_flipped) {
+    player.player_moveshoot_flipped = true;
+  }
 
   // create map
-  mapmaker.make(waves_info[send.wave_name].map);
+  mapmaker.make(wave_info.map);
 
   /*
   add_key_listener("|", function() {

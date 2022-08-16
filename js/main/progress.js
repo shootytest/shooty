@@ -3,6 +3,7 @@ import { waves_info, waves_points, wave_ratings } from "../lib/waves.js";
 import { worlds } from "../lib/worlds.js";
 import { firebase } from "../util/firebase.js";
 import { get_account_username } from "../util/localstorage.js";
+import { math_util } from "../util/math.js";
 
 // hmmm
 /* progress: level progress, player unlock progress, other progress stuff... (just some functions) */
@@ -22,7 +23,7 @@ progress.init = function(world_key) {
     if (L == null || L.conditions == null) continue;
     for (const condition of L.conditions) {
       if (condition.type === "player") {
-
+        // TODO: condition type player
       } else { // condition.type === "level"
         const level_key = condition.level;
         const use_key = condition.use || "best";
@@ -55,6 +56,7 @@ progress.check_condition = function(condition) {
   if (condition == null) return 0;
 
   const scores = progress.user_scores;
+  let result = 0;
 
   if (condition.type === "player") {
     return 0; // TODO: player condition
@@ -64,24 +66,20 @@ progress.check_condition = function(condition) {
     if (condition.rating != null) {
       const rating = scores[level_key][use_key].rating;
       if (rating != null) {
-        return (wave_ratings.length - 1 - rating) / (wave_ratings.length - 1 - condition.rating);
-      } else {
-        return 0;
+        result = (wave_ratings.length - 1 - rating) / (wave_ratings.length - 1 - condition.rating);
       }
     } else if (condition.rounds != null) {
       const rounds = scores[level_key][use_key].rounds;
       if (rounds != null) {
-        return (rounds + 1) / (condition.rounds + 1);
-      } else {
-        return 0;
+        result = (rounds + 1) / (condition.rounds + 1);
       }
     } else if (condition.points != null) {
       const points = scores[level_key][use_key].points || 0;
-      return points / condition.points;
+      result = points / condition.points;
     }
   }
 
-  return 0;
+  return math_util.bound(result, 0, 1);
 }
 
 // for convenience (returns a list of percentages)

@@ -41,6 +41,7 @@ export class Player extends Thing {
     return result;
   }
 
+  player_moveshoot_flipped = false;
   player_autofire = false;
   player_dead = false;
   player_dead_time = 0;
@@ -81,14 +82,29 @@ export class Player extends Thing {
   tick_player() {
     // if not dead
     if (!this.player_dead) {
-      // rotate player
-      this.target.facing = camera.mouse_position;
-      // move player
-      const move_x = (check_keys(config.controls.right) ? 1 : 0) - (check_keys(config.controls.left) ? 1 : 0);
-      const move_y = (check_keys(config.controls.down) ? 1 : 0) - (check_keys(config.controls.up) ? 1 : 0);
-      this.move_player(Vector.create(move_x, move_y));
-      // shoot player
-      this.shooting = this.player_autofire || check_keys(config.controls.shoot);
+      if (this.player_moveshoot_flipped) {
+        // do funny stuff
+        // rotate and shoot player
+        const facing_x = (check_keys(config.controls.right) ? 1 : 0) - (check_keys(config.controls.left) ? 1 : 0);
+        const facing_y = (check_keys(config.controls.down) ? 1 : 0) - (check_keys(config.controls.up) ? 1 : 0);
+        this.target.facing = Vector.add(Vector.add(this.position, this.velocity), Vector.create(facing_x, facing_y));
+        // shoot player
+        this.shooting = this.player_autofire || facing_x !== 0 || facing_y !== 0;
+        // move player
+        if (check_keys(config.controls.shoot)) {
+          this.move_player(Vector.sub(camera.mouse_position, this.position));
+        }
+      } else {
+        // do normal stuff
+        // rotate player
+        this.target.facing = camera.mouse_position;
+        // move player
+        const move_x = (check_keys(config.controls.right) ? 1 : 0) - (check_keys(config.controls.left) ? 1 : 0);
+        const move_y = (check_keys(config.controls.down) ? 1 : 0) - (check_keys(config.controls.up) ? 1 : 0);
+        this.move_player(Vector.create(move_x, move_y));
+        // shoot player
+        this.shooting = this.player_autofire || check_keys(config.controls.shoot);
+      }
     }
   }
 

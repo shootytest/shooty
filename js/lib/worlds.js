@@ -11,8 +11,30 @@ worlds.zero = {
       y: 0,
       lines: [
         { key: "level0test", },
+        { key: "tutorialplus", },
+        { key: "tutorialstar", },
       ],
       conditions: [],
+    },
+    tutorialplus: {
+      key: "tutorialplus",
+      char: "T+",
+      x: -150,
+      y: -50,
+      lines: [],
+      conditions: [
+        { type: "level", level: "tutorial", rating: 2, },
+      ],
+    },
+    tutorialstar: {
+      key: "tutorialstar",
+      char: "T★",
+      x: -300,
+      y: 100,
+      lines: [],
+      conditions: [
+        { type: "level", level: "tutorial", rating: 0, },
+      ],
     },
     level0test: {
       key: "level0test",
@@ -59,7 +81,7 @@ worlds.test = {
       y: 50,
       lines: [],
       conditions: [
-        { type: "level", level: "oneround", use: "basic", rating: 1, },
+        { type: "level", level: "oneround", rating: 4, },
       ],
     },
     tutorialold: {
@@ -71,7 +93,7 @@ worlds.test = {
         { key: "blank", },
       ],
       conditions: [
-        { type: "level", level: "oneround", rating: 4, },
+        { type: "level", level: "oneround", use: "basic", rating: 1, },
       ],
     },
     blank: {
