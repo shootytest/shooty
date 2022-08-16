@@ -93,6 +93,10 @@ export class Camera {
     return (mx >= x && my >= y && mx <= x + w && my <= y + h);
   }
 
+  mouse_in_rectangle(x, y, w, h) {
+    return camera.mouse_in_rect(x - w / 2, y - h / 2, w, h);
+  }
+
   mouse_in_thing(t) {
     const mx = this.mouse_position.x, my = this.mouse_position.y;
     return t.query_point(mx, my).length > 0;

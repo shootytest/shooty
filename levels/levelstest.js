@@ -575,6 +575,7 @@ function draw_ui(delta_time) {
     // stuff inside the sidebar
     if (ui.sidebar_target > 0) {
       // level name
+      s = _h * 0.05;
       x = _w - ui.sidebar / 2;
       y = 30;
       ctx.textAlign = "center";
@@ -582,12 +583,6 @@ function draw_ui(delta_time) {
       ctx.fillStyle = W.text;
       ctx.font = "30px roboto mono";
       draw.fill_text(ctx, info.name, x, y);
-      // level information
-      if (unlocked) {
-        // TODO: level stats
-      } else {
-        // TODO: level conditions
-      }
       // play button
       y = _h - 100;
       r = 50;
@@ -605,6 +600,41 @@ function draw_ui(delta_time) {
       ctx.fill();
       if (unlocked && clicking) {
         window.location.href = "/choose/?level=" + L.key;
+      }
+      // level information
+      if (unlocked) {
+        // TODO: level stats
+      } else {
+        // TODO: level conditions
+        if (L.conditions != null && Array.isArray(L.conditions)) {
+          y = 100;
+          ctx.font = `${s * 0.75}px roboto mono`;
+          let condition_text = null;
+          for (const condition of L.conditions) {
+            // this might be inefficient, try to combine with are_conditions_met (above)?
+            const ratio = progress.check_condition(condition);
+            ctx.strokeStyle = W.text;
+            ctx.lineWidth = 2;
+            draw.stroke_rectangle(ctx, x, y, ui.sidebar * 0.75, s);
+            ctx.fillStyle = chroma.mix(C.red_dark, C.green_dark, ratio).hex();
+            draw.fill_rect(ctx, x - ui.sidebar * 0.375 + 1, y - s * 0.5 + 1, ui.sidebar * 0.75 * ratio - 2, s - 2);
+            ctx.fillStyle = W.text;
+            draw.fill_text(ctx, `${Math.round(ratio * 100)}%`, x, y);
+            hovering = camera.mouse_in_rectangle(x, y, ui.sidebar * 0.75, s);
+            if (hovering) {
+              condition_text = progress.level_condition_text(condition);
+            }
+            y += s * 1.5;
+          }
+          // draw condition text
+          if (condition_text != null) {
+            ctx.font = `${s * 0.5}px roboto mono`;
+            for (const string of draw.split_text(ctx, condition_text, ui.sidebar * 0.75)) {
+              draw.fill_text(ctx, string, x, y);
+              y += s * 0.75;
+            }
+          }
+        }
       }
     }
   }

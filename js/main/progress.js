@@ -1,5 +1,5 @@
 import { upgrades } from "../lib/upgrades.js";
-import { waves_info, wave_ratings } from "../lib/waves.js";
+import { waves_info, waves_points, wave_ratings } from "../lib/waves.js";
 import { worlds } from "../lib/worlds.js";
 import { firebase } from "../util/firebase.js";
 import { get_account_username } from "../util/localstorage.js";
@@ -52,6 +52,8 @@ progress.init = function(world_key) {
 // returns a number from 0 to 1 indicating how complete the condition is
 progress.check_condition = function(condition) {
 
+  if (condition == null) return 0;
+
   const scores = progress.user_scores;
 
   if (condition.type === "player") {
@@ -62,7 +64,7 @@ progress.check_condition = function(condition) {
     if (condition.rating != null) {
       const rating = scores[level_key][use_key].rating;
       if (rating != null) {
-        return (wave_ratings.length - rating) / (wave_ratings.length - condition.rating);
+        return (wave_ratings.length - 1 - rating) / (wave_ratings.length - 1 - condition.rating);
       } else {
         return 0;
       }
@@ -113,7 +115,11 @@ progress.level_condition_text = function(condition) {
       result = `Get at least a${rating_name.charAt(0).toUpperCase() === 'A' ? "n" : ""} ${rating_name} for`;
     } else if (condition.rounds != null) {
       const round_number = condition.rounds || 0;
-      result = `Complete round ${round_number} of`
+      if (waves_info[condition.level].rounds === round_number) {
+        result = `Complete all rounds of`;
+      } else {
+        result = `Complete round ${round_number} of`;
+      }
     } else if (condition.points != null) {
       result = `Get at least ${condition.points || 0} points for`
     }

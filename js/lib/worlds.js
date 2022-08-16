@@ -20,7 +20,8 @@ worlds.zero = {
       x: 200,
       y: -50,
       conditions: [
-        { type: "level", level: "tutorial", rounds: 10, },
+        { type: "level", level: "tutorial", rating: 9, },
+        { type: "level", level: "tutorial", rounds: 6, },
       ],
     },
   },
@@ -79,7 +80,8 @@ worlds.test = {
       x: -300,
       y: 400,
       conditions: [
-        { type: "level", level: "tutorialold", rating: 6, },
+        { type: "level", level: "tutorialold", rating: 7, },
+        { type: "level", level: "tutorialold", rounds: 10, },
       ],
     },
   },
