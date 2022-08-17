@@ -649,6 +649,33 @@ make.enemy_ramshoot = {
 
 // ##scatter enemies
 
+make.enemy_scatter_triple = {
+  parent: ["enemy"],
+  name: "Scatter Triple",
+  always_shoot: true,
+  spin_rate: 1.2,
+  rotation_controller: "spin",
+  size: 21,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0.5, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.25, y: SQRT_3 * 0.25, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.25, y: -SQRT_3 * 0.25, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_scatter_triple, x: 0.5, y: 0, },
+    { parent: shoots.e_scatter_triple, x: -0.25, y: SQRT_3 * 0.25, rotation: 120, delay: 10, },
+    { parent: shoots.e_scatter_triple, x: -0.25, y: -SQRT_3 * 0.25, rotation: -120, delay: 20, },
+  ],
+  health: {
+    capacity: 16,
+    damage: 0.005,
+  },
+  items: [
+    { type: "normal", number: 3, },
+  ],
+};
+
 make.enemy_oct = {
   parent: ["enemy"],
   name: "Octopus",
@@ -793,6 +820,32 @@ make.enemy_homing = {
   ],
 };
 
+make.enemy_homing_3 = {
+  parent: ["enemy"],
+  name: "Homing (x3)",
+  always_shoot: true,
+  size: 21,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "line_extend", x2: 1, y2: 0, },
+    { type: "line_extend", x2: -0.5, y2: SQRT_3 * 0.5, },
+    { type: "line_extend", x2: -0.5, y2: -SQRT_3 * 0.5 },
+  ],
+  shoots: [
+    { parent: shoots.e_homing_3, rotation: 0 },
+    { parent: shoots.e_homing_3, rotation: 120 },
+    { parent: shoots.e_homing_3, rotation: -120 },
+  ],
+  health: {
+    capacity: 19,
+    damage: 0.008,
+  },
+  items: [
+    { type: "normal", number: 2, },
+    { type: "big", number: 1, },
+  ],
+};
+
 make.enemy_homing_4 = {
   parent: ["enemy"],
   name: "Homing (x4)",
@@ -801,6 +854,9 @@ make.enemy_homing_4 = {
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
     { type: "line_extend", x2: 1, y2: 0, },
+    { type: "line_extend", x2: -1, y2: 0, },
+    { type: "line_extend", x2: 0, y2: 1, },
+    { type: "line_extend", x2: 0, y2: -1, },
   ],
   shoots: [
     { parent: shoots.e_homing_4, rotation: 0 },

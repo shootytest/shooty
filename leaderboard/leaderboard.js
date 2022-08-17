@@ -6,6 +6,7 @@ import { firebase } from "../js/util/firebase.js";
 const root_var = document.querySelector(':root');
 const parameters = new URLSearchParams(document.location.search);
 const level = parameters.get("level");
+const use_type = parameters.get("use") || "best";
 const div_main = document.getElementById("main");
 const L = waves_info[level];
 
@@ -104,6 +105,7 @@ function init(entries) {
   root_var.style.setProperty("--hover-color", "#FFFFFF22");
   div_main.innerHTML = `
     <h1 id="h1" style="font-size: 25px;">Rankings - ${L.name}</h1>
+    ${use_type === "best" ? "" : `<h3>Use: ${upgrades[use_type].name}</h3>`}
     <h2><a href="/leaderboard" class="a-left" style="color: yellow;">Back</a></h2>
     <table id="board" style="font-size: 18px;">
       <thead>
@@ -173,7 +175,7 @@ function fire() {
       for (const user of LIST) {
         // listen = responsive leaderboard
         // get = unresponsive leaderboard
-        firebase.listen(`/scores/${user}/${level}/best`, function(entry) {
+        firebase.listen(`/scores/${user}/${level}/${use_type}`, function(entry) {
           if (entry == null) return;
           entries[user] = entry;
           update();

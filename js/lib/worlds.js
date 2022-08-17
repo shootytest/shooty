@@ -79,9 +79,21 @@ worlds.test = {
       char: "2r",
       x: 150,
       y: 50,
-      lines: [],
+      lines: [
+        { key: "threerounds", },
+      ],
       conditions: [
         { type: "level", level: "oneround", rating: 4, },
+      ],
+    },
+    threerounds: {
+      key: "threerounds",
+      char: "3r",
+      x: 300,
+      y: -50,
+      lines: [],
+      conditions: [
+        { type: "level", level: "tworounds", rating: 9, },
       ],
     },
     tutorialold: {

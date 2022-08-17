@@ -217,6 +217,7 @@ if ("tutorialplus") {
 }
 
 if ("level0") {
+
   waves_info.level0 = {
     name: "Level 0",
     key: "level0",
@@ -269,9 +270,9 @@ if ("level0") {
   };
 
   waves_points.level0 = {
-    points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5 ],
+    points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, ],
     time: [ 0, 7, 12, 15, 10, 8, 11, 18, 20, 21, 15, ],
-    ratings: [ 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.05, 0 ],
+    ratings: [ 1, 0.95, 0.9, 0.8, 0.7, 0.6, 0.5, 0.35, 0.2, 0.1, 0.05, 0 ],
   };
 }
 
@@ -562,6 +563,49 @@ if ("tworounds") {
   waves_points.tworounds = {
     points: [ 0, 1, 1.5, ],
     time: [ 0, 20, 30, ],
+    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.3, 0.1, 0.05, 0 ],
+  };
+
+}
+
+if ("threerounds") {
+
+  waves_info.threerounds = {
+    name: "Three Rounds",
+    key: "threerounds",
+    description: "This level has only three rounds!",
+    map: "empty",
+    bosses: 0,
+    rounds: 3,
+  };
+
+  waves.threerounds = [
+    0,
+    { type: "scatter_triple", number: 3, interval: 60, },
+    [ // 2
+      { type: "basic_triple", number: 1, },
+      { type: "triple", number: 1, },
+      { type: "scatter_triple", number: 1, },
+    ],
+    { type: "homing_3", number: 3, interval: 60, },
+  ];
+
+  waves_text.threerounds = {
+    [0]: [
+      { message: "3", delay: 0, },
+    ],
+    [1]: [
+      { message: "33", delay: 0, },
+    ],
+    [2]: [
+      { message: "333", delay: 0, },
+      { message: "3333333333333333333333333333333333333333333333", delay: 0, after: true, },
+    ],
+  };
+
+  waves_points.threerounds = {
+    points: [ 0, 1, 1.25, 1.5, ],
+    time: [ 0, 15, 21, 25, ],
     ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.3, 0.1, 0.05, 0 ],
   };
 
