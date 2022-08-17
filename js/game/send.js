@@ -5,6 +5,7 @@ import { waves, waves_info, waves_points, waves_text, wave_ratings } from "../li
 import { PriorityQueue } from "../util/priorityqueue.js";
 import { Thing } from "./thing.js";
 import { Enemy } from "./enemy.js";
+import { mapmaker } from "./mapmaker.js";
 import { player } from "./player.js";
 import { gamesave } from "../main/gamesave.js";
 import { make, realitems, realmake } from "../lib/make.js";
@@ -37,7 +38,10 @@ export const init_send = function() {
 
 export const tick_send = function() {
   while (!send_queue.isEmpty() && send_queue.peek().time < Thing.time) {
-    const s = send_queue.peek();
+    const s = send_queue.peek().wave;
+    if (s.mapshape != null) {
+      mapmaker.remove(s.mapshape);
+    }
     Enemy.create(s.type, s.boss);
     send_queue.pop();
   }
@@ -204,7 +208,7 @@ export const send_wave = function(wave) {
   let time = Thing.time + (wave.delay || 0);
   for (let i = 0; i < (wave.number || 0); i++) {
     send_queue.push({
-      time: time, type: wave.type, wave: wave, boss: wave.boss,
+      time: time, wave: wave,
     });
     time += (wave.interval || 0);
   }

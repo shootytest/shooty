@@ -53,6 +53,7 @@ export const config = {
   joystick: {
     pointer: false,
     dynamic: true,
+    flipped: false,
     size: 25,
   },
   dev: {

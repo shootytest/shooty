@@ -16,6 +16,9 @@ maps.tutorial = {
   name: "Tutorial Map",
   width: 400,
   height: 400,
+  spawn: [
+    { x: 0, y: 0, },
+  ],
   shapes: [
     { type: "circle", x: 0.1, y: 0.6, r: 50, },
     { type: "circle", x: -0.3, y: -0.1, r: 40, },
@@ -23,6 +26,24 @@ maps.tutorial = {
   ],
   zones: [
     { x: -400, y: -400, w: 800, h: 800, },
+  ],
+}
+
+maps.level0 = {
+  name: "Level 0",
+  width: 450,
+  height: 450,
+  spawn: [
+    { x: -300, y: -300, },
+    { x: -300, y: 300, },
+    { x: 300, y: -300, },
+    { x: 300, y: 300, },
+  ],
+  shapes: [
+    { type: "circle", bouncy: false, x: 0, y: 0, r: 75, },
+  ],
+  zones: [
+    { x: -450, y: -450, w: 900, h: 900, },
   ],
 }
 

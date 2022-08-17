@@ -91,12 +91,14 @@ make.bullet = {
 
 make.player_bullet = {
   player_bullet: true,
+  density: 0.002,
   collision_filter: category.player_bullet,
   color: C.player_bullet,
 };
 
 make.enemy_bullet = {
   enemy_bullet: true,
+  density: 0.003,
   collision_filter: category.enemy_bullet,
   color: C.enemy_bullet,
 };
@@ -226,7 +228,7 @@ make.bullet_tower_grow = {
 make.bullet_tower_placer = {
   parent: ["bullet_tower"],
   keep_children: true,
-  rotation_controller: "autotarget",
+  rotation_controller: "autotarget_player",
   shoots: [
     { parent: shoots.p_placer_tower, },
   ],
@@ -235,7 +237,7 @@ make.bullet_tower_placer = {
 make.bullet_tower_rammer = {
   parent: ["bullet_tower"],
   keep_children: true,
-  rotation_controller: "autotarget",
+  rotation_controller: "autotarget_player",
   shoots: [
     { parent: shoots.p_rammer_tower, },
   ],
@@ -259,9 +261,22 @@ make.bullet_launcher = {
 make.bullet_enemy_tower_placer = {
   parent: ["bullet_tower"],
   keep_children: true,
-  rotation_controller: "autotarget",
+  rotation_controller: "autotarget_enemy",
   shoots: [
     { parent: shoots.e_placer_tower, },
+  ],
+};
+
+make.bullet_boss_basic = {
+  parent: ["bullet_tower"],
+  keep_children: true,
+  rotation_controller: "autotarget_enemy",
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", },
+  ],
+  shoots: [
+    { parent: shoots.e_basic, },
   ],
 };
 
@@ -319,7 +334,7 @@ make.enemy_basic_double = {
     damage: 0.0047,
   },
   items: [
-    { type: "normal", number: 4, },
+    { type: "normal", number: 3, },
   ],
 };
 
@@ -347,6 +362,30 @@ make.enemy_basic_triple = {
   ],
 };
 
+make.enemy_basic_quintuple = {
+  parent: ["enemy"],
+  name: "Basic ×5",
+  size: 25,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.orangered_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_basic_quintuple, x: 0, y: 0, delay: 0, color: C.orangered_bullet, },
+    { parent: shoots.e_basic_quintuple, x: 0, y: 0, delay: 5, color: C.orangered_bullet, },
+    { parent: shoots.e_basic_quintuple, x: 0, y: 0, delay: 10, color: C.orangered_bullet, },
+    { parent: shoots.e_basic_quintuple, x: 0, y: 0, delay: 15, color: C.orangered_bullet, },
+    { parent: shoots.e_basic_quintuple, x: 0, y: 0, delay: 20, color: C.orangered_bullet, },
+  ],
+  health: {
+    capacity: 32,
+    damage: 0.0055,
+  },
+  items: [
+    { type: "normal", number: 5, },
+  ],
+};
+
 make.enemy_basic_hexagon = {
   parent: ["enemy"],
   name: "Basic ×6",
@@ -368,7 +407,29 @@ make.enemy_basic_hexagon = {
     damage: 0.004,
   },
   items: [
-    { type: "normal", number: 4, },
+    { type: "normal", number: 5, },
+  ],
+};
+
+make.enemy_double = {
+  parent: ["enemy"],
+  name: "Double",
+  size: 22,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0, y: -0.4, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0.4, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_double, x: 0, y: -0.4, rotation: -1, },
+    { parent: shoots.e_double, x: 0, y: 0.4, rotation: 1, },
+  ],
+  health: {
+    capacity: 18,
+    damage: 0.005,
+  },
+  items: [
+    { type: "normal", number: 2, },
   ],
 };
 
@@ -682,6 +743,28 @@ make.enemy_boss_tutorial_2 = {
   },
   items: [
     { type: "normal", number: 10, },
+    { type: "large", number: 2, },
+  ],
+};
+
+make.enemy_boss_basic = {
+  parent: ["enemy"],
+  name: "Boss: Basic (Easy)",
+  size: 75,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_boss_basic, },
+    { parent: shoots.e_boss_basic_maker, shooting: true, },
+  ],
+  health: {
+    capacity: 50,
+    damage: 0.006,
+  },
+  items: [
+    { type: "normal", number: 8, },
     { type: "large", number: 2, },
   ],
 };

@@ -216,6 +216,65 @@ if ("tutorialplus") {
 
 }
 
+if ("level0") {
+  waves_info.level0 = {
+    name: "Level 0",
+    key: "level0",
+    description: "NOT Level 1",
+    map: "level0",
+    bosses: 1,
+    rounds: 10,
+  };
+
+  waves.level0 = [
+    0,
+    { type: "basic", number: 2, interval: 150, },
+    { type: "basic_double", number: 2, interval: 200, },
+    [ // 3
+      { type: "basic", number: 2, interval: 120, },
+      { type: "basic_triple", number: 1, interval: 0, },
+    ],
+    [ // 4
+      { type: "ram", number: 2, interval: 120, },
+      { type: "basic_double", number: 1, delay: 60, },
+    ],
+    { type: "basic_quintuple", number: 1, interval: 120, },
+    [ // 6
+      { type: "basic", number: 1, },
+      { type: "basic_hexagon", number: 1, delay: 120, },
+    ],
+    { type: "basic_double", number: 4, interval: 150, },
+    { type: "basic_triple", number: 3, interval: 180, },
+    { type: "basic_hexagon", number: 3, interval: 200, },
+    { type: "boss_basic", number: 1, boss: true, mapshape: 0, },
+  ];
+
+  waves_text.level0 = {
+    [0]: [
+      { message: "This is Level 0!", delay: 0, },
+      { message: "Level numbers are 0-indexed, because...", delay: 60, },
+      { message: "um...", delay: 100, },
+      { message: "Never mind.", delay: 140, },
+    ],
+    [1]: [
+      { message: "Just some tutorial-like stuff.", delay: 0, },
+    ],
+    [2]: [
+      { message: "A new enemy, already?", delay: 0, },
+    ],
+    [10]: [
+      { message: "The wall...", delay: 0, },
+      { message: "!", delay: 15, },
+    ],
+  };
+
+  waves_points.level0 = {
+    points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5 ],
+    time: [ 0, 7, 12, 15, 10, 8, 11, 18, 20, 21, 15, ],
+    ratings: [ 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.05, 0 ],
+  };
+}
+
 if ("level0test") {
   waves_info.level0test = {
     name: "Unnamed Level",

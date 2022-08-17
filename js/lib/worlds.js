@@ -10,7 +10,7 @@ worlds.zero = {
       x: 0,
       y: 0,
       lines: [
-        { key: "level0test", },
+        { key: "level0", },
         { key: "tutorialplus", },
         { key: "tutorialstar", },
       ],
@@ -36,8 +36,8 @@ worlds.zero = {
         { type: "level", level: "tutorial", rating: 0, },
       ],
     },
-    level0test: {
-      key: "level0test",
+    level0: {
+      key: "level0",
       char: "0",
       x: 200,
       y: -50,

@@ -6,6 +6,8 @@ const Vector = Matter.Vector;
 
 export const mapmaker = { };
 
+mapmaker.shapes = [];
+
 const border_wall_thickness = 10;
 
 function makeborder(x, y, w, h, rot = 0) {
@@ -52,5 +54,16 @@ mapmaker.make = function(map_key) {
     wall.rotation = S.rot || 0;
     wall.deleter = !S.bouncy;
     wall.create();
+
+    mapmaker.shapes.push(wall);
+  }
+}
+
+mapmaker.remove = function(shape_index) {
+  mapmaker.shapes[shape_index].remove();
+  // remove from the shapes list too
+  const index = mapmaker.shapes.indexOf(this);
+  if (index != null && index > -1) {
+    mapmaker.shapes.splice(index, 1);
   }
 }

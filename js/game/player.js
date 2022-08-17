@@ -87,12 +87,12 @@ export class Player extends Thing {
         // rotate and shoot player
         const facing_x = (check_keys(config.controls.right) ? 1 : 0) - (check_keys(config.controls.left) ? 1 : 0);
         const facing_y = (check_keys(config.controls.down) ? 1 : 0) - (check_keys(config.controls.up) ? 1 : 0);
-        this.target.facing = Vector.add(Vector.add(this.position, this.velocity), Vector.create(facing_x, facing_y));
+        this.target.facing = Vector.clone(Vector.add(Vector.add(this.position, this.velocity), Vector.create(facing_x, facing_y)));
         // shoot player
         this.shooting = this.player_autofire || facing_x !== 0 || facing_y !== 0;
         // move player
         if (check_keys(config.controls.shoot)) {
-          this.move_player(Vector.sub(camera.mouse_position, this.position));
+          this.move_player(Vector.clone(Vector.sub(camera.mouse_position, this.position)));
         }
       } else {
         // do normal stuff

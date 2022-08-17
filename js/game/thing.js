@@ -339,9 +339,13 @@ export class Thing {
         const new_rotation = Vector.angle(this.position, this.shoot_parent.target.facing);
         this.target.rotation = Vector.lerp_angle(this.target.rotation, new_rotation, this.homing_amount);
         break;
-      case "autotarget": // automatically target nearest enemies
+      case "autotarget_player": // automatically target nearest enemies
         const nearest_enemy = Enemy.nearest(this.position);
         if (nearest_enemy != null) this.target.facing = nearest_enemy.position;
+        this.target.rotation = Vector.angle(this.position, this.target.facing);
+        break;
+      case "autotarget_enemy": // automatically target nearest enemies
+        this.target.facing = player.position;
         this.target.rotation = Vector.angle(this.position, this.target.facing);
         break;
       case "escape": // automatically escape nearest player_bullets
@@ -635,6 +639,9 @@ export class Thing {
     }
     if (S.time != null) {
       b.time_death = S.time;
+    }
+    if (S.friction != null) {
+      b.friction = S.friction;
     }
     if (S.options != null) {
       for (let k in S.options) {

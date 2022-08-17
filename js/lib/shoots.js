@@ -74,7 +74,9 @@ shoots.p_tower = { type: "tower_basic", reload: 60, size: 10, speed: 5, damage: 
 shoots.e_basic = { type: "basic", reload: 60 * 1.5, size: 10, speed: 5, damage: 1, time: 360, };
 shoots.e_basic_double = { type: "basic", reload: 60 * 1.6, size: 9, speed: 5.5, damage: 0.9, time: 300, };
 shoots.e_basic_triple = { type: "basic", reload: 60 * 1.75, size: 8.5, speed: 6, damage: 0.8, time: 275, };
+shoots.e_basic_quintuple = { type: "basic", reload: 60 * 1.5, size: 11, speed: 4.75, damage: 0.45, time: 370, };
 shoots.e_basic_hexagon = { type: "basic", reload: 60 * 1.2, size: 7.5, speed: 5.5, damage: 0.25, time: 330, };
+shoots.e_double = { type: "basic", reload: 60 * 1.5, size: 9, speed: 5.25, damage: 0.9, time: 300, };
 shoots.e_triple = { type: "basic", reload: 60 * 1.5, size: 8.5, speed: 5.5, damage: 0.8, time: 280, };
 shoots.e_quadruple = { type: "basic", reload: 60 * 1.6, size: 8, speed: 5.6, damage: 0.6, time: 320, };
 shoots.e_quintuple = { type: "basic", reload: 60 * 1.8, size: 11, speed: 4.5, damage: 0.7, time: 380, };
@@ -96,6 +98,8 @@ shoots.e_homing = { type: "homing", reload: 60 * 1.4, size: 10, speed: 8, damage
 shoots.e_homing_4 = { type: "homing", reload: 60 * 2.5, size: 9, speed: 8, damage: 0.8, options: { homing_amount: 0.05, speed_death: 5, } };
 
 // bosses!
+shoots.e_boss_basic = { type: "basic", reload: 60 * 0.75, size: 36, speed: 5, damage: 1.5, time: 400, };
+shoots.e_boss_basic_maker = { type: "boss_basic", reload: 60 * 2, size: 20, speed: 10, spreadv: 1, friction: 0.05, spread: 1, damage: 2.3, time: 60 * 7, };
 shoots.e_boss_tutorial = { type: "grow", reload: 60 * 0.2, size: 10, speed: 5, spread: 0.05, damage: 1, time: 120, options: { grow_amount: 0.012, }, };
 shoots.e_boss_tutorial_2 = { type: "homing", reload: 60 * 0.5, size: 15, speed: 10, spread: 0.2, damage: 1, time: 300, options: { homing_amount: 0.05, }, };
 shoots.e_boss_oct = { type: "basic", reload: 60 * 0.5, size: 18, speed: 10, spread: 0, damage: 1.5, time: 320, };
