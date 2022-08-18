@@ -440,14 +440,14 @@ export class Thing {
   }
 
   real_point_location(vector) {
-    return Vector.add(this.position, Vector.rotate(Vector.create(this.get_shape_dimension(vector.x, 1, 0), this.get_shape_dimension(vector.y, 1, 0)), this.rotation));
+    return Vector.add(this.position, Vector.rotate(Vector.create(this.get_shape_dimension(vector.x, 1, 0, 0), this.get_shape_dimension(vector.y, 1, 0)), this.rotation));
   }
 
-  draw_point_location(vector, scale) {
-    return Vector.add(this.screenpos, Vector.mult(Vector.rotate(Vector.create(this.get_shape_dimension(vector.x, 1, 0), this.get_shape_dimension(vector.y, 1, 0)), this.rotation), scale));
+  draw_point_location(vector, scale, shoot_index) {
+    return Vector.add(this.screenpos, Vector.mult(Vector.rotate(Vector.create(this.get_shape_dimension(vector.x, 1, shoot_index, 0), this.get_shape_dimension(vector.y, 1, 0)), this.rotation), scale));
   }
 
-  get_shape_dimension(dimension, multiplier = 1, normal = 1) {
+  get_shape_dimension(dimension, multiplier = 1, shoot_index = 0, normal = 1) {
     let d = 1;
     if (multiplier == null) {
       multiplier = 1;
@@ -458,7 +458,7 @@ export class Thing {
       d = dimension;
     } else if (typeof dimension === "string") {
       if (dimension.startsWith("shootsize") && this.shoots.length > 0) {
-        return (this.shoots[0].size || 0) * multiplier * ((+dimension.substring(10)) || 0);
+        return (this.shoots[shoot_index].size || 0) * multiplier * ((+dimension.substring(10)) || 0);
       }
       return multiplier * (+dimension);
     } else {
@@ -509,7 +509,7 @@ export class Thing {
   draw_shape(ctx, scale, shape, options = { }) {
     ctx.lineWidth = (shape.width || 3);
     const type = shape.type;
-    const location = this.draw_point_location(Vector.create(shape.x, shape.y), scale);
+    const location = this.draw_point_location(Vector.create(shape.x, shape.y), scale, shape.shoot_index || 0);
     const x = location.x;
     const y = location.y;
     const rot = (shape.rotation || 0) + this.rotation;
@@ -527,7 +527,7 @@ export class Thing {
     switch (type) {
       case "circle":
       case "circle_fade":
-        r = this.get_shape_dimension(shape.r, 1 * scale);
+        r = this.get_shape_dimension(shape.r, 1 * scale, shape.shoot_index || 0);
         draw.circle(ctx, x, y, r);
         ctx.fill();
         ctx.stroke();
@@ -536,27 +536,27 @@ export class Thing {
       case "square_fade":
       case "rectangle":
       case "rectangle_fade":
-        w = this.get_shape_dimension(shape.w, 2 * scale);
-        h = this.get_shape_dimension(shape.h, 2 * scale);
+        w = this.get_shape_dimension(shape.w, 2 * scale, shape.shoot_index || 0);
+        h = this.get_shape_dimension(shape.h, 2 * scale, shape.shoot_index || 0);
         draw.fill_rectangle_angle(ctx, x, y, w, h, rot);
         draw.stroke_rectangle_angle(ctx, x, y, w, h, rot);
         break;
       case "line":
       case "line_fade":
-        location2 = this.draw_point_location(Vector.create(shape.x2, shape.y2), scale);
+        location2 = this.draw_point_location(Vector.create(shape.x2, shape.y2), scale, shape.shoot_index || 0);
         x2 = location2.x;
         y2 = location2.y;
         draw.line(ctx, x, y, x2, y2);
         break;
       case "polygon":
       case "polygon_fade":
-        r = this.get_shape_dimension(shape.r, 1 * scale);
+        r = this.get_shape_dimension(shape.r, 1 * scale, shape.shoot_index || 0);
         draw.regular_polygon(ctx, shape.sides, r, x, y, rot);
         ctx.fill();
         ctx.stroke();
         break;
       case "line_extend":
-        location2 = this.draw_point_location(Vector.create(shape.x2, shape.y2), scale);
+        location2 = this.draw_point_location(Vector.create(shape.x2, shape.y2), scale, shape.shoot_index || 0);
         location2 = Vector.lerp(location, location2, this.get_shoot_ratio(shape.shoot_index, shape.duration_reload));
         x2 = location2.x;
         y2 = location2.y;

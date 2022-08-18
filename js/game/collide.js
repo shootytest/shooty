@@ -27,6 +27,10 @@ function collide(a, b, pair) {
     player.item_collect(u.give_type, u.give_number);
     u.deleted = true;
   }
+  if (t.player_bullet && u.item) {
+    player.item_collect(u.give_type, u.give_number);
+    u.deleted = true;
+  }
   if (t.health.damage > 0 && u.health.capacity > 0 && t.team !== u.team) {
     u.health.hit_add(t.health.damage);
     u.killer = t.shoot_parent;

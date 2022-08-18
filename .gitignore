@@ -11,6 +11,9 @@ firebase-debug.*.log*
 .surgeignore
 CNAME
 
+# VSC
+.vscode
+
 # Firebase cache
 .firebase/
 

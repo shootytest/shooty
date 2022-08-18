@@ -41,9 +41,23 @@ worlds.zero = {
       char: "0",
       x: 200,
       y: -50,
+      lines: [
+        { key: "level1", },
+      ],
       conditions: [
         { type: "level", level: "tutorial", rating: 9, },
         { type: "level", level: "tutorial", rounds: 6, },
+      ],
+    },
+    level1: {
+      key: "level1",
+      char: "1",
+      x: 350,
+      y: -50,
+      lines: [],
+      conditions: [
+        { type: "level", level: "level0", rating: 6, },
+        { type: "level", level: "level0", rounds: 10, },
       ],
     },
   },

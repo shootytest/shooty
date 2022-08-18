@@ -276,6 +276,82 @@ if ("level0") {
   };
 }
 
+if ("level1") {
+
+  waves_info.level1 = {
+    name: "Level 1",
+    key: "level1",
+    description: "NOT Level 0",
+    map: "level1",
+    bosses: 1,
+    rounds: 15,
+  };
+
+  waves.level1 = [
+    0,
+    { type: "double", number: 2, interval: 60, },
+    { type: "triple", number: 2, interval: 80, },
+    [ // 3
+      { type: "basic", number: 2, interval: 40, },
+      { type: "double", number: 2, delay: 20, interval: 40, },
+    ],
+    { type: "quadruple", number: 2, interval: 80, },
+    [ // 5
+      { type: "double", number: 2, interval: 0, },
+      { type: "triple", number: 1, interval: 0, },
+    ],
+    { type: "quintuple", number: 2, interval: 100, },
+    [ // 7
+      { type: "double", number: 1, delay: 30 },
+      { type: "triple", number: 1, delay: 60, },
+      { type: "quadruple", number: 2, interval: 90, },
+    ],
+    { type: "octring", number: 2, interval: 120, },
+    [ // 9
+      { type: "basic", number: 1, },
+      { type: "double", number: 1, },
+      { type: "triple", number: 1, },
+      { type: "quadruple", number: 1, },
+      { type: "quintuple", number: 1, },
+    ],
+    { type: "boss_decring", number: 1, boss: true, },
+    /*
+    { type: "plane3", number: 3, },
+    { type: "line2", number: 3, },
+    [ // 13
+      { type: "plane3", number: 3, delay: 60, interval: 120, },
+      { type: "basic_triple", number: 1, delay: 120, },
+      { type: "triple", number: 1, },
+    ],
+    { type: "line_satellite", number: 2, },
+    { type: "boss_line", number: 1, boss: true, },
+    */
+  ];
+
+  waves_text.level1 = {
+    [0]: [
+      { message: "This is Level 1!", delay: 0, },
+      { message: "Level numbers are 1-indexed!", delay: 20, },
+      { message: "No they aren't.", delay: 50, },
+    ],
+    [6]: [
+      { message: "Flowers?", delay: 0, },
+    ],
+    [8]: [
+      { message: "........", delay: 0, },
+    ],
+    [9]: [
+      { message: "12345!", delay: 0, },
+    ],
+  };
+
+  waves_points.level1 = {
+    points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, ],
+    time: [ 0, 8, 9, 18, 10, 17, 13, 20, 16, 25, 30, ],
+    ratings: [ 1, 0.95, 0.9, 0.8, 0.7, 0.6, 0.5, 0.35, 0.2, 0.1, 0.05, 0 ],
+  };
+}
+
 if ("level0test") {
   waves_info.level0test = {
     name: "Unnamed Level",

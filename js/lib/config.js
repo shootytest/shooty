@@ -113,23 +113,23 @@ export const category = {
   },
   player: {
     category: group.player,
-    mask: group.default | group.wall | group.enemy_bullet | group.player | group.enemy | group.item
+    mask: group.default | group.wall | group.enemy_bullet | group.player | group.enemy | group.item,
   },
   player_bullet: {
     category: group.player_bullet,
-    mask: group.default | group.wall | group.enemy | group.enemy_bullet
+    mask: group.default | group.wall | group.enemy | group.enemy_bullet | group.item,
   },
   enemy: {
     category: group.enemy,
-    mask: group.default | group.wall | group.player | group.player_bullet | group.enemy
+    mask: group.default | group.wall | group.player | group.player_bullet | group.enemy,
   },
   enemy_bullet: {
     category: group.enemy_bullet,
-    mask: group.default | group.wall | group.player | group.player_bullet
+    mask: group.default | group.wall | group.player | group.player_bullet,
   },
   item: {
     category: group.item,
-    mask: group.default | group.wall | group.player,
+    mask: group.default | group.wall | group.player | group.player_bullet,
   },
 };
 

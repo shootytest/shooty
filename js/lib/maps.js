@@ -8,7 +8,7 @@ maps.empty = {
   shapes: [
   ],
   zones: [
-    { x: -300, y: -300, w: 600, h: 600, },
+    { x: -280, y: -280, w: 560, h: 560, },
   ],
 }
 
@@ -25,7 +25,7 @@ maps.tutorial = {
     { type: "circle", x: 0.8, y: -0.7, r: 30, },
   ],
   zones: [
-    { x: -400, y: -400, w: 800, h: 800, },
+    { x: -380, y: -380, w: 760, h: 760, },
   ],
 }
 
@@ -43,7 +43,24 @@ maps.level0 = {
     { type: "circle", bouncy: false, x: 0, y: 0, r: 75, },
   ],
   zones: [
-    { x: -450, y: -450, w: 900, h: 900, },
+    { x: -430, y: -430, w: 860, h: 860, },
+  ],
+}
+
+maps.level1 = {
+  name: "Level 1",
+  width: 500,
+  height: 500,
+  spawn: [
+    { x: 0, y: 0, },
+  ],
+  shapes: [
+    { type: "rectangle", bouncy: false, x: -0, y: -0.4, w: 75, h: 80, },
+    { type: "rectangle", bouncy: false, x: -0.6, y: 0.4, w: 20, h: 120, },
+    { type: "rectangle", bouncy: false, x: 0.7, y: 0.5, w: 40, h: 30, },
+  ],
+  zones: [
+    { x: -430, y: -430, w: 860, h: 860, },
   ],
 }
 
@@ -64,7 +81,7 @@ maps.bouncycircles = {
     { type: "circle", bouncy: true, x: -0.5, y: -0.5, r: 40, },
   ],
   zones: [
-    { x: -500, y: -500, w: 1000, h: 1000, },
+    { x: -480, y: -480, w: 960, h: 960, },
   ],
 }
 
@@ -89,7 +106,7 @@ maps.multiplayer = {
     { type: "rectangle", bouncy: false, x: 0, y: 0.55, w: 150, h: 30, },
   ],
   zones: [
-    { x: -500, y: -500, w: 1000, h: 1000, },
+    { x: -480, y: -480, w: 960, h: 960, },
   ],
 }
 

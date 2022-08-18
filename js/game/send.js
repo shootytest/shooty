@@ -198,7 +198,8 @@ export const end_wave = function() {
       i.make(make.item_normal);
       i.create();
     }
-    send_message(`You lost ${math_util.round_to(player.wave_health_lost * config.game.health_mult, 0.01)} health for the round and gained ${bonus_points} points!`, C.message_text_gold, -1, 55);
+    const lost_health = (player.wave_health_lost * config.game.health_mult);
+    send_message(`You lost ${lost_health % 1 !== 0 ? lost_health.toFixed(2) : Math.round(lost_health)} health for the round and gained ${bonus_points} points!`, C.message_text_gold, -1, 55);
   }
   // save the game
   gamesave.save();

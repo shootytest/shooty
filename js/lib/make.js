@@ -1,6 +1,6 @@
 import { C } from "./color.js";
 import { category, config } from "./config.js";
-import { shoots, shoot_rotate } from "./shoots.js";
+import { shoots, shoot_rotate, shoot_rotate_position } from "./shoots.js";
 
 const SQRT_2 = Math.sqrt(2);
 const SQRT_3 = Math.sqrt(3);
@@ -291,6 +291,7 @@ make.enemy = {
   friction: 0.1,
   color: C.red,
   rotation_controller: "target",
+  homing_amount: 0.06,
   target_player: true,
 };
 
@@ -508,6 +509,109 @@ make.enemy_quintuple = {
   },
   items: [
     { type: "normal", number: 3, },
+  ],
+};
+
+make.enemy_octring = {
+  parent: ["enemy"],
+  name: "Octring",
+  size: 32,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    ...shape_rotate_position(
+      { type: "circle_fade", shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+      8, 0.6,
+    ),
+  ],
+  shoots: [
+    ...shoot_rotate_position(shoots.e_octring, 8, 0.6),
+  ],
+  health: {
+    capacity: 28,
+    damage: 0.006,
+  },
+  items: [
+    { type: "normal", number: 8, },
+  ],
+};
+
+make.enemy_line2 = {
+  parent: ["enemy"],
+  name: "Line (2)",
+  size: 23,
+  homing_amount: 0.08,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 1, h: 0.3, body: true, },
+    { type: "circle_fade", x: -0.5, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.5, y: 0, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_line2, x: -0.5, y: 0, },
+    { parent: shoots.e_line2, x: 0.5, y: 0, },
+  ],
+  health: {
+    capacity: 10,
+    damage: 0.005,
+  },
+  items: [
+    { type: "normal", number: 2, },
+  ],
+};
+
+make.enemy_line_satellite = {
+  parent: ["enemy"],
+  name: "Line Satellite",
+  size: 25,
+  homing_amount: 0.07,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 1, h: 1, body: true, color: C.transparent, },
+    { type: "rectangle", x: 0, y: 0.7, w: 1, h: 0.3, },
+    { type: "rectangle", x: 0, y: -0.7, w: 1, h: 0.3, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.orangered_bullet, },
+    { type: "circle_fade", x: 0.5, y: 0.7, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.5, y: 0.7, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.5, y: -0.7, shoot_index: 3, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.5, y: -0.7, shoot_index: 4, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_line_satellite_middle, x: 0, y: 0, },
+    { parent: shoots.e_line_satellite_side, x: 0.5, y: 0.7, },
+    { parent: shoots.e_line_satellite_side, x: -0.5, y: 0.7, rotation: 1, },
+    { parent: shoots.e_line_satellite_side, x: 0.5, y: -0.7, },
+    { parent: shoots.e_line_satellite_side, x: -0.5, y: -0.7, rotation: -1, },
+  ],
+  health: {
+    capacity: 20,
+    damage: 0.006,
+  },
+  items: [
+    { type: "normal", number: 2, },
+    { type: "big", number: 1, },
+  ],
+};
+
+make.enemy_plane3 = {
+  parent: ["enemy"],
+  name: "Plane (3)",
+  size: 23,
+  homing_amount: 0.08,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 0.3, h: 1, body: true, },
+    { type: "circle_fade", x: 0, y: -0.6, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0.6, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_plane3, x: 0, y: -0.6, },
+    { parent: shoots.e_plane3, x: 0, y: 0, },
+    { parent: shoots.e_plane3, x: 0, y: 0.6, },
+  ],
+  health: {
+    capacity: 11,
+    damage: 0.006,
+  },
+  items: [
+    { type: "normal", number: 2, },
   ],
 };
 
@@ -734,6 +838,7 @@ make.enemy_boss_tutorial = {
   parent: ["enemy"],
   name: "Boss: Bubble (easy)",
   size: 45,
+  homing_amount: 0.05,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
     { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
@@ -778,6 +883,7 @@ make.enemy_boss_basic = {
   parent: ["enemy"],
   name: "Boss: Basic (Easy)",
   size: 75,
+  homing_amount: 0.07,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
     { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
@@ -793,6 +899,36 @@ make.enemy_boss_basic = {
   items: [
     { type: "normal", number: 8, },
     { type: "large", number: 2, },
+  ],
+};
+
+make.enemy_boss_decring = {
+  parent: ["enemy"],
+  name: "Boss: Decring",
+  size: 50,
+  homing_amount: 0.09,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 10, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 11, r: "shootsize*1", color: C.enemy_bullet, },
+    ...shape_rotate_position(
+      { type: "circle_fade", shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+      10, 0.6,
+    ),
+  ],
+  shoots: [
+    ...shoot_rotate_position(shoots.e_boss_decring, 10, 0.6),
+    { parent: shoots.e_boss_decring_middle, x: 0, y: 0, },
+    { parent: shoots.e_boss_decring_trap, x: 0, y: 0, },
+  ],
+  health: {
+    capacity: 50,
+    damage: 0.010,
+  },
+  items: [
+    { type: "normal", number: 10, },
+    { type: "big", number: 2, },
+    { type: "large", number: 1, },
   ],
 };
 
@@ -1002,6 +1138,22 @@ make.test = {
     { type: "circle" },
   ],
 };
+
+function shape_rotate_position(shape, number, radius = 0.5, offset = 0, total_angle = 360) {
+  const result = [];
+  const total_angle_radians = total_angle / 180 * Math.PI;
+  for (let i = 0; i < number; i++) {
+    let angel = total_angle_radians / number * i + offset; // angel
+    const sh = { };
+    for (let k in shape) {
+      sh[k] = shape[k];
+    }
+    sh.x = radius * Math.cos(angel);
+    sh.y = radius * Math.sin(angel);
+    result.push(sh);
+  }
+  return result;
+}
 
 for (const make_key in make) {
   if (!make.hasOwnProperty(make_key)) continue;

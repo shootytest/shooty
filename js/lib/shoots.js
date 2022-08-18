@@ -35,8 +35,8 @@ shoots.p_square = { type: "square", reload: 15, size: 14, speed: 3.6, spread: 0.
 shoots.p_shotgun = { type: "basic", reload: 50, size: 7.5, speed: 5, spread: 0.11, spreadv: 0.2, damage: 1.3, time: 120, };
 shoots.p_shootgun = { type: "square", reload: 60, size: 8, speed: 5.5, spread: 0.13, spreadv: 0.25, damage: 0.8, time: 111, };
 // auto path
-shoots.p_auto = { type: "basic", reload: 25, size: 8, speed: 4.2, spread: 0.05, damage: 2.5, time: 190, x: 0.4, auto: true, target_type: "enemy", };
-shoots.p_autooo = { type: "basic", reload: 40, size: 9, speed: 4.4, spread: 0.045, damage: 1.4, time: 200, auto: true, target_type: "enemy", };
+shoots.p_auto = { type: "basic", reload: 25, size: 8, speed: 4.2, spread: 0.05, damage: 2.25, time: 190, x: 0.4, auto: true, target_type: "enemy", };
+shoots.p_autooo = { type: "basic", reload: 40, size: 9, speed: 4.4, spread: 0.045, damage: 1.25, time: 200, auto: true, target_type: "enemy", };
 // sniper path
 shoots.p_sniper = { type: "triangle", reload: 45, size: 9.5, speed: 10, spread: 0.025, damage: 4.75, time: 300, };
 shoots.p_sniperscatter_sniper = { type: "triangle", reload: 50, size: 9.5, speed: 9, spread: 0.03, damage: 2.5, time: 300, };
@@ -80,6 +80,11 @@ shoots.e_double = { type: "basic", reload: 60 * 1.5, size: 9, speed: 5.25, damag
 shoots.e_triple = { type: "basic", reload: 60 * 1.5, size: 8.5, speed: 5.5, damage: 0.8, time: 280, };
 shoots.e_quadruple = { type: "basic", reload: 60 * 1.6, size: 8, speed: 5.6, damage: 0.6, time: 320, };
 shoots.e_quintuple = { type: "basic", reload: 60 * 1.8, size: 11, speed: 4.5, damage: 0.7, time: 380, };
+shoots.e_octring = { type: "basic", reload: 60 * 0.8, size: 7, speed: 6, damage: 0.3, time: 350, };
+shoots.e_line2 = { type: "basic", reload: 60 * 0.6, size: 5, speed: 9, damage: 0.5, time: 360, };
+shoots.e_line_satellite_side = { type: "basic", reload: 60 * 1.3, size: 5, speed: 6.45, damage: 0.45, time: 380, };
+shoots.e_line_satellite_middle = { type: "basic", reload: 60 * 0.65, size: 7, speed: 6.5, damage: 1.2, time: 380, };
+shoots.e_plane3 = { type: "basic", reload: 60 * 0.9, size: 5, speed: 7.5, damage: 0.6, time: 380, };
 shoots.e_fast = { type: "square", reload: 60 * 0.6, size: 8, speed: 8, damage: 0.75, time: 240, };
 shoots.e_slow = { type: "basic", reload: 60 * 1.5, size: 18, speed: 3.5, damage: 2, time: 480, };
 shoots.e_strong = { type: "basic", reload: 60 * 1.6, size: 12, speed: 15, damage: 1.6, time: 180, };
@@ -105,6 +110,9 @@ shoots.e_boss_basic_maker = { type: "boss_basic", reload: 60 * 2, size: 20, spee
 shoots.e_boss_tutorial = { type: "grow", reload: 60 * 0.2, size: 10, speed: 5, spread: 0.05, damage: 1, time: 120, options: { grow_amount: 0.012, }, };
 shoots.e_boss_tutorial_2 = { type: "homing", reload: 60 * 0.5, size: 15, speed: 10, spread: 0.2, damage: 1, time: 300, options: { homing_amount: 0.05, }, };
 shoots.e_boss_oct = { type: "basic", reload: 60 * 0.5, size: 18, speed: 10, spread: 0, damage: 1.5, time: 320, };
+shoots.e_boss_decring = { type: "basic", reload: 60 * 0.65, size: 9, speed: 6, damage: 0.4, time: 360, };
+shoots.e_boss_decring_middle = { type: "basic", reload: 60 * 1.1, size: 18, speed: 7, damage: 1.3, time: 500, };
+shoots.e_boss_decring_trap = { type: "basic", reload: 60 * 0.6, size: 10, speed: 9, spreadv: 1, friction: 0.05, spread: 100, damage: 0.5, time: 500, };
 
 // test
 shoots.t_basic = {};
@@ -113,6 +121,29 @@ export const shoot_rotate = function(parent, number, offset = 0, total_angle = 3
   const result = [];
   for (let i = 0; i < number; i++) {
     result.push({ parent: parent, rotation: total_angle / number * i + offset });
+  }
+  return result;
+}
+
+export const shoot_rotate_position = function(parent, number,
+                                              radius = 0.5, rotate = false,
+                                              rotation_list = null, delay_list = null,
+                                              offset = 0, total_angle = 360) {
+  const result = [];
+  const total_angle_radians = total_angle / 180 * Math.PI;
+  for (let i = 0; i < number; i++) {
+    let angle = total_angle / number * i + offset; // angle
+    let angel = total_angle_radians / number * i + offset; // angel
+    let shoot = { parent: parent, x: radius * Math.cos(angel), y: radius * Math.sin(angel), };
+    if (rotate) {
+      shoot.rotation = angle;
+    } else if (rotation_list != null) {
+      shoot.rotation = rotation_list[i];
+    }
+    if (delay_list != null) {
+      shoot.delay = delay_list[i];
+    }
+    result.push(shoot);
   }
   return result;
 }
