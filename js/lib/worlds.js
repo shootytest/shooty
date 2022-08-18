@@ -56,8 +56,8 @@ worlds.zero = {
       y: -50,
       lines: [],
       conditions: [
-        { type: "level", level: "level0", rating: 6, },
-        { type: "level", level: "level0", rounds: 10, },
+        { type: "level", level: "level0", rating: 7, },
+        { type: "level", level: "level0", rounds: 8, },
       ],
     },
   },
@@ -105,9 +105,21 @@ worlds.test = {
       char: "3r",
       x: 300,
       y: -50,
-      lines: [],
+      lines: [
+        { key: "level0test", },
+      ],
       conditions: [
         { type: "level", level: "tworounds", rating: 9, },
+      ],
+    },
+    level0test: {
+      key: "level0test",
+      char: "0t",
+      x: 350,
+      y: 300,
+      lines: [],
+      conditions: [
+        { type: "level", level: "threerounds", rating: 8, },
       ],
     },
     tutorialold: {

@@ -23,12 +23,12 @@ function collide(a, b, pair) {
     t.killer = u.shoot_parent;
     u.deleted = true;
   }
-  if (t.player && u.item) {
+  if (t.item && u.player) {
     player.item_collect(u.give_type, u.give_number);
-    u.deleted = true;
+    t.deleted = true;
   }
-  if (t.player_bullet && u.item) {
-    player.item_collect(u.give_type, u.give_number);
+  if (t.item && u.player_bullet) {
+    const d = t.health.hit(u.damage);
     u.deleted = true;
   }
   if (t.health.damage > 0 && u.health.capacity > 0 && t.team !== u.team) {

@@ -777,11 +777,18 @@ export class Thing {
   }
 
   remove() {
+    this.remove_before();
     if (this.items.length > 0) this.drop_items();
     this.remove_list();
     this.remove_body();
     this.remove_children();
     this.exists = false;
+  }
+
+  remove_before() {
+    if (this.item) {
+      player.item_collect(this.give_type, this.give_number);
+    }
   }
 
   remove_list() {

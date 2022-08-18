@@ -1066,6 +1066,7 @@ make.item = {
   fixed: false,
   item: true,
   density: 0.1,
+  friction: 0.05,
   team: 1,
   color: C.gold,
 };
@@ -1077,6 +1078,10 @@ make.item_normal = {
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
   ],
+  health: {
+    capacity: 2,
+    damage: 0,
+  },
   give_type: "coin",
   give_number: 1,
 };
@@ -1088,6 +1093,10 @@ make.item_big = {
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
   ],
+  health: {
+    capacity: 6,
+    damage: 0,
+  },
   give_type: "coin",
   give_number: 3,
 };
@@ -1099,6 +1108,10 @@ make.item_large = {
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
   ],
+  health: {
+    capacity: 10,
+    damage: 0,
+  },
   give_type: "coin",
   give_number: 5,
 };

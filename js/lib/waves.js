@@ -284,7 +284,7 @@ if ("level1") {
     description: "NOT Level 0",
     map: "level1",
     bosses: 1,
-    rounds: 15,
+    rounds: 10,
   };
 
   waves.level1 = [
