@@ -1,3 +1,4 @@
+import { math_util } from "../util/math.js";
 
 export const worlds = { };
 
@@ -97,7 +98,7 @@ worlds.test = {
         { key: "threerounds", },
       ],
       conditions: [
-        { type: "level", level: "oneround", rating: 4, },
+        { type: "level", level: "oneround", rating: 7, },
       ],
     },
     threerounds: {
@@ -149,6 +150,36 @@ worlds.test = {
   sidebar: "#643d7a",
   text: "#ffffff",
   shapes: [
-    
+    ...shapes_lerp(
+      {
+        x: 0, y: 0,
+        vx: 5, vy: -5,
+        size: 50,
+        depth: 1.2,
+      },
+      { depth: 0.5, },
+      10,
+    ),
   ],
 };
+
+function shapes_lerp(s1, s2, n) {
+  const lerp_keys = [ ];
+  for (let k in s2) {
+    if (!s1.hasOwnProperty(k) || typeof s1[k] != "number" || typeof s2[k] != "number") continue;
+    lerp_keys.push(k);
+  }
+  const result = [ ];
+  for (let i = 0; i < n; i++) {
+    const ratio = i / (n - 1);
+    const s = { };
+    for (const k in s1) {
+      s[k] = s1[k];
+    }
+    for (const k of lerp_keys) {
+      s[k] = math_util.lerp(s1[k], s2[k], ratio);
+    }
+    result.push(s);
+  }
+  return result;
+}

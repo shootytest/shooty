@@ -20,6 +20,9 @@ export const remove_key_listeners = function(key) {
 
 export const init_key = function() {
   window.addEventListener("keydown", function(event) {
+    if (["Tab"].includes(event.code)) {
+      event.preventDefault();
+    }
     const key = event.key;
     keys[key] = true;
     if (!event.repeat) {
@@ -32,6 +35,9 @@ export const init_key = function() {
   });
   
   window.addEventListener("keypress", function(event) {
+    if (["Tab"].includes(event.code)) {
+      event.preventDefault();
+    }
     const key = event.key;
     keys[key] = true;
   });

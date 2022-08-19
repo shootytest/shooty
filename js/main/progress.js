@@ -18,7 +18,14 @@ progress.user_players = { };
 progress.init = function(world_key) {
   const user = get_account_username();
   const W = worlds[world_key];
-  for (const level_key in W.levels) {
+  const level_key_list = Object.keys(W.levels);
+  for (const level_key of level_key_list) {
+    progress.user_scores[level_key] = {};
+    firebase.listen(`/scores/${user}/${level_key}/best/`, function(entry) {
+      progress.user_scores[level_key].best = entry;
+    });
+  }
+  for (const level_key of level_key_list) {
     const L = W.levels[level_key];
     if (L == null || L.conditions == null) continue;
     for (const condition of L.conditions) {
@@ -27,6 +34,7 @@ progress.init = function(world_key) {
       } else { // condition.type === "level"
         const level_key = condition.level;
         const use_key = condition.use || "best";
+        if (use_key === "best" && level_key_list.includes(level_key)) continue;
         const db_string = `/scores/${user}/${level_key}/${use_key}/`;
         if (progress.user_scores[level_key] == null) progress.user_scores[level_key] = { };
         if (progress.user_scores[level_key][use_key] == null) progress.user_scores[level_key][use_key] = { };
@@ -63,6 +71,8 @@ progress.check_condition = function(condition) {
   } else { // condition.type === "level"
     const level_key = condition.level;
     const use_key = condition.use || "best";
+    if (scores[level_key] == null) return 0;
+    if (scores[level_key][use_key] == null) return 0;
     if (condition.rating != null) {
       const rating = scores[level_key][use_key].rating;
       if (rating != null) {

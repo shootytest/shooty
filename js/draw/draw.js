@@ -25,9 +25,9 @@ draw.circle = function(ctx, x, y, r) {
   ctx.arc(x, y, r, 0, 2 * Math.PI);
 }
 
-draw.arc = function(ctx, x, y, r, s, e) {
+draw.arc = function(ctx, x, y, r, s, e, clockwise = false) {
   ctx.beginPath();
-  ctx.arc(x, y, r, s, e);
+  ctx.arc(x, y, r, s, e, !clockwise);
 }
 
 // rectangles

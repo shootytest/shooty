@@ -143,6 +143,7 @@ function test() {
     });
   }
   add_key_listener("p", function() {
+    if (send.game_ended) return;
     if (game_is_paused()) {
       close_all_overlays();
     } else {
@@ -150,29 +151,17 @@ function test() {
       ui.pause_time = ui.time;
     }
   });
-  add_key_listener("z", function() {
-    return;
+  add_key_listener("Tab", function() {
     if (send.game_ended) return;
-    if (ui.shop_overlay) {
+    // not upgrade overlay, but "screenshot mode"
+    // just a hack
+    if (ui.nothing_overlay) {
       close_all_overlays();
     } else {
       if (game_is_paused()) {
         close_all_overlays();
       }
-      ui.shop_overlay = true;
-    }
-  });
-  add_key_listener("x", function() {
-    return;
-    if (ui.upgrade_overlay) {
-      close_all_overlays();
-    } else {
-      if (game_is_paused()) {
-        close_all_overlays();
-      }
-      ui.upgrade_selected = "";
-      ui.upgrade_camera_target = Vector.create(0, 0);
-      ui.upgrade_overlay = true;
+      ui.nothing_overlay = true;
     }
   });
   add_key_listener("i", function() {
@@ -231,7 +220,7 @@ function test() {
   if (get_account_username() === "dev" && !multiplayer.is_multiplayer) {
     add_key_listener("?", function() {
       return;
-      player.item_collect("coin", Infinity);
+      // player.item_collect("coin", Infinity);
     });
     add_key_listener("~", function() {
       return;

@@ -4,7 +4,7 @@ import { draw } from "../js/draw/draw.js";
 import { draw_svg } from "../js/draw/svg.js";
 import { C } from "../js/lib/color.js";
 import { config } from "../js/lib/config.js";
-import { waves_info } from "../js/lib/waves.js";
+import { waves_info, wave_ratings_colors } from "../js/lib/waves.js";
 import { worlds } from "../js/lib/worlds.js";
 import { controls } from "../js/main/controls.js";
 import { check_keys, init_key, keys } from "../js/main/key.js";
@@ -265,6 +265,7 @@ class Shape {
   }
 
   draw_polygon() {
+    const size = this.size / this.depth;
     if (this.sides < 0) {
       // negative sides = star, so change shape into a star
       this.shape = "star";
@@ -272,11 +273,11 @@ class Shape {
       return;
     } else if (this.sides < 2) {
       // circle
-      draw.circle(ctx, this.realx, this.realy, this.size);
+      draw.circle(ctx, this.realx, this.realy, size);
     } else if (this.sides === 2) {
       // line
     } else if (this.sides === 3) {
-      draw.regular_polygon(ctx, this.sides, this.size, this.realx, this.realy, this.rotation);
+      draw.regular_polygon(ctx, this.sides, size, this.realx, this.realy, this.rotation);
     }
     if (this.fill) ctx.fill();
     if (this.stroke) ctx.stroke();
@@ -503,6 +504,20 @@ function draw_level(level_key) {
     ctx.fillStyle = L.text || W.background;
     ctx.font = `${size * 0.75}px roboto mono`;
     draw.fill_text(ctx, L.char, v.x, v.y + 2);
+    // draw rating, rounds
+    const level_best_entry = progress.user_scores[level_key].best;
+    if (level_best_entry != null) {
+      const rating_color = wave_ratings_colors[level_best_entry.rating];
+      const round_ratio = level_best_entry.rounds / waves_info[level_key].rounds;
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = math_util.set_color_alpha(rating_color, 0.5);
+      draw.circle(ctx, v.x, v.y, size * 1.2);
+      ctx.stroke();
+      ctx.strokeStyle = rating_color;
+      draw.arc(ctx, v.x, v.y, size * 1.2, Math.PI / 2, Math.PI / 2 - 2 * Math.PI * round_ratio);
+      ctx.stroke();
+      ctx.lineWidth = 3;
+    }
   } else {
     ctx.fillStyle = C.grey;
     ctx.strokeStyle = is_selected ? C.red : (L.stroke || C.red_dark);
@@ -602,13 +617,13 @@ function draw_ui(delta_time) {
         window.location.href = "/choose/?level=" + L.key;
       }
       // level information
-      if (false && unlocked) {
-        // TODO: level stats
-      } else {
-        // TODO: level conditions
+      if ("level conditions") {
         if (L.conditions != null && Array.isArray(L.conditions)) {
-          y = 100;
+          y = 80;
           ctx.font = `${s * 0.75}px roboto mono`;
+          ctx.fillStyle = W.text;
+          draw.fill_text(ctx, `Conditions`, x, y);
+          y += s * 1.25;
           let condition_text = null;
           for (const condition of L.conditions) {
             // this might be inefficient, try to combine with are_conditions_met (above)?
@@ -626,14 +641,37 @@ function draw_ui(delta_time) {
             }
             y += s * 1.5;
           }
+          y -= s * 0.25;
           // draw condition text
           if (condition_text != null) {
             ctx.font = `${s * 0.5}px roboto mono`;
-            for (const string of draw.split_text(ctx, condition_text, ui.sidebar * 0.75)) {
+            for (const string of draw.split_text(ctx, condition_text, ui.sidebar * 0.8)) {
               draw.fill_text(ctx, string, x, y);
               y += s * 0.75;
             }
           }
+        }
+      }
+      if ("level info" && unlocked) {
+        y += s;
+        ctx.font = `${s * 0.75}px roboto mono`;
+        ctx.fillStyle = W.text;
+        draw.fill_text(ctx, `Information`, x, y);
+        y += s;
+        let info_text = "";
+        if (info.description != null) {
+          info_text += info.description;
+        }
+        if (info.rounds != null) {
+          info_text += "\nRounds: " + info.rounds;
+        }
+        if (info.bosses != null) {
+          info_text += "\nBosses: " + info.bosses;
+        }
+        ctx.font = `${s * 0.5}px roboto mono`;
+        for (const string of draw.split_text(ctx, info_text, ui.sidebar * 0.8)) {
+          draw.fill_text(ctx, string, x, y);
+          y += s * 0.75;
         }
       }
     }

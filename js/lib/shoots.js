@@ -82,7 +82,8 @@ shoots.e_quadruple = { type: "basic", reload: 60 * 1.6, size: 8, speed: 5.6, dam
 shoots.e_quintuple = { type: "basic", reload: 60 * 1.8, size: 11, speed: 4.5, damage: 0.7, time: 380, };
 shoots.e_octring = { type: "basic", reload: 60 * 0.8, size: 7, speed: 6, damage: 0.3, time: 350, };
 shoots.e_line2 = { type: "basic", reload: 60 * 0.6, size: 5, speed: 9, damage: 0.5, time: 360, };
-shoots.e_line_satellite_side = { type: "basic", reload: 60 * 1.3, size: 5, speed: 6.45, damage: 0.45, time: 380, };
+shoots.e_line4 = { type: "basic", reload: 60 * 0.8, size: 5, speed: 8.5, damage: 0.4, time: 320, };
+shoots.e_line_satellite_side = { type: "basic", reload: 60 * 1.3, size: 4, speed: 6.45, damage: 0.45, time: 380, };
 shoots.e_line_satellite_middle = { type: "basic", reload: 60 * 0.65, size: 7, speed: 6.5, damage: 1.2, time: 380, };
 shoots.e_plane3 = { type: "basic", reload: 60 * 0.9, size: 5, speed: 7.5, damage: 0.6, time: 380, };
 shoots.e_fast = { type: "square", reload: 60 * 0.6, size: 8, speed: 8, damage: 0.75, time: 240, };
@@ -96,6 +97,7 @@ shoots.e_ramshoot_ram = { type: "ram", reload: 60 * 2, move: true, speed: 50, du
 shoots.e_ramshoot_shoot = { type: "basic", reload: 60 * 0.7, size: 6, speed: 10, damage: 0.8, time: 360, };
 // scatter type
 shoots.e_scatter_triple = { type: "basic", reload: 60 * 0.5, size: 8, speed: 4.75, spread: 0.04, damage: 1, time: 320, };
+shoots.e_scatter_square = { type: "square", reload: 60 * 0.4, size: 7.5, speed: 5, spread: 0.04, damage: 0.85, time: 320, };
 shoots.e_oct = { type: "basic", reload: 60 * 0.5, size: 7, speed: 4.5, spread: 0.05, damage: 0.8, time: 320, };
 // placer type
 shoots.e_placer_tower = { type: "basic", reload: 60 * 2, size: 9, speed: 4, damage: 1, time: 250, };

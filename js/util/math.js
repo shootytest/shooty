@@ -5,14 +5,12 @@ export const SQRT_2 = Math.sqrt(2);
 export const SQRT_3 = Math.sqrt(3);
 export const SQRT_5 = Math.sqrt(5);
 
-const Vector = Matter.Vector;
-
 math_util.regpoly = function(sides, size, angle = 0, x = 0, y = 0) {
   const ans = [];
   let a = angle;
   size *= math_util.get_real_regpoly_size(sides);
   for (let i = 0; i < sides; ++i) {
-    ans.push(Vector.create(x + size * Math.cos(a), y + size * Math.sin(a)));
+    ans.push(math_util.vector_create(x + size * Math.cos(a), y + size * Math.sin(a)));
     a += Math.PI * 2 / sides;
   }
   return ans;
@@ -80,3 +78,19 @@ math_util.get_color_alpha = (hex) => {
 math_util.set_color_alpha = (hex, alpha) => {
   return hex + math_util.get_color_component(alpha);
 }
+
+// ui stuff
+
+math_util.lerp = (a, b, s) => {
+  return a * (1 - s) + b * s;
+}
+
+math_util.bounce = (time, period) => {
+  return Math.abs(period - time % (period * 2)) / period;
+}
+
+// matter vector stuff
+
+math_util.vector_create = function(x, y) {
+  return { x: x || 0, y: y || 0 };
+};

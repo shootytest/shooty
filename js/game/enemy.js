@@ -166,7 +166,10 @@ export class Enemy extends Thing {
         // this.target.facing = Vector.add(this.position, Vector.createpolar(this.target.rotation, 1));
       }
       if (!this.never_shoot && (this.always_shoot || can_see_player)) {
+        this.shooting = true;
         this.shoot();
+      } else {
+        this.shooting = false;
       }
     }
   }

@@ -82,6 +82,7 @@ export class Thing {
   always_shoot = false;
   never_shoot = false;
   keep_children = false;
+  keep_this = false;
 
   // property scalars
   team = 0;
@@ -306,9 +307,7 @@ export class Thing {
     this.tick_shoot();
     this.tick_body();
     this.tick_death();
-    if (this.shooting) {
-      this.shoot();
-    }
+    this.shoot();
   }
 
   tick_move() {
@@ -447,6 +446,13 @@ export class Thing {
     return Vector.add(this.screenpos, Vector.mult(Vector.rotate(Vector.create(this.get_shape_dimension(vector.x, 1, shoot_index, 0), this.get_shape_dimension(vector.y, 1, 0)), this.rotation), scale));
   }
 
+  // checks whether a shape is active and drawable
+  check_shape(shape) {
+    if (shape.activate_below != null && this.health.health / this.health.capacity > shape.activate_below) return false;
+    if (shape.activate_above != null && this.health.health / this.health.capacity < shape.activate_above) return false;
+    return true;
+  }
+
   get_shape_dimension(dimension, multiplier = 1, shoot_index = 0, normal = 1) {
     let d = 1;
     if (multiplier == null) {
@@ -507,6 +513,7 @@ export class Thing {
    * color, fill
    */
   draw_shape(ctx, scale, shape, options = { }) {
+    if (!this.check_shape(shape)) return;
     ctx.lineWidth = (shape.width || 3);
     const type = shape.type;
     const location = this.draw_point_location(Vector.create(shape.x, shape.y), scale, shape.shoot_index || 0);
@@ -570,7 +577,14 @@ export class Thing {
 
   shoot() {
     for (let index = 0; index < this.shoots.length; index++) {
-      this.shoot_index(index);
+      const s = this.shoots[index];
+      // shoot conditions
+      if (s.never_shoot || s.death) continue;
+      if (this.shooting || s.shooting || s.always_shoot) {
+        if (s.activate_below != null && this.health.health / this.health.capacity > s.activate_below) continue;
+        if (s.activate_above != null && this.health.health / this.health.capacity < s.activate_above) continue;
+        this.shoot_index(index);
+      }
     }
   }
 
@@ -642,6 +656,9 @@ export class Thing {
     }
     if (S.friction != null) {
       b.friction = S.friction;
+    }
+    if (S.death) {
+      b.keep_this = true;
     }
     if (S.options != null) {
       for (let k in S.options) {
@@ -786,6 +803,14 @@ export class Thing {
   }
 
   remove_before() {
+    // do shoot_death
+    for (let index = 0; index < this.shoots.length; index++) {
+      const s = this.shoots[index];
+      if (s.death) {
+        this.shoot_index(index);
+      }
+    }
+    // if thing is item, collect itself
     if (this.item) {
       player.item_collect(this.give_type, this.give_number);
     }
@@ -801,13 +826,6 @@ export class Thing {
     }
   }
 
-  remove_children() {
-    if (this.keep_children) return;
-    for (const c of this.shoot_children) {
-      c.remove();
-    }
-  }
-
   remove_body() {
     if (this.body != null) {
       // remove from world
@@ -816,6 +834,14 @@ export class Thing {
       return true;
     } else {
       return false;
+    }
+  }
+
+  remove_children() {
+    if (this.keep_children) return;
+    for (const c of this.shoot_children) {
+      if (c.keep_this) continue;
+      c.remove();
     }
   }
 

@@ -7,7 +7,7 @@ export const waves_points = {};
 
 export const wave_ratings = [
 // there are 11 main ratings from 1 to 11
-// ratings 0 and 12 are exactly 100% and 0% respectively
+// ratings 0 and 12 are exactly 100% and 0% respectively (special ratings)
 // 0     1    2     3     4    5     6     7    8     9    10   11    X
   "★", "S+", "S", "S-", "A+", "A", "A-", "B+", "B", "B-", "C", "D", "✖",
 ];
@@ -347,10 +347,12 @@ if ("level1") {
 
   waves_points.level1 = {
     points: [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, ],
-    time: [ 0, 8, 9, 18, 10, 17, 13, 20, 16, 25, 30, ],
+    time: [ 0, 8, 9, 18, 10, 17, 13, 20, 16, 30, 40, ],
     ratings: [ 1, 0.95, 0.9, 0.8, 0.7, 0.6, 0.5, 0.35, 0.2, 0.1, 0.05, 0 ],
   };
 }
+
+// old/unused/useless/ridiculous/testing stuff (put these in the "Test" world)
 
 if ("level0test") {
   waves_info.level0test = {
@@ -440,8 +442,6 @@ if ("level0test") {
     ratings: [ 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.05, 0 ],
   };
 }
-
-// old/unused/useless/ridiculous/testing stuff (put these in the "Test" world)
 
 if ("tutorialold") {
 

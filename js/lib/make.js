@@ -558,6 +558,33 @@ make.enemy_line2 = {
   ],
 };
 
+make.enemy_line4 = {
+  parent: ["enemy"],
+  name: "Line (4)",
+  size: 24,
+  homing_amount: 0.085,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 1, h: 0.3, body: true, },
+    { type: "circle_fade", x: -0.6, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.2, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.2, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.6, y: 0, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_line4, x: -0.6, y: 0, },
+    { parent: shoots.e_line4, x: -0.2, y: 0, },
+    { parent: shoots.e_line4, x: 0.2, y: 0, },
+    { parent: shoots.e_line4, x: 0.6, y: 0, },
+  ],
+  health: {
+    capacity: 15,
+    damage: 0.005,
+  },
+  items: [
+    { type: "normal", number: 3, },
+  ],
+};
+
 make.enemy_line_satellite = {
   parent: ["enemy"],
   name: "Line Satellite",
@@ -565,20 +592,20 @@ make.enemy_line_satellite = {
   homing_amount: 0.07,
   shapes: [
     { type: "rectangle", x: 0, y: 0, w: 1, h: 1, body: true, color: C.transparent, },
-    { type: "rectangle", x: 0, y: 0.7, w: 1, h: 0.3, },
-    { type: "rectangle", x: 0, y: -0.7, w: 1, h: 0.3, },
+    { type: "rectangle", x: 0, y: 0.8, w: 1, h: 0.2, },
+    { type: "rectangle", x: 0, y: -0.8, w: 1, h: 0.2, },
     { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.orangered_bullet, },
-    { type: "circle_fade", x: 0.5, y: 0.7, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
-    { type: "circle_fade", x: -0.5, y: 0.7, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
-    { type: "circle_fade", x: 0.5, y: -0.7, shoot_index: 3, r: "shootsize*1", color: C.enemy_bullet, },
-    { type: "circle_fade", x: -0.5, y: -0.7, shoot_index: 4, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.5, y: 0.8, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.5, y: 0.8, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0.5, y: -0.8, shoot_index: 3, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: -0.5, y: -0.8, shoot_index: 4, r: "shootsize*1", color: C.enemy_bullet, },
   ],
   shoots: [
     { parent: shoots.e_line_satellite_middle, x: 0, y: 0, },
-    { parent: shoots.e_line_satellite_side, x: 0.5, y: 0.7, },
-    { parent: shoots.e_line_satellite_side, x: -0.5, y: 0.7, rotation: 1, },
-    { parent: shoots.e_line_satellite_side, x: 0.5, y: -0.7, },
-    { parent: shoots.e_line_satellite_side, x: -0.5, y: -0.7, rotation: -1, },
+    { parent: shoots.e_line_satellite_side, x: 0.5, y: 0.8, },
+    { parent: shoots.e_line_satellite_side, x: -0.5, y: 0.8, rotation: 1, },
+    { parent: shoots.e_line_satellite_side, x: 0.5, y: -0.8, },
+    { parent: shoots.e_line_satellite_side, x: -0.5, y: -0.8, rotation: -1, },
   ],
   health: {
     capacity: 20,
@@ -780,6 +807,32 @@ make.enemy_scatter_triple = {
   ],
 };
 
+make.enemy_scatter_square = {
+  parent: ["enemy"],
+  name: "Scatter Square",
+  always_shoot: true,
+  spin_rate: 1.4,
+  rotation_controller: "spin",
+  size: 18,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 1, h: 1, body: true, },
+    { type: "rectangle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_scatter_square, x: 0, y: 0, },
+    { parent: shoots.e_scatter_square, x: 0, y: 0, rotation: 90, delay: 6, },
+    { parent: shoots.e_scatter_square, x: 0, y: 0, rotation: 180, delay: 12, },
+    { parent: shoots.e_scatter_square, x: 0, y: 0, rotation: 270, delay: 18, },
+  ],
+  health: {
+    capacity: 12,
+    damage: 0.005,
+  },
+  items: [
+    { type: "normal", number: 3, },
+  ],
+};
+
 make.enemy_oct = {
   parent: ["enemy"],
   name: "Octopus",
@@ -906,20 +959,20 @@ make.enemy_boss_decring = {
   parent: ["enemy"],
   name: "Boss: Decring",
   size: 50,
-  homing_amount: 0.09,
+  homing_amount: 0.07,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
-    { type: "circle_fade", x: 0, y: 0, shoot_index: 10, r: "shootsize*1", color: C.enemy_bullet, },
-    { type: "circle_fade", x: 0, y: 0, shoot_index: 11, r: "shootsize*1", color: C.enemy_bullet, },
     ...shape_rotate_position(
       { type: "circle_fade", shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
       10, 0.6,
     ),
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 10, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 11, r: "shootsize*1", color: C.enemy_bullet, activate_below: 0.6, },
   ],
   shoots: [
     ...shoot_rotate_position(shoots.e_boss_decring, 10, 0.6),
     { parent: shoots.e_boss_decring_middle, x: 0, y: 0, },
-    { parent: shoots.e_boss_decring_trap, x: 0, y: 0, },
+    { parent: shoots.e_boss_decring_trap, x: 0, y: 0, activate_below: 0.6, }, // only activates below 36 health
   ],
   health: {
     capacity: 50,
@@ -929,6 +982,31 @@ make.enemy_boss_decring = {
     { type: "normal", number: 10, },
     { type: "big", number: 2, },
     { type: "large", number: 1, },
+  ],
+};
+
+make.enemy_gwoc = {
+  parent: ["enemy"],
+  name: "Great Wall of China",
+  size: 100,
+  homing_amount: 0.08,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 0.1, h: 1, body: true, },
+    { type: "circle_fade", x: 0, y: -0.6, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0.6, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_plane3, x: 0, y: -0.6, },
+    { parent: shoots.e_plane3, x: 0, y: 0, },
+    { parent: shoots.e_plane3, x: 0, y: 0.6, },
+  ],
+  health: {
+    capacity: 11,
+    damage: 0.006,
+  },
+  items: [
+    { type: "normal", number: 2, },
   ],
 };
 
@@ -1124,7 +1202,7 @@ make.symbol = {
   symbol: true,
   no_body: true,
   team: 1,
-}
+};
 
 make.enemy_spawn_symbol = {
   parent: ["symbol"],
@@ -1137,7 +1215,7 @@ make.enemy_spawn_symbol = {
     { type: "line", x: 0, y: 0.2, x2: 0, y2: 1, },
     { type: "line", x: 0, y: -0.2, x2: 0, y2: -1, },
   ],
-}
+};
 
 // #tests
 

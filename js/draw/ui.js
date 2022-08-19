@@ -39,18 +39,12 @@ export const ui = {
   // paused?
   paused: false,
   pause_time: 0,
+  // nothing
+  nothing_overlay: false,
+  // upgrade
+  upgrade_overlay: false, // useless
   // shop
   shop_overlay: false,
-  // upgrades
-  upgrade_overlay: false,
-  upgrade_divide: 0,
-  upgrade_divide_target: 1,
-  upgrade_camera_target: Vector.create(),
-  upgrade_camera: Vector.create(),
-  upgrade_camera_speed: 10,
-  upgrade_camera_smoothness: 0.1,
-  upgrade_selected: "",
-  upgrade_things: {},
   // inventory
   inventory_overlay: false,
   // end
@@ -74,7 +68,7 @@ export const ui = {
   },
   // tick tock
   clocks: ["🕐","🕑","🕒","🕓","🕔","🕕","🕖","🕗","🕘","🕙","🕚","🕛","🕜","🕝","🕞","🕟","🕠","🕡","🕢","🕣","🕤","🕥","🕦","🕧"],
-}
+};
 window.ui = ui;
 
 export const lerp = function(a, b, s) {
@@ -94,13 +88,13 @@ export const init_ui = function() {
 }
 
 export const game_is_paused = function() {
-  return ui.paused || ui.shop_overlay || ui.upgrade_overlay || ui.inventory_overlay || ui.end_overlay || ui.popup.show;
+  return ui.paused || ui.shop_overlay || ui.nothing_overlay || ui.inventory_overlay || ui.end_overlay || ui.popup.show;
 }
 
 export const close_all_overlays = function() {
   ui.paused = false;
   ui.shop_overlay = false;
-  ui.upgrade_overlay = false;
+  ui.nothing_overlay = false;
   ui.inventory_overlay = false;
   if (!send.game_ended) ui.end_overlay = false;
   ui.popup.show = false;
@@ -447,7 +441,7 @@ export const draw_ui = function(ctx) {
 
   if ("paused" && ui.paused) {
     const pause_time = ui.time - ui.pause_time;
-    const pause_animation_progress = math_util.bound((pause_time - 60) / 30, 0, 1);
+    const pause_animation_progress = math_util.bound((pause_time - 60) / 20, 0, 1);
     ctx.fillStyle = math_util.set_color_alpha(C.white, 0.8);
     draw.fill_rect(ctx, 0, 0, _width, _height);
     const pause_text = "paused";
@@ -490,7 +484,11 @@ export const draw_ui = function(ctx) {
           if (i === 0) {
             close_all_overlays();
           } else if (i === 1) {
-            window.location.href = "/choose/?level=" + send.wave_name;
+            if (multiplayer.is_multiplayer) {
+              window.location.href = "/multiplayer";
+            } else {
+              window.location.href = "/choose/?level=" + send.wave_name;
+            }
           } else if (i === 2) {
             close_all_overlays();
             end_game(waves[send.wave_name][send.wave + 1] == null);
@@ -507,264 +505,7 @@ export const draw_ui = function(ctx) {
   }
 
   if ("upgrade" && ui.upgrade_overlay && false) {
-    ///// draw backgrounds
-    ctx.fillStyle = math_util.set_color_alpha(C.background, 0.8);
-    draw.fill_rect(ctx, 0, 0, _width, _height);
-    // calculate upgrade divide
-    ui.upgrade_divide_target = (ui.upgrade_selected) ? (mobile.screen_mobile ? 0 : 0.7) : 1;
-    const upgrade_divide = lerp(ui.upgrade_divide, ui.upgrade_divide_target, ui.upgrade_camera_smoothness);
-    ui.upgrade_divide = upgrade_divide;
-    // result of upgrade divide stored in divide_x
-    const divide_x = _width * upgrade_divide;
-    let upgrade_selected_old = ui.upgrade_selected;
-    let upgrade_selected_clear = ui.new_click && camera.mouse_in_rect(0, 0, divide_x, _height);
-    // draw divided background
-    ctx.fillStyle = math_util.set_color_alpha(C.blue, 0.5);
-    draw.fill_rect(ctx, divide_x, 0, _width - divide_x, _height);
-    // draw the divider line
-    ctx.strokeStyle = C.white;
-    draw.line(ctx, divide_x, 0, divide_x, _height);
-    ///// move the camera using arrow keys
-    const move_x = (check_keys(config.controls.right) ? 1 : 0) - (check_keys(config.controls.left) ? 1 : 0);
-    const move_y = (check_keys(config.controls.down) ? 1 : 0) - (check_keys(config.controls.up) ? 1 : 0);
-    const move_v = Vector.mult(Vector.normalise(Vector.create(move_x, move_y)), ui.upgrade_camera_speed);
-    ui.upgrade_camera_target = Vector.add(ui.upgrade_camera_target, move_v);
-    // move the camera using mouse
-    ui.upgrade_camera_target = Vector.sub(ui.upgrade_camera_target, controls.mousedrag_change);
-    ui.upgrade_camera = Vector.sub(ui.upgrade_camera, controls.mousedrag_change);
-    // lerp camera
-    const u_camera = ui.upgrade_camera;
-    ui.upgrade_camera = Vector.lerp(u_camera, ui.upgrade_camera_target, ui.upgrade_camera_smoothness);
-    ///// draw upgrades
-    // function to draw shape of upgrade (always circle for now)
-    function draw_upgrade_shape(U, x, y, size) {
-      if (U.shape === "circle" || U.shape == null) {
-        draw.circle(ctx, x, y, size);
-      } else {
-        console.log("Shape " + U.shape + " not supported yet!");
-      }
-    }
-    // do ctx clipping
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, 0, divide_x, _height);
-    ctx.clip();
-    // scam button (do not scam!)
-    const scam = check_keys("`");
-    // selected upgrade and focused upgrade
-    let selected = (ui.upgrade_selected) ? upgrades[ui.upgrade_selected] : null; // selected upgrade
-    let focused = null; // focused upgrade (to describe)
-    // offscreen check
-    let is_everything_offscreen = true;
-    if (controls.mousedrag_change.x !== 0 || controls.mousedrag_change.y !== 0) {
-      is_everything_offscreen = false;
-    }
-    // logging purposes (for me)
-    if (check_click()) {
-      const display_v = Vector.add(camera.mouse_position, u_camera);
-      console.log(display_v.x, display_v.y);
-    }
-    // a big loop
-    for (const upgrade_key in upgrades) {
-      // variables to be used later
-      const U = upgrades[upgrade_key];
-      const current = player.current_upgrade === upgrade_key;
-      const reached = player.reached_upgrades.includes(upgrade_key)
-      x = U.x - u_camera.x + _width / 2;
-      y = U.y - u_camera.y + _height / 2;
-      size = U.size || 30;
-      c = U.color || C.blue; // (current) ? chroma.mix(U.color || C.blue, C.white, bounce(ui.time, 50) * 0.2) : U.color;
-      if (reached && camera.mouse_in_circle(x, y, size)) {
-        focused = U;
-        upgrade_selected_clear = false;
-        if (ui.new_click) {
-          ui.upgrade_selected = upgrade_key;
-          selected = U;
-        }
-      }
-      // draw stuff
-      if ("draw stuff") {
-        ctx.strokeStyle = c;
-        ctx.fillStyle = chroma(c).alpha(chroma(c).alpha() * (focused === U ? 0.5 : 0.2));
-        ctx.lineWidth = 3;
-        if (player.unlocked_upgrades.includes(upgrade_key)) {
-          ctx.shadowBlur = 30;
-          ctx.shadowColor = C.white;
-          for (let i = 0; i < 2; i++) {
-            draw_upgrade_shape(U, x, y, size);
-            ctx.stroke();
-          }
-          if (current) {
-            ctx.shadowBlur = 75;
-            ctx.shadowColor = C.pink;
-            for (let i = 0; i < 5; i++) {
-              draw_upgrade_shape(U, x, y, size);
-              ctx.stroke();
-            }
-          }
-        } else {
-          draw_upgrade_shape(U, x, y, size);
-          ctx.stroke();
-        }
-        ctx.shadowBlur = 0;
-        ctx.fill();
-        // draw player thing
-        if ("draw player thing" && reached) {
-          let p;
-          if (ui.upgrade_things[upgrade_key] == null) {
-            p = new Thing();
-            p.make(make.player);
-            p.make(player_make[upgrade_key]);
-            for (let i = 0; i < p.shoots_time.length; i++) {
-              p.shoots_time[i] = 1000000;
-            }
-            ui.upgrade_things[upgrade_key] = p;
-          } else {
-            p = ui.upgrade_things[upgrade_key];
-          }
-          p.target.position = camera.camera_position(Vector.create(x, y));
-          p.rotation = Math.PI * (ui.time % 200) / 100;
-          p.tick();
-          // draw with a scale of 1
-          p.draw(ctx, 1);
-        }
-        if (upgrade_key === ui.upgrade_selected) {
-          ctx.strokeStyle = C.red_health;
-          draw_upgrade_shape(U, x, y, size);
-          ctx.stroke();
-        } else if (player.unlocked_upgrades.includes(upgrade_key)) {
-          ctx.strokeStyle = C.green_dark;
-          draw_upgrade_shape(U, x, y, size);
-          ctx.stroke();
-        } else if (reached && (player.get_item_amount("coin") >= U.cost || scam)) {
-          ctx.strokeStyle = chroma.mix(C.blue, C.green_bullet, bounce(ui.time, 50));
-          draw_upgrade_shape(U, x, y, size);
-          ctx.stroke();
-        }
-        // draw connections
-        for (const connect_key of U.connections) {
-          if (connect_key === upgrade_key) continue;
-          const U2 = upgrades[connect_key];
-          ctx.strokeStyle = (player.reached_upgrades.includes(connect_key) && reached) ? C.white : C.darkgrey;
-          ctx.fillStyle = ctx.strokeStyle;
-          ctx.lineWidth = 3;
-          let v1 = Vector.create(x, y);
-          let v2 = Vector.create(U2.x - u_camera.x + _width / 2, U2.y - u_camera.y + _height / 2);
-          let mag = Vector.magnitude(Vector.sub(v1, v2))
-          let v3 = Vector.lerp(v1, v2, ((U.size || 30) + 1) / mag);
-          let v4 = Vector.lerp(v2, v1, ((U2.size || 30) + 1) / mag);
-          let v5 = Vector.lerp(v3, v4, (ui.time % 50) / 50);
-          draw.line(ctx, v3.x, v3.y, v4.x, v4.y);
-          draw.circle(ctx, v5.x, v5.y, 4);
-          ctx.fill();
-        }
-      } // end draw
-      // check if not offscreen
-      if ("check if not offscreen") {
-        let targetx = U.x - u_camera.x + _width / 2;
-        let targety = U.y - u_camera.y + _height / 2;
-        if (math_util.in_rect(targetx, targety, 0, 0, divide_x, _height)) {
-          is_everything_offscreen = false;
-        }
-      }
-    }
-    ctx.restore();
-    ///// draw upgrade description
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "center";
-    /*
-    if (focused != null || selected != null) {
-      const U = focused || selected;
-    */
-    if (ui.upgrade_selected) {
-      const U = selected;
-      // name
-      ctx.fillStyle = C.white;
-      x = (_width + divide_x) / 2;
-      y = 50;
-      w = (_width - divide_x) * 0.8;
-      h = 50;
-      ctx.font = "bold 30px roboto mono";
-      draw.fill_text(ctx, U.name, x, y);
-      // description
-      ctx.font = "20px roboto mono";
-      y += h;
-      const texts = draw.split_text(ctx, U.desc, w);
-      for (const text of texts) {
-        draw.fill_text(ctx, text, x, y);
-        y += h / 2;
-      }
-      // button
-      w = (_width - divide_x) * 0.6;
-      y = _height - h * 2;
-      let hover = camera.mouse_in_rect(x - w / 2, y - h / 2, x + w / 2, y + h / 2);
-      if (!player.unlocked_upgrades.includes(U.key)) {
-        // buy button
-        ctx.fillStyle = (player.get_item_amount("coin") >= U.cost || scam) ? (hover ? C.green_health : C.green_dark) : (hover ? C.red_health : C.red_dark);
-        draw.fill_rectangle(ctx, x, y, w, h);
-        ctx.strokeStyle = C.gold;
-        ctx.lineWidth = 3;
-        draw.circle(ctx, x - w / 2 + 25, y, 10);
-        ctx.stroke();
-        ctx.fillStyle = C.white;
-        ctx.font = "20px roboto mono";
-        draw.fill_text(ctx, "" + U.cost, x + 10, y);
-        if (hover && ui.new_click) {
-          player.upgrade_to(U.key, scam);
-        }
-      } else if (player.current_upgrade !== U.key) {
-        // switch button
-        ctx.fillStyle = hover ? C.bright_blue : C.blue;
-        draw.fill_rectangle(ctx, x, y, w, h);
-        ctx.fillStyle = C.white;
-        ctx.font = "20px roboto mono";
-        draw.fill_text(ctx, "switch", x, y);
-        if (hover && ui.new_click) {
-          player.upgrade_to(U.key);
-        }
-      } else {
-        // not a button
-        ctx.fillStyle = hover ? C.gold : C.gold;
-        draw.fill_rectangle(ctx, x, y, w, h);
-        ctx.fillStyle = C.background;
-        ctx.font = "20px roboto mono";
-        draw.fill_text(ctx, "selected", x, y);
-        if (hover && ui.new_click) {
-          player.upgrade_to(U.key);
-        }
-      }
-      // click?
-      if (ui.new_click) {
-        if (ui.upgrade_selected === U.key && upgrade_selected_old === U.key && focused != null) {
-          player.upgrade_to(U.key, scam);
-        }
-      }
-    }
-    // close button
-    if (Math.abs(ui.upgrade_divide_target - ui.upgrade_divide) < 0.01) {
-      x = _width - 60;
-      y = 20;
-      w = 40;
-      h = 40;
-      const hover = camera.mouse_in_rect(x, y, w, h);
-      ctx.fillStyle = math_util.set_color_alpha(C.red, hover ? 0.7 : 0.4);
-      draw.fill_rect(ctx, x, y, w, h);
-      ctx.strokeStyle = C.red;
-      draw.x_cross(ctx, x, y, w, h, 0.7);
-      if (hover && ui.new_click) {
-        if (ui.upgrade_divide_target === 1) {
-          close_all_overlays();
-        } else {
-          upgrade_selected_clear = true;
-        }
-      }
-    }
-    if (upgrade_selected_clear) {
-      ui.upgrade_selected = false;
-    }
-    if (is_everything_offscreen) {
-      ui.upgrade_camera_target = Vector.mult(ui.upgrade_camera_target, 0.975);
-    }
+    // haha, see /choose/choose.js
   }
 
   if ("inventory" && ui.inventory_overlay) {
