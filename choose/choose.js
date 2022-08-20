@@ -196,7 +196,7 @@ function draw_stuff() {
   }
   // a big loop
   for (const upgrade_key in upgrades) {
-    // variables to be used later
+    // important variables
     const U = upgrades[upgrade_key];
     const current = user.current_upgrade === upgrade_key;
     const reached = user.reached_upgrades.includes(upgrade_key);
@@ -204,7 +204,8 @@ function draw_stuff() {
     y = U.y * get_tile_size() - u_camera.y + _height / 2;
     size = U.size || 30;
     size *= ui.upgrade_scale;
-    c = U.color || C.blue; // (current) ? chroma.mix(U.color || C.blue, C.white, bounce(ui.time, 50) * 0.2) : U.color;
+    c = U.color || C.blue;
+    // c = (current) ? chroma.mix(c, C.white, bounce(ui.time, 50) * 0.2) : c;
     if (reached && camera.mouse_in_circle(x, y, size) && camera.mouse_in_rect(0, 0, divide_x, _height)) {
       focused = U;
       upgrade_selected_clear = false;

@@ -313,6 +313,8 @@ export class Thing {
   tick_move() {
     if (this.body == null) return;
     switch (this.movement_controller) {
+      case "fixed":
+        break;
       case "grow":
         const grow_amount = 1 + this.grow_amount;
         Body.scale(this.body, grow_amount, grow_amount);
@@ -333,6 +335,7 @@ export class Thing {
   tick_rotate() {
     if (this.body == null) return;
     switch (this.rotation_controller) {
+      case "fixed":
       case "target":
       case "homing": // slowly turn towards target
         const new_rotation = Vector.angle(this.position, this.shoot_parent.target.facing);
@@ -370,7 +373,9 @@ export class Thing {
         console.error("Unknown rotation controller: " + this.rotation_controller);
         break;
     }
-    Body.setAngle(this.body, this.target.rotation);
+    if (this.rotation_controller !== "fixed") {
+      Body.setAngle(this.body, this.target.rotation);
+    }
   }
 
   tick_shoot() {
@@ -669,7 +674,7 @@ export class Thing {
     b.team = this.team;
     b.shoot_parent = this.shoot_parent;
     // shoot the bullet with correct rotation and speed
-    let rot = random.gauss(this.rotation + (Vector.deg_to_rad(S.rotation || 0)), S.spread || 0);
+    let rot = random.gauss(this.target.rotation + (Vector.deg_to_rad(S.rotation || 0)), S.spread || 0);
     let facing = this.target.facing;
     let spreadv = S.spreadv || 0;
     let spd = spreadv === 0 ? S.speed : random.gauss(S.speed, spreadv);

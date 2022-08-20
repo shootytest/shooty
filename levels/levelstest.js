@@ -590,16 +590,16 @@ function draw_ui(delta_time) {
     // stuff inside the sidebar
     if (ui.sidebar_target > 0) {
       // level name
-      s = _h * 0.05;
+      s = Math.min(_h * 0.05, 40);
       x = _w - ui.sidebar / 2;
-      y = 30;
+      y = s;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = W.text;
-      ctx.font = "30px roboto mono";
+      ctx.font = `${s}px roboto mono`;
       draw.fill_text(ctx, info.name, x, y);
       // play button
-      y = _h - 100;
+      y = _h - s * 3;
       r = 50;
       hovering = camera.mouse_in_circle(x, y, r);
       clicking = (hovering && ui.new_click) || check_keys(config.controls.uienter);
@@ -619,36 +619,44 @@ function draw_ui(delta_time) {
       // level information
       if ("level conditions") {
         if (L.conditions != null && Array.isArray(L.conditions)) {
-          y = 80;
+          y = s * 2.5;
           ctx.font = `${s * 0.75}px roboto mono`;
           ctx.fillStyle = W.text;
           draw.fill_text(ctx, `Conditions`, x, y);
           y += s * 1.25;
           let condition_text = null;
-          for (const condition of L.conditions) {
-            // this might be inefficient, try to combine with are_conditions_met (above)?
-            const ratio = progress.check_condition(condition);
-            ctx.strokeStyle = W.text;
-            ctx.lineWidth = 2;
-            draw.stroke_rectangle(ctx, x, y, ui.sidebar * 0.75, s);
-            ctx.fillStyle = chroma.mix(C.red_dark, C.green_dark, ratio).hex();
-            draw.fill_rect(ctx, x - ui.sidebar * 0.375 + 1, y - s * 0.5 + 1, ui.sidebar * 0.75 * ratio - 2, s - 2);
-            ctx.fillStyle = W.text;
-            draw.fill_text(ctx, `${Math.round(ratio * 100)}%`, x, y);
-            hovering = camera.mouse_in_rectangle(x, y, ui.sidebar * 0.75, s);
-            if (hovering) {
-              condition_text = progress.level_condition_text(condition);
+          if (L.conditions != null && L.conditions.length > 0) {
+            for (const condition of L.conditions) {
+              // this might be inefficient, try to combine with are_conditions_met (above)?
+              const ratio = progress.check_condition(condition);
+              ctx.strokeStyle = W.text;
+              ctx.lineWidth = 2;
+              draw.stroke_rectangle(ctx, x, y, ui.sidebar * 0.75, s);
+              ctx.fillStyle = chroma.mix(C.red_dark, C.green_dark, ratio).hex();
+              draw.fill_rect(ctx, x - ui.sidebar * 0.375 + 1, y - s * 0.5 + 1, ui.sidebar * 0.75 * ratio - 2, s - 2);
+              ctx.fillStyle = W.text;
+              draw.fill_text(ctx, `${Math.round(ratio * 100)}%`, x, y);
+              hovering = camera.mouse_in_rectangle(x, y, ui.sidebar * 0.75, s);
+              if (hovering) {
+                condition_text = progress.level_condition_text(condition);
+              }
+              y += s * 1.5;
             }
-            y += s * 1.5;
-          }
-          y -= s * 0.25;
-          // draw condition text
-          if (condition_text != null) {
-            ctx.font = `${s * 0.5}px roboto mono`;
-            for (const string of draw.split_text(ctx, condition_text, ui.sidebar * 0.8)) {
-              draw.fill_text(ctx, string, x, y);
-              y += s * 0.75;
+            y -= s * 0.25;
+            // draw condition text
+            if (condition_text != null) {
+              ctx.font = `${s * 0.5}px roboto mono`;
+              for (const string of draw.split_text(ctx, condition_text, ui.sidebar * 0.8)) {
+                draw.fill_text(ctx, string, x, y);
+                y += s * 0.75;
+              }
             }
+          } else {
+            y -= s * 0.1;
+            ctx.font = `${s * 0.6}px roboto mono`;
+            ctx.fillStyle = C.enemy_bullet; // haha
+            draw.fill_text(ctx, "<none>", x, y);
+            y += s * 0.7;
           }
         }
       }
@@ -663,7 +671,12 @@ function draw_ui(delta_time) {
           info_text += info.description;
         }
         if (info.rounds != null) {
-          info_text += "\nRounds: " + info.rounds;
+          const user_rounds = progress.user_scores[level_key]?.best?.rounds; // optional chaining exists in js???
+          if (user_rounds != null) {
+            info_text += "\nRounds: " + user_rounds + "/" + info.rounds;
+          } else {
+            info_text += "\nRounds: " + info.rounds;
+          }
         }
         if (info.bosses != null) {
           info_text += "\nBosses: " + info.bosses;

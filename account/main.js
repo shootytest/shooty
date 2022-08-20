@@ -46,9 +46,12 @@ function register(username, password) {
       password: hashed,
       desc: "",
       inventory: {
-        coin: 10,
+        coin: 100,
       },
       players: ["basic"],
+    });
+    firebase.get(`/users/LIST/`, function(LIST) {
+      firebase.set(`/users/LIST/${LIST.length}`, username);
     });
   });
 }

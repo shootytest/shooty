@@ -266,6 +266,7 @@ player_make.shootgun = {
 };
 
 player_make.auto = {
+  homing_amount: 0.055,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
     { type: "circle_fade", x: 0.4, y: 0, r: "shootsize*1", color: C.bright_blue, },
@@ -277,6 +278,7 @@ player_make.auto = {
 };
 
 player_make.autooo = {
+  homing_amount: 0.05,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
     { type: "circle_fade", x: 0, y: 0, r: "shootsize*1", color: C.bright_blue, },

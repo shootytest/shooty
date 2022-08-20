@@ -985,28 +985,43 @@ make.enemy_boss_decring = {
   ],
 };
 
-make.enemy_gwoc = {
+make.enemy_boss_gwoc = {
   parent: ["enemy"],
-  name: "Great Wall of China",
+  name: "Boss: Wall of China",
   size: 100,
   homing_amount: 0.08,
+  rotation_controller: "fixed",
   shapes: [
     { type: "rectangle", x: 0, y: 0, w: 0.1, h: 1, body: true, },
-    { type: "circle_fade", x: 0, y: -0.6, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
-    { type: "circle_fade", x: 0, y: 0, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
-    { type: "circle_fade", x: 0, y: 0.6, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: -0.8, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: -0.6, shoot_index: 1, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: -0.4, shoot_index: 2, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: -0.2, shoot_index: 3, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 4, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0.2, shoot_index: 5, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0.4, shoot_index: 6, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0.6, shoot_index: 7, r: "shootsize*1", color: C.enemy_bullet, },
+    { type: "circle_fade", x: 0, y: 0.8, shoot_index: 8, r: "shootsize*1", color: C.enemy_bullet, },
   ],
   shoots: [
-    { parent: shoots.e_plane3, x: 0, y: -0.6, },
-    { parent: shoots.e_plane3, x: 0, y: 0, },
-    { parent: shoots.e_plane3, x: 0, y: 0.6, },
+    { parent: shoots.e_homing, x: 0, y: -0.8, },
+    { parent: shoots.e_boss_decring_trap, x: 0, y: -0.6, },
+    { parent: shoots.e_boss_tutorial, x: 0, y: -0.4, },
+    { parent: shoots.e_basic, x: 0, y: -0.2, },
+    { parent: shoots.e_homing, x: 0, y: 0, },
+    { parent: shoots.e_boss_decring_trap, x: 0, y: 0.2, },
+    { parent: shoots.e_boss_tutorial, x: 0, y: 0.4, },
+    { parent: shoots.e_basic, x: 0, y: 0.6, },
+    { parent: shoots.e_homing, x: 0, y: 0.8, },
   ],
   health: {
-    capacity: 11,
+    capacity: 70,
     damage: 0.006,
   },
   items: [
-    { type: "normal", number: 2, },
+    { type: "normal", number: 6, },
+    { type: "big", number: 3, },
+    { type: "large", number: 2, },
   ],
 };
 
@@ -1137,7 +1152,7 @@ make.enemy_invisible = {
   ],
 };
 
-// #items
+// #items (coins)
 
 make.item = {
   collision_filter: category.item,
@@ -1149,9 +1164,24 @@ make.item = {
   color: C.gold,
 };
 
-make.item_normal = {
+make.item_small = {
   parent: ["item"],
   name: "Coin x1",
+  size: 3.5,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+  ],
+  health: {
+    capacity: 1,
+    damage: 0,
+  },
+  give_type: "coin",
+  give_number: 1,
+};
+
+make.item_normal = {
+  parent: ["item"],
+  name: "Coin x2",
   size: 5,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
@@ -1161,12 +1191,12 @@ make.item_normal = {
     damage: 0,
   },
   give_type: "coin",
-  give_number: 1,
+  give_number: 2,
 };
 
 make.item_big = {
   parent: ["item"],
-  name: "Coin x3",
+  name: "Coin x6",
   size: 7.5,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
@@ -1176,12 +1206,12 @@ make.item_big = {
     damage: 0,
   },
   give_type: "coin",
-  give_number: 3,
+  give_number: 6,
 };
 
 make.item_large = {
   parent: ["item"],
-  name: "Coin x5",
+  name: "Coin x10",
   size: 10,
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
@@ -1191,7 +1221,37 @@ make.item_large = {
     damage: 0,
   },
   give_type: "coin",
-  give_number: 5,
+  give_number: 10,
+};
+
+make.item_huge = {
+  parent: ["item"],
+  name: "Coin x20",
+  size: 15,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+  ],
+  health: {
+    capacity: 20,
+    damage: 0,
+  },
+  give_type: "coin",
+  give_number: 20,
+};
+
+make.item_gigantic = {
+  parent: ["item"],
+  name: "Coin x50",
+  size: 20,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+  ],
+  health: {
+    capacity: 50,
+    damage: 0,
+  },
+  give_type: "coin",
+  give_number: 50,
 };
 
 // #symbols
