@@ -123,11 +123,17 @@ export const end_game = function(finished = false) {
     const oldpoints = entry.points;
     const newpoints = Math.round(player.points);
     if (newpoints >= oldpoints) {
-      firebase.set(`/scores/${username}/${wavename}/best/`, {
-        points: newpoints,
-        rating: rating,
-        rounds: ((finished) ? waveinfo.rounds : (send.wave - 1)),
-        use: playertype,
+      // check if player exists or not
+      firebase.get(`/users/${username}/players`, function(players) {
+        if (players.includes(playertype)) {
+          // set the score
+          firebase.set(`/scores/${username}/${wavename}/best/`, {
+            points: newpoints,
+            rating: rating,
+            rounds: ((finished) ? waveinfo.rounds : (send.wave - 1)),
+            use: playertype,
+          });
+        }
       });
     }
   });

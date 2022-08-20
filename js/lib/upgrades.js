@@ -123,7 +123,7 @@ upgrades.scatter1 = {
   name: "Scatter",
   desc: "Squares are yummy! (why)",
   cost: 400,
-  connections: ["scatter2", "scatterspam", "squarer", "shotgun"],
+  connections: ["scatterspam", "squarer", "shotgun", "sniperscatter"],
   x: -2,
   y: 0,
 };
@@ -185,7 +185,7 @@ upgrades.shotgun = {
   cost: 750,
   connections: ["shootgun"],
   x: -4,
-  y: 3,
+  y: 1,
 };
 
 upgrades.shootgun = {
@@ -195,7 +195,7 @@ upgrades.shootgun = {
   cost: 1050,
   connections: [],
   x: -6,
-  y: 4,
+  y: 2,
 };
 
 upgrades.auto = {
@@ -221,11 +221,31 @@ upgrades.autooo = {
 upgrades.sniper = {
   key: "sniper",
   name: "Sniper",
-  desc: "Hello!",
+  desc: "-     -     -",
   cost: 450,
-  connections: ["sniperscatter", "sniperauto"],
+  connections: ["sniperscatter", "sniperauto", "fastersniper", "strongersniper"],
   x: 0,
   y: 2,
+};
+
+upgrades.fastersniper = {
+  key: "fastersniper",
+  name: "Sniper (faster)",
+  desc: "-   -   -   -",
+  cost: 550,
+  connections: [],
+  x: 1,
+  y: 5,
+};
+
+upgrades.strongersniper = {
+  key: "strongersniper",
+  name: "Sniper (stronger)",
+  desc: "=     =     =",
+  cost: 500,
+  connections: [],
+  x: -1,
+  y: 5,
 };
 
 upgrades.sniperauto = {
@@ -234,7 +254,7 @@ upgrades.sniperauto = {
   desc: "triangle + circle",
   cost: 500,
   connections: [],
-  x: -2,
+  x: -3,
   y: 5,
 };
 
@@ -244,8 +264,8 @@ upgrades.sniperscatter = {
   desc: "triangle + square",
   cost: 600,
   connections: [],
-  x: -4,
-  y: 5,
+  x: -3,
+  y: 3,
 };
 
 upgrades.big = {
@@ -356,7 +376,7 @@ upgrades.placerbig = {
   desc: "Places auto-targeting towers.",
   cost: 900,
   connections: [],
-  x: 2,
+  x: 3,
   y: 5,
 };
 
@@ -366,6 +386,6 @@ upgrades.rammer = {
   desc: "Nothing to do with random-access memory.",
   cost: 400,
   connections: [],
-  x: 4,
+  x: 5,
   y: 5,
 };

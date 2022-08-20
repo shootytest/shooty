@@ -13,8 +13,8 @@ export const shoots = {};
 
 shoots.p_basic = { type: "basic", reload: 30, size: 10, speed: 5, spread: 0.04, damage: 3, time: 240, };
 // multi path
-shoots.p_triple = { type: "basic", reload: 40, size: 9, speed: 4.5, spread: 0.02, damage: 1.7, time: 210, };
-shoots.p_penta = { type: "basic", reload: 45, size: 8, speed: 4.5, spread: 0.02, damage: 1.45, time: 180, };
+shoots.p_triple = { type: "basic", reload: 40, size: 9, speed: 4.5, spread: 0.02, damage: 1.85, time: 210, };
+shoots.p_penta = { type: "basic", reload: 45, size: 8, speed: 4.5, spread: 0.02, damage: 1.65, time: 180, };
 shoots.p_oct = { type: "basic", reload: 28, size: 7.2, speed: 6.4, spread: 0.048, damage: 1.75, time: 240, };
 shoots.p_jellyfish = { type: "basic", reload: 36, size: 8, speed: 3.5, spread: 0.035, damage: 1.8, time: 100, };
 shoots.p_lobster = { type: "basic", reload: 22, size: 7, speed: 4, spread: 0.04, damage: 0.9, time: 150, };
@@ -28,7 +28,7 @@ shoots.p_burster = { type: "basic", reload: 100, duration: 100, duration_reload:
 shoots.p_scatter1 = { type: "square", reload: 15, size: 8, speed: 5, spread: 0.06, spreadv: 0.02, damage: 1.9, time: 200, };
 shoots.p_scatter2 = { type: "square", reload: 8, size: 6, speed: 6.5, spread: 0.08, spreadv: 0.02, damage: 1.25, time: 160, };
 shoots.p_scatterspam = { type: "square", reload: 3, size: 4.5, speed: 5, spread: 0.09, spreadv: 0.04, damage: 0.55, time: 180 };
-shoots.p_flamethrower = { type: "basic", reload: 1, size: 3, speed: 4, spread: 0.1, spreadv: 0.8, damage: 0.18, time: 120, }; // a lot of spreadv
+shoots.p_flamethrower = { type: "basic", reload: 1, size: 3, speed: 4, spread: 0.11, spreadv: 0.8, damage: 0.18, time: 120, }; // a lot of spreadv
 shoots.p_squarer = { type: "square", reload: 20, size: 13, speed: 4, spread: 0.045, damage: 2, time: 160, };
 shoots.p_square = { type: "square", reload: 15, size: 14, speed: 3.6, spread: 0.02, damage: 1.3, time: 200, };
 // shotgun path
@@ -39,6 +39,8 @@ shoots.p_auto = { type: "basic", reload: 25, size: 8, speed: 4.2, spread: 0.05, 
 shoots.p_autooo = { type: "basic", reload: 40, size: 9, speed: 4.4, spread: 0.045, damage: 1.25, time: 200, auto: true, target_type: "enemy", };
 // sniper path
 shoots.p_sniper = { type: "triangle", reload: 45, size: 9.5, speed: 10, spread: 0.025, damage: 4.75, time: 300, };
+shoots.p_fastersniper = { type: "triangle", reload: 35, size: 9, speed: 11, spread: 0.03, damage: 4, time: 270, };
+shoots.p_strongersniper = { type: "triangledot", reload: 65, size: 11, speed: 8, spread: 0.021, damage: 6.25, time: 350, };
 shoots.p_sniperscatter_sniper = { type: "triangle", reload: 50, size: 9.5, speed: 9, spread: 0.03, damage: 2.5, time: 300, };
 shoots.p_sniperscatter_scatter = { type: "square", reload: 15, size: 8, speed: 5, spread: 0.06, spreadv: 0.02, damage: 0.9, time: 200, };
 shoots.p_sniperauto_sniper = { type: "triangle", reload: 50, size: 9.5, speed: 9, spread: 0.025, damage: 4, time: 300, };

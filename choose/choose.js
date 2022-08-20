@@ -104,8 +104,8 @@ function default_scale() {
 }
 
 function change_scale(ds) {
-  ui.upgrade_tile_size *= ds;
-  ui.upgrade_scale_target = math_util.bound(ui.upgrade_tile_size / ui.upgrade_min_tile_size, 0.4, 5);
+  ui.upgrade_tile_size = math_util.bound(ui.upgrade_tile_size * ds, 32, 400);
+  ui.upgrade_scale_target = ui.upgrade_tile_size / ui.upgrade_min_tile_size;
 }
 
 function get_tile_size() {

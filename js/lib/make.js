@@ -107,6 +107,14 @@ make.bullet_basic = {
   parent: ["bullet"],
 };
 
+make.bullet_basicdot = {
+  parent: ["bullet"],
+  shapes: [
+    { type: "circle" },
+    { type: "circle", r: "1", },
+  ],
+};
+
 make.bullet_auto = {
   parent: ["bullet"],
   shooting: true,
@@ -125,6 +133,14 @@ make.bullet_triangle = {
   parent: ["bullet"],
   shapes: [
     { type: "polygon", sides: 3, r: 1, body: true, },
+  ],
+};
+
+make.bullet_triangledot = {
+  parent: ["bullet"],
+  shapes: [
+    { type: "polygon", sides: 3, r: 1, body: true, },
+    { type: "circle", r: "1", },
   ],
 };
 

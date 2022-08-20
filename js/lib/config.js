@@ -31,7 +31,7 @@ export const config = {
     health_mult: 10,
     damage_points_mult: 10,
     kill_points_mult: 100, // unused???
-    item_points_mult: 50,
+    item_points_mult: 0, // gone
     clear_points_mult: 1,
     bonus_points_mult: 1,
     clear_wave_time_add: 1000,

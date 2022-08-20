@@ -303,6 +303,29 @@ player_make.sniper = {
   ],
 };
 
+player_make.fastersniper = {
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "polygon_fade", sides: 3, r: "shootsize*1", color: C.bright_blue, },
+  ],
+  shoots: [
+    "delete",
+    { parent: shoots.p_fastersniper, },
+  ],
+};
+
+player_make.strongersniper = {
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "circle_fade", x: 0, y: 0, r: "1", color: C.player_bullet, },
+    { type: "polygon_fade", sides: 3, r: "shootsize*1", color: C.player_bullet, },
+  ],
+  shoots: [
+    "delete",
+    { parent: shoots.p_strongersniper, },
+  ],
+};
+
 player_make.sniperauto = {
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
