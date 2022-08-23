@@ -1,3 +1,4 @@
+import { config } from "../lib/config.js";
 import { make } from "../lib/make.js";
 import { maps } from "../lib/maps.js";
 import { Thing } from "./thing.js";
@@ -6,9 +7,11 @@ const Vector = Matter.Vector;
 
 export const mapmaker = { };
 
+mapmaker.width = 0;
+mapmaker.height = 0;
 mapmaker.shapes = [];
 
-const border_wall_thickness = 10;
+const border_wall_thickness = config.game.map_border_wall_thickness;
 
 function makeborder(x, y, w, h, rot = 0) {
   const wall = new Thing(Vector.create(x, y));
@@ -23,6 +26,9 @@ function makeborder(x, y, w, h, rot = 0) {
 mapmaker.make = function(map_key) {
   const M = maps[map_key];
   const thick = border_wall_thickness;
+
+  mapmaker.width = M.width;
+  mapmaker.height = M.height;
 
   makeborder(0, M.height + thick, M.width + thick * 2, thick);
   makeborder(0, -M.height - thick, M.width + thick * 2, thick);
@@ -66,4 +72,11 @@ mapmaker.remove = function(shape_index) {
   if (index != null && index > -1) {
     mapmaker.shapes.splice(index, 1);
   }
+}
+
+mapmaker.check_outside_map = function(position) {
+  const w = mapmaker.width, h = mapmaker.height;
+  const b = border_wall_thickness;
+  const x = position.x, y = position.y;
+  return x > w - b || x < b - w || y > h - b || y < b - h;
 }

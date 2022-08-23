@@ -72,7 +72,6 @@ export const ui = {
   // tick tock
   clocks: ["🕐","🕑","🕒","🕓","🕔","🕕","🕖","🕗","🕘","🕙","🕚","🕛","🕜","🕝","🕞","🕟","🕠","🕡","🕢","🕣","🕤","🕥","🕦","🕧"],
 };
-window.ui = ui;
 
 export const lerp = function(a, b, s) {
   return a * (1 - s) + b * s;
@@ -90,6 +89,10 @@ export const init_ui = function() {
   // nothing for now!
   // never mind!
   init_ui_firebase();
+  // debug stuff, TODO remove
+  if (get_account_username() === "dev") {
+    window.ui = ui;
+  }
 }
 
 const init_ui_firebase = function() {

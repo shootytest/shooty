@@ -39,6 +39,7 @@ export const config = {
     clear_wave_without_losing_health_points: 5000,
     clear_wave_without_losing_health_coins: 10,
     enemy_spawn_delay: 60,
+    map_border_wall_thickness: 10,
   },
   controls: {
     up: ["ArrowUp", "w", "W"],

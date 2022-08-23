@@ -12,6 +12,7 @@ import { firebase } from "../util/firebase.js";
 import { get_account_username } from "../util/localstorage.js";
 import { random } from "../util/random.js";
 import { Enemy } from "./enemy.js"; // somehow, removing this line breaks things (import system!!!)
+import { mapmaker } from "./mapmaker.js";
 import { end_game, send } from "./send.js";
 import { Thing } from "./thing.js";
 
@@ -105,6 +106,11 @@ export class Player extends Thing {
         // shoot player
         this.shooting = this.player_autofire || check_keys(config.controls.shoot);
       }
+    }
+
+    // if outside the map, then go back to origin
+    if (mapmaker.check_outside_map(this.position)) {
+      this.position = Vector.create();
     }
   }
 
@@ -259,7 +265,11 @@ export class Player extends Thing {
 }
 
 export const player = new Player();
-window.player = player;
+
+if (get_account_username() === "dev") {
+  // debug, TODO remove
+  // window.player = player;
+}
 
 // tie firebase
 export let player_user = null;

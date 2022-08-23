@@ -184,4 +184,7 @@ controls.init = function() {
   
 }
 
-window.controls = controls;
+
+if (get_account_username() === "dev") {
+  window.controls = controls;
+}

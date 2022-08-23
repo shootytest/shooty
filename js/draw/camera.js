@@ -1,6 +1,7 @@
 import { player } from "../game/player.js";
 import { Thing } from "../game/thing.js";
 import { config } from "../lib/config.js";
+import { get_account_username } from "../util/localstorage.js";
 import { draw } from "./draw.js";
 import { draw_ui, draw_ui_before, draw_ui_middle } from "./ui.js";
 
@@ -105,4 +106,7 @@ export class Camera {
 }
 
 export const camera = new Camera();
-window.camera = camera;
+
+if (get_account_username() === "dev") {
+  window.camera = camera;
+}

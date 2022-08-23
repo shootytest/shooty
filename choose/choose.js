@@ -481,4 +481,9 @@ window.addEventListener('wheel', function(event) {
   const direction = event.deltaY / Math.abs(event.deltaY);
   change_scale((direction < 0) ? (1.1) : (1 / 1.1));
 });
-window.ui = ui;
+
+// debug stuff, TODO remove
+if (get_account_username() === "dev") {
+  window.user = user;
+  window.ui = ui;
+}

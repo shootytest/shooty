@@ -138,6 +138,3 @@ progress.level_condition_text = function(condition) {
   }
   return result;
 }
-
-// TODO: remove (just for debugging)
-window.progress = progress;

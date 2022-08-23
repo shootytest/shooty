@@ -56,4 +56,7 @@ window.addEventListener("load", main);
 window.addEventListener("resize", function(event) {
   canvas_resize(canvas);
 });
-window.ui = ui;
+
+if (get_account_username() === "dev") {
+  window.ui = ui;
+}

@@ -21,9 +21,6 @@ export const send = {
   game_ended: false,
 }
 
-// TODO: remove debugging feature
-window.send = send;
-
 export const send_queue = new PriorityQueue((a, b) => {
   return a.time < b.time;
 });
@@ -34,6 +31,12 @@ export function set_wave_name(wave_name) {
 
 export const init_send = function() {
   // do nothing?
+  if (get_account_username() === "dev") {
+    // debug stuff, TODO remove
+    window.send = send;
+    window.level_total_points = level_total_points;
+    window.get_rating_number = get_rating_number;
+  }
 }
 
 export const tick_send = function() {
@@ -278,7 +281,3 @@ export const get_rating_number = function(wave_name, points) {
   }
   return wave_ratings.length - 1;
 }
-
-// TODO: remove
-window.level_total_points = level_total_points;
-window.get_rating_number = get_rating_number;

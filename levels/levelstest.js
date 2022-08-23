@@ -740,6 +740,8 @@ window.addEventListener('wheel', function(event) {
   ui.change_camera_scale((direction < 0) ? (1.1) : (1 / 1.1));
 });
 
-// TODO: remove
-window.ui = ui;
-window.Shape = Shape;
+// debug stuff, TODO remove
+if (get_account_username() === "dev") {
+  window.ui = ui;
+  window.Shape = Shape;
+}

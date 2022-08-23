@@ -899,4 +899,7 @@ export class Thing {
 
 }
 
-window.Thing = Thing;
+// debug stuff, TODO remove
+if (get_account_username() === "dev") {
+  window.Thing = Thing;
+}

@@ -46,5 +46,3 @@ mobile.exitfullscreen = function() {
 import interact from 'https://cdn.interactjs.io/v1.10.11/interactjs/index.js'
 
 mobile.interact = interact;
-
-window.mobile = mobile;
