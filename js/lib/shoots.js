@@ -93,9 +93,9 @@ shoots.e_slow = { type: "basic", reload: 60 * 1.5, size: 18, speed: 3.5, damage:
 shoots.e_strong = { type: "basic", reload: 60 * 1.6, size: 12, speed: 15, damage: 1.6, time: 180, };
 shoots.e_small = { type: "basic", reload: 60 * 0.25, size: 5, speed: 9, damage: 0.5, time: 500, };
 // ram type
-shoots.e_ram = { type: "ram", reload: 60 * 2, move: true, speed: 60, duration: 60 * 2.5, };
-shoots.e_ram_escape = { type: "ram", reload: 1, move: true, speed: 60, duration: 10000000, };
-shoots.e_ramshoot_ram = { type: "ram", reload: 60 * 2, move: true, speed: 50, duration: 60 * 3, };
+shoots.e_ram = { type: "ram", reload: 60 * 2, move: true, speed: 30, duration: 60 * 2.5, };
+shoots.e_ram_escape = { type: "ram", reload: 1, move: true, speed: 30, duration: 10000000, };
+shoots.e_ramshoot_ram = { type: "ram", reload: 60 * 2, move: true, speed: 25, duration: 60 * 3, };
 shoots.e_ramshoot_shoot = { type: "basic", reload: 60 * 0.7, size: 6, speed: 10, damage: 0.8, time: 360, };
 // scatter type
 shoots.e_scatter_triple = { type: "basic", reload: 60 * 0.5, size: 8, speed: 4.75, spread: 0.04, damage: 1, time: 320, };

@@ -124,6 +124,7 @@ function init(entries) {
   const tbody_board = document.getElementById("board-tbody");
   const ranked_entries = [ ];
   for (const username in entries) {
+    if (username === "dev" || username === "test" || username === "shooty") continue;
     const entry = entries[username];
     ranked_entries.push({
       user: username,

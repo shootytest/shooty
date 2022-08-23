@@ -310,7 +310,7 @@ player_make.fastersniper = {
   ],
   shoots: [
     "delete",
-    { parent: shoots.p_fastersniper, },
+    { parent: shoots.p_fastersniper, color: C.bright_blue, },
   ],
 };
 

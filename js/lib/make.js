@@ -20,6 +20,7 @@ make.player = {
   rotation_controller: "player",
   size: 30,
   speed: 50,
+  density: 0.001,
   friction: 0.1,
   collision_filter: category.player,
   color: C.blue,
@@ -746,6 +747,7 @@ make.enemy_ram = {
   parent: ["enemy"],
   name: "Rammer",
   density: 0.001,
+  friction: 0.1,
   size: 18,
   always_shoot: true,
   shapes: [
@@ -771,6 +773,7 @@ make.enemy_ramshoot = {
   parent: ["enemy"],
   name: "Rammer+",
   density: 0.001,
+  friction: 0.1,
   size: 23,
   always_shoot: true,
   shapes: [

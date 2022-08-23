@@ -11,6 +11,8 @@ import { waves, waves_points, wave_ratings, wave_ratings_colors } from "../lib/w
 import { controls } from "../main/controls.js";
 import { check_keys } from "../main/key.js";
 import { multiplayer } from "../main/multiplayer.js";
+import { firebase } from "../util/firebase.js";
+import { get_account_username } from "../util/localstorage.js";
 import { math_util } from "../util/math.js";
 import { mobile } from "../util/mobile.js";
 import { PriorityQueue } from "../util/priorityqueue.js";
@@ -43,6 +45,7 @@ export const ui = {
   nothing_overlay: false,
   // upgrade
   upgrade_overlay: false, // useless
+  unlocked_upgrades: [],
   // shop
   shop_overlay: false,
   // inventory
@@ -85,6 +88,20 @@ const check_click = function() {
 
 export const init_ui = function() {
   // nothing for now!
+  // never mind!
+  init_ui_firebase();
+}
+
+const init_ui_firebase = function() {
+  firebase.listen(`/users/${get_account_username()}/players`, function(players) {
+    ui.unlocked_upgrades = [];
+    for (const type of players) {
+      if (type == null || upgrades[type] == null) {
+        continue;
+      }
+      if (!ui.unlocked_upgrades.includes(type)) ui.unlocked_upgrades.push(type);
+    }
+  });
 }
 
 export const game_is_paused = function() {
@@ -274,18 +291,28 @@ export const draw_ui = function(ctx) {
     timer_text = "" + timer;
     ctx.textBaseline = "middle";
     ctx.textAlign = "right";
-    // measure text
-    ctx.font = "20px roboto mono";
+    // measure text width
     w = ctx.measureText(timer_text).width;
     w += ctx.measureText(clock_emoji).width;
-    // back rectangle
+    // draw back rectangle
     ctx.fillStyle = math_util.set_color_alpha(C.background, 0.7);
-    draw.fill_rect(ctx, _width - 30 - w, _height - 95, w + 30, 30);
+    draw.fill_rect(ctx, _width - 35 - w, _height - 95, w + 30, 30);
     ctx.fillStyle = C.white;
     w -= ctx.measureText(clock_emoji).width;
     draw.fill_text(ctx, clock_emoji, _width - 25 - w, _height - 80);
-    ctx.font = "20px roboto mono";
     draw.fill_text(ctx, timer_text, _width - 20, _height - 80);
+    ///// test mode
+    if (!ui.unlocked_upgrades.includes(player.current_upgrade) && ui.unlocked_upgrades.length > 0) {
+      // test mode is on
+      let test_mode_text = "🧪 TEST MODE";
+      // draw back rectangle
+      w = ctx.measureText(test_mode_text).width;
+      ctx.fillStyle = math_util.set_color_alpha(C.background, 0.7);
+      draw.fill_rect(ctx, _width - 35 - w, _height - 145, w + 30, 30);
+      ctx.fillStyle = C.white;
+      // then draw text
+      draw.fill_text(ctx, test_mode_text, _width - 20, _height - 130);
+    }
   }
 
   if ("items" && !game_is_paused()) {

@@ -9,7 +9,7 @@ import { Player, player } from "../game/player.js";
 import { init_collide } from "../game/collide.js";
 import { init_send, next_wave, send, set_wave_name, tick_send } from "../game/send.js";
 import { Enemy } from "../game/enemy.js";
-import { clear_messages, close_all_overlays, game_is_paused, send_message, ui } from "../draw/ui.js";
+import { clear_messages, close_all_overlays, game_is_paused, init_ui, send_message, ui } from "../draw/ui.js";
 import { firebase } from "../util/firebase.js";
 import { download_screenshot, copy_screenshot } from "../util/screenshot.js";
 import { video_button_pressed } from "../util/video.js";
@@ -248,6 +248,7 @@ function init() {
   multiplayer.init();
   init_collide();
   init_send();
+  init_ui();
   test();
 }
 
