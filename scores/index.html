@@ -12,8 +12,14 @@
   <link rel="preload" href="/lib/chroma.js" as="script">
   <script src="/lib/chroma.js"></script>
   <style>
-    html, body {
-      touch-action: none;
+    :root {
+      --hover-color: dimgrey;
+    }
+    tr {
+      transition: all .2s ease-in;
+    }
+    tbody tr:hover {
+      background-color: var(--hover-color);
     }
     body {
       background-color: olivedrab;
@@ -22,7 +28,9 @@
 </head>
 
 <body background="">
-  <p id="loading">not done yet...</p>
+  <div id="main">
+    <p id="loading">not done yet...</p>
+  </div>
 
   <script type="module" src="scores.js"></script>
 

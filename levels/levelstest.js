@@ -9,6 +9,7 @@ import { worlds } from "../js/lib/worlds.js";
 import { controls } from "../js/main/controls.js";
 import { check_keys, init_key, keys } from "../js/main/key.js";
 import { progress } from "../js/main/progress.js";
+import { get_account_username } from "../js/util/localstorage.js";
 import { math_util } from "../js/util/math.js";
 
 const parameters = new URLSearchParams(document.location.search);
@@ -175,12 +176,20 @@ class Shape {
     return this.position.y;
   }
 
+  get r() {
+    return this.rotation;
+  }
+
   get vx() {
     return this.velocity.x;
   }
 
   get vy() {
     return this.velocity.y;
+  }
+
+  get vr() {
+    return this.rotvelocity;
   }
 
   get angle() {
@@ -213,6 +222,10 @@ class Shape {
 
   set vy(newy) {
     this.velocity = Vector.create(this.vx, newy);
+  }
+
+  set vr(neww) {
+    this.rotvelocity = neww;
   }
 
   set angle(a) {
@@ -274,10 +287,8 @@ class Shape {
     } else if (this.sides < 2) {
       // circle
       draw.circle(ctx, this.realx, this.realy, size);
-    } else if (this.sides === 2) {
-      // line
-    } else if (this.sides === 3) {
-      draw.regular_polygon(ctx, this.sides, size, this.realx, this.realy, this.rotation);
+    } else if (this.sides >= 2) {
+      draw.regular_polygon(ctx, this.sides, size, this.realx, this.realy, math_util.deg_to_rad(this.rotation));
     }
     if (this.fill) ctx.fill();
     if (this.stroke) ctx.stroke();

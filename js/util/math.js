@@ -79,6 +79,14 @@ math_util.set_color_alpha = (hex, alpha) => {
   return hex + math_util.get_color_component(alpha);
 }
 
+math_util.deg_to_rad = (deg) => {
+  return deg / 180 * Math.PI;
+}
+
+math_util.rad_to_deg = (rad) => {
+  return rad / Math.PI * 180;
+}
+
 // ui stuff
 
 math_util.lerp = (a, b, s) => {

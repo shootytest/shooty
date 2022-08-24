@@ -92,6 +92,7 @@ shoots.e_fast = { type: "square", reload: 60 * 0.6, size: 8, speed: 8, damage: 0
 shoots.e_slow = { type: "basic", reload: 60 * 1.5, size: 18, speed: 3.5, damage: 2, time: 480, };
 shoots.e_strong = { type: "basic", reload: 60 * 1.6, size: 12, speed: 15, damage: 1.6, time: 180, };
 shoots.e_small = { type: "basic", reload: 60 * 0.25, size: 5, speed: 9, damage: 0.5, time: 500, };
+shoots.e_small_healthy = { type: "basic", reload: 60 * 0.3, size: 5.25, speed: 8, damage: 0.45, time: 450, };
 // ram type
 shoots.e_ram = { type: "ram", reload: 60 * 2, move: true, speed: 30, duration: 60 * 2.5, };
 shoots.e_ram_escape = { type: "ram", reload: 1, move: true, speed: 30, duration: 10000000, };

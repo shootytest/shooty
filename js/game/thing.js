@@ -9,6 +9,7 @@ import { math_util } from "../util/math.js";
 import { Enemy } from "./enemy.js";
 import { Health } from "./health.js";
 import { player, Player } from "./player.js";
+import { get_account_username } from "../util/localstorage.js";
 
 const Body = Matter.Body,
       Bodies = Matter.Bodies,

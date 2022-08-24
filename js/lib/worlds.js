@@ -2,6 +2,10 @@ import { math_util } from "../util/math.js";
 
 export const worlds = { };
 
+export const world_list = [
+  "zero", "test",
+];
+
 worlds.zero = {
   name: "Zero",
   levels: {
@@ -108,19 +112,29 @@ worlds.test = {
       y: -50,
       lines: [
         { key: "level0test", },
+        { key: "fourrounds", },
       ],
       conditions: [
         { type: "level", level: "tworounds", rating: 9, },
       ],
     },
+    fourrounds: {
+      key: "fourrounds",
+      char: "4r",
+      x: 550,
+      y: -30,
+      conditions: [
+        { type: "level", level: "threerounds", rating: 8, },
+      ],
+    },
     level0test: {
       key: "level0test",
       char: "0t",
-      x: 350,
-      y: 300,
+      x: 300,
+      y: -300,
       lines: [],
       conditions: [
-        { type: "level", level: "threerounds", rating: 8, },
+        { type: "level", level: "threerounds", rating: 6, },
       ],
     },
     tutorialold: {
@@ -146,19 +160,28 @@ worlds.test = {
       ],
     },
   },
-  background: "#201924",
-  sidebar: "#643d7a",
+  background: "#1f1e33", // "#201924",
+  sidebar: "#494587", // "#643d7a",
   text: "#ffffff",
   shapes: [
     ...shapes_lerp(
       {
         x: 0, y: 0,
-        vx: 5, vy: -5,
-        size: 50,
+        vx: 9, vy: -9, // moves to x: 300, y: -300
+        size: 50, sides: 0,
         depth: 1.2,
       },
-      { depth: 0.5, },
-      10,
+      { depth: 0.4, },
+      9,
+    ),
+    ...shapes_lerp(
+      { x: 0, y: 0,
+        depth: 5, size: 1000, sides: 5,
+        rotation: 0, rotvelocity: 0.4,
+        fill: "#CCCCCC10",
+      },
+      { depth: 4, size: 300, rotvelocity: 1, },
+      6,
     ),
   ],
 };

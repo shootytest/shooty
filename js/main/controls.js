@@ -2,6 +2,7 @@ import { camera } from "../draw/camera.js";
 import { game_is_paused } from "../draw/ui.js";
 import { player } from "../game/player.js";
 import { config } from "../lib/config.js";
+import { get_account_username } from "../util/localstorage.js";
 import { mobile } from "../util/mobile.js";
 import { keys } from "./key.js";
 

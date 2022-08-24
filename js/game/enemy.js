@@ -1,3 +1,4 @@
+import { camera } from "../draw/camera.js";
 import { config } from "../lib/config.js";
 import { make } from "../lib/make.js";
 import { maps } from "../lib/maps.js";

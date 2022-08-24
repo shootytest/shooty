@@ -741,6 +741,26 @@ make.enemy_small = {
   ],
 };
 
+make.enemy_small_healthy = {
+  parent: ["enemy"],
+  name: "Small (health+)",
+  size: 12,
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, color: C.orangered, },
+    { type: "circle_fade", x: 0, y: 0, shoot_index: 0, r: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_small_healthy, },
+  ],
+  health: {
+    capacity: 8,
+    damage: 0.0055,
+  },
+  items: [
+    { type: "normal", number: 4, },
+  ],
+};
+
 // ##ram enemies
 
 make.enemy_ram = {

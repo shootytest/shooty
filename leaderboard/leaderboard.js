@@ -1,6 +1,6 @@
 import { upgrades } from "../js/lib/upgrades.js";
 import { waves_info, wave_ratings } from "../js/lib/waves.js";
-import { worlds } from "../js/lib/worlds.js";
+import { worlds, world_list } from "../js/lib/worlds.js";
 import { firebase } from "../js/util/firebase.js";
 
 const root_var = document.querySelector(':root');
@@ -9,10 +9,6 @@ const level = parameters.get("level");
 const use_type = parameters.get("use") || "best";
 const div_main = document.getElementById("main");
 const L = waves_info[level];
-
-const list_of_worlds = [
-  "zero", "test",
-];
 
 /* // unused...
   function index(leaderboard) {
@@ -68,7 +64,7 @@ function index(HIDE) {
   `
   root_var.style.setProperty("--hover-color", "#000000AA");
   const tbody_list = document.getElementById("list-tbody");
-  for (const world_key of list_of_worlds) {
+  for (const world_key of world_list) {
     const W = worlds[world_key];
     for (const level_key in W.levels) {
       const l = waves_info[level_key];

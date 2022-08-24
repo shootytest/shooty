@@ -687,6 +687,61 @@ if ("threerounds") {
 
 }
 
+if ("fourrounds") {
+
+  waves_info.fourrounds = {
+    name: "Four Rounds",
+    key: "fourrounds",
+    description: "This level has only four rounds!",
+    map: "empty",
+    bosses: 0,
+    rounds: 4,
+  };
+
+  waves.fourrounds = [
+    0,
+    { type: "small", number: 4, interval: 60, },
+    [ // 2
+      { type: "line4", number: 4, },
+    ],
+    { type: "small_healthy", number: 4, interval: 60, },
+    [ // 4
+      { type: "homing_4", number: 1, },
+      { type: "line4", number: 1, },
+      { type: "quadruple", number: 1, },
+      { type: "scatter_square", number: 1, },
+    ],
+  ];
+
+  waves_text.fourrounds = {
+    [0]: [
+      { message: "4", delay: 0, },
+    ],
+    [1]: [
+      { message: "for", delay: 0, },
+    ],
+    [2]: [
+      { message: "for i in range(4):", delay: 0, },
+    ],
+    [3]: [
+      { message: "for i in range(444):", delay: 0, },
+      { message: "    print(444)", delay: 0, },
+    ],
+    [4]: [
+      { message: "def four():", delay: 0, },
+      { message: "    print(4)", delay: 0, },
+      { message: "    four()", delay: 0, },
+    ],
+  };
+
+  waves_points.fourrounds = {
+    points: [ 0, 1, 1, 1, 1.5, ],
+    time: [ 0, 15, 20, 15, 25, ],
+    ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.3, 0.1, 0.05, 0 ],
+  };
+
+}
+
 if ("multiplayer") {
 
   waves_info.multiplayer = {
