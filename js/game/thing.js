@@ -554,6 +554,16 @@ export class Thing {
         draw.fill_rectangle_angle(ctx, x, y, w, h, rot);
         draw.stroke_rectangle_angle(ctx, x, y, w, h, rot);
         break;
+      case "rounded_square":
+      case "rounded_square_fade":
+      case "rounded_rectangle":
+      case "rounded_rectangle_fade":
+        // TODO: actually rounded rectangle
+        w = this.get_shape_dimension(shape.w, 2 * scale, shape.shoot_index || 0);
+        h = this.get_shape_dimension(shape.h, 2 * scale, shape.shoot_index || 0);
+        draw.fill_rectangle_angle(ctx, x, y, w, h, rot);
+        draw.stroke_rectangle_angle(ctx, x, y, w, h, rot);
+        break;
       case "line":
       case "line_fade":
         location2 = this.draw_point_location(Vector.create(shape.x2, shape.y2), scale, shape.shoot_index || 0);

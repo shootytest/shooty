@@ -83,11 +83,13 @@ shoots.e_triple = { type: "basic", reload: 60 * 1.5, size: 8.5, speed: 5.5, dama
 shoots.e_quadruple = { type: "basic", reload: 60 * 1.6, size: 8, speed: 5.6, damage: 0.6, time: 320, };
 shoots.e_quintuple = { type: "basic", reload: 60 * 1.8, size: 11, speed: 4.5, damage: 0.7, time: 380, };
 shoots.e_octring = { type: "basic", reload: 60 * 0.8, size: 7, speed: 6, damage: 0.3, time: 350, };
+shoots.e_lineline = { type: "lineline", reload: 60 * 0.7, size: 19, speed: 8, damage: 1.25, time: 400, };
 shoots.e_line2 = { type: "basic", reload: 60 * 0.6, size: 5, speed: 9, damage: 0.5, time: 360, };
 shoots.e_line4 = { type: "basic", reload: 60 * 0.8, size: 5, speed: 8.5, damage: 0.4, time: 320, };
 shoots.e_line_satellite_side = { type: "basic", reload: 60 * 1.3, size: 4, speed: 6.45, damage: 0.45, time: 380, };
 shoots.e_line_satellite_middle = { type: "basic", reload: 60 * 0.65, size: 7, speed: 6.5, damage: 1.2, time: 380, };
 shoots.e_plane3 = { type: "basic", reload: 60 * 0.9, size: 5, speed: 7.5, damage: 0.6, time: 380, };
+shoots.e_planeplane = { type: "planeplane", reload: 60 * 0.8, size: 20, speed: 7.5, damage: 1.5, time: 330, };
 shoots.e_fast = { type: "square", reload: 60 * 0.6, size: 8, speed: 8, damage: 0.75, time: 240, };
 shoots.e_slow = { type: "basic", reload: 60 * 1.5, size: 18, speed: 3.5, damage: 2, time: 480, };
 shoots.e_strong = { type: "basic", reload: 60 * 1.6, size: 12, speed: 15, damage: 1.6, time: 180, };
@@ -108,6 +110,8 @@ shoots.e_placer_tower = { type: "basic", reload: 60 * 2, size: 9, speed: 4, dama
 shoots.e_homing = { type: "homing", reload: 60 * 1.4, size: 10, speed: 7.5, damage: 1.1, options: { homing_amount: 0.06, speed_death: 5, } };
 shoots.e_homing_3 = { type: "homing", reload: 60 * 2, size: 9.5, speed: 7.5, damage: 0.8, options: { homing_amount: 0.055, speed_death: 5, } };
 shoots.e_homing_4 = { type: "homing", reload: 60 * 2.5, size: 9, speed: 7.5, damage: 0.8, options: { homing_amount: 0.05, speed_death: 5, } };
+shoots.e_amongus = { type: "amongus", reload: 60 * 0.5, size: 18, speed: 4, damage: 1, time: 120, };
+shoots.e_amongus_bullet = { type: "square", reload: 60 * 0.1, size: 7.5, speed: 6, damage: 0.25, time: 360, };
 
 // bosses!
 shoots.e_boss_basic = { type: "basic", reload: 60 * 0.75, size: 36, speed: 5, damage: 1.5, time: 400, };

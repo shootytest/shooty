@@ -177,6 +177,13 @@ make.bullet_bigauto = {
   ],
 };
 
+make.bullet_lineline = {
+  parent: ["bullet"],
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 1, h: 0.25, body: true, },
+  ],
+};
+
 make.bullet_line1 = {
   parent: ["bullet"],
   shapes: [
@@ -188,6 +195,13 @@ make.bullet_line2 = {
   parent: ["bullet"],
   shapes: [
     { type: "rectangle", x: 0, y: 0, w: 1, h: 0.09, body: true, },
+  ],
+};
+
+make.bullet_planeplane = {
+  parent: ["bullet"],
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 0.25, h: 1, body: true, },
   ],
 };
 
@@ -294,6 +308,21 @@ make.bullet_boss_basic = {
   ],
   shoots: [
     { parent: shoots.e_basic, },
+  ],
+};
+
+make.bullet_amongus = {
+  parent: ["bullet_tower"],
+  keep_children: true,
+  rotation_controller: "autotarget_enemy",  
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 0.6, h: 0.6, body: true, },
+    { type: "rectangle", x: -0.8, y: -0.4, w: 0.2, h: 0.2, },
+    { type: "rectangle", x: -0.8, y: 0.4, w: 0.2, h: 0.2, },
+    { type: "rectangle", x: 0.2, y: 0.2, w: 0.2, h: 0.4, },
+  ],
+  shoots: [
+    { parent: shoots.e_amongus_bullet, },
   ],
 };
 
@@ -552,6 +581,27 @@ make.enemy_octring = {
   ],
 };
 
+make.enemy_lineline = {
+  parent: ["enemy"],
+  name: "Line (Line)",
+  size: 25,
+  homing_amount: 0.08,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 1, h: 0.35, body: true, },
+    { type: "rectangle_fade", x: 0, y: 0, shoot_index: 0, w: "shootsize*1", h: "shootsize*0.25", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_lineline, x: 0, y: 0, },
+  ],
+  health: {
+    capacity: 17.5,
+    damage: 0.005,
+  },
+  items: [
+    { type: "normal", number: 4, },
+  ],
+};
+
 make.enemy_line2 = {
   parent: ["enemy"],
   name: "Line (2)",
@@ -631,6 +681,27 @@ make.enemy_line_satellite = {
   items: [
     { type: "normal", number: 2, },
     { type: "big", number: 1, },
+  ],
+};
+
+make.enemy_planeplane = {
+  parent: ["enemy"],
+  name: "Plane (Plane)",
+  size: 25,
+  homing_amount: 0.08,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 0.35, h: 1, body: true, },
+    { type: "rectangle_fade", x: 0, y: 0, shoot_index: 0, w: "shootsize*0.25", h: "shootsize*1", color: C.enemy_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.e_planeplane, x: 0, y: 0, },
+  ],
+  health: {
+    capacity: 19,
+    damage: 0.005,
+  },
+  items: [
+    { type: "normal", number: 4, },
   ],
 };
 
@@ -1188,6 +1259,33 @@ make.enemy_invisible = {
   },
   items: [
     { type: "normal", number: 4, },
+  ],
+};
+
+// ##funny enemies (!!!!!!!!!!)
+
+make.enemy_z_amongus = {
+  parent: ["enemy"],
+  name: "Among Us",
+  size: 30,
+  always_shoot: true,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 0.8, h: 0.6, body: true, color: C.transparent, },
+    { type: "rectangle", x: 0.15, y: 0, w: 0.6, h: 0.6, },
+    { type: "rectangle", x: -0.65, y: -0.4, w: 0.2, h: 0.2, },
+    { type: "rectangle", x: -0.65, y: 0.4, w: 0.2, h: 0.2, },
+    { type: "rectangle", x: 0.35, y: 0.2, w: 0.2, h: 0.4, },
+  ],
+  shoots: [
+    { parent: shoots.e_amongus, rotation: 0, },
+  ],
+  health: {
+    capacity: 18,
+    damage: 0.008,
+  },
+  items: [
+    { type: "normal", number: 1, },
+    { type: "big", number: 1, },
   ],
 };
 

@@ -515,7 +515,7 @@ export const draw_ui = function(ctx) {
             close_all_overlays();
           } else if (i === 1) {
             if (multiplayer.is_multiplayer) {
-              window.location.href = "/multiplayer";
+              window.location.href = "/multiplayer/";
             } else {
               window.location.href = "/choose/?level=" + send.wave_name;
             }
@@ -613,9 +613,13 @@ export const draw_ui = function(ctx) {
       }
       if (click) {
         if (i === 0) {
-          window.location.href = "/worlds";
+          window.location.href = "/worlds/";
         } else if (i === 1) {
-          window.location.href = "/choose/?level=" + send.wave_name;
+          if (multiplayer.is_multiplayer) {
+            window.location.href = "/multiplayer/";
+          } else {
+            window.location.href = "/choose/?level=" + send.wave_name;
+          }
         } else if (i === 2) {
           window.location.href = "/";
         }
