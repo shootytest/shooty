@@ -91,6 +91,7 @@ function index(HIDE) {
 }
 
 function init(entries) {
+  // reject invalid level
   if (L == null || entries == null) {
     div_main.innerHTML = `
       <h1 id="h1">Leaderboard - Level Not Found</h1>
@@ -98,11 +99,34 @@ function init(entries) {
     `;
     return;
   }
+  // sort entries
+  const ranked_entries = [ ];
+  const use_types = ["best"];
+  for (const username in entries) {
+    if (username === "dev" || username === "test" || username === "shooty") continue;
+    const entry = entries[username];
+    ranked_entries.push({
+      user: username,
+      points: entry.points,
+      rounds: entry.rounds,
+      rating: entry.rating,
+      use: entry.use,
+    });
+    if (!use_types.includes(entry.use)) {
+      use_types.push(entry.use);
+    }
+  }
+  // sort entries by score
+  ranked_entries.sort( (a, b) => b.points - a.points );
+  // CSS
   root_var.style.setProperty("--hover-color", "#FFFFFF22");
-  div_main.innerHTML = `
+  // HTML
+  let main_html = `
     <h1 id="h1" style="font-size: 25px;">Rankings - ${L.name}</h1>
     ${use_type === "best" ? "" : `<h3>Use: ${upgrades[use_type].name}</h3>`}
     <h2><a href="/leaderboard" class="a-left" style="color: yellow;">Back</a></h2>
+  `;
+  main_html += `
     <table id="board" style="font-size: 18px;">
       <thead>
         <tr>
@@ -117,21 +141,9 @@ function init(entries) {
       <tbody id="board-tbody"></tbody>
     </table>
   `;
+  // set HTML
+  div_main.innerHTML = main_html;
   const tbody_board = document.getElementById("board-tbody");
-  const ranked_entries = [ ];
-  for (const username in entries) {
-    if (username === "dev" || username === "test" || username === "shooty") continue;
-    const entry = entries[username];
-    ranked_entries.push({
-      user: username,
-      points: entry.points,
-      rounds: entry.rounds,
-      rating: entry.rating,
-      use: entry.use,
-    });
-  }
-  // sort ranks by score
-  ranked_entries.sort( (a, b) => b.points - a.points );
   let rank = 1;
   for (const entry of ranked_entries) {
     if (entry == null) continue;

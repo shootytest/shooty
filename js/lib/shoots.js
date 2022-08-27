@@ -28,12 +28,14 @@ shoots.p_burster = { type: "basic", reload: 100, duration: 100, duration_reload:
 shoots.p_scatter1 = { type: "square", reload: 15, size: 8, speed: 5, spread: 0.06, spreadv: 0.02, damage: 1.9, time: 200, };
 shoots.p_scatter2 = { type: "square", reload: 8, size: 6, speed: 6.5, spread: 0.08, spreadv: 0.02, damage: 1.25, time: 160, };
 shoots.p_scatterspam = { type: "square", reload: 3, size: 4.5, speed: 5, spread: 0.09, spreadv: 0.04, damage: 0.55, time: 180 };
-shoots.p_flamethrower = { type: "basic", reload: 1, size: 3, speed: 4, spread: 0.11, spreadv: 0.8, damage: 0.18, time: 120, }; // a lot of spreadv
+shoots.p_spammer = { type: "basic", reload: 1, size: 3.5, speed: 4, spread: 0.10, spreadv: 0.3, damage: 0.18, time: 120, }; // a lot of spreadv
+shoots.p_flamethrower = { type: "basic", reload: 1, size: 3.5, speed: 3.5, spread: 0.12, spreadv: 0.8, damage: 0.15, time: 120, }; // even more spreadv // TODO: add fire
+shoots.p_spammer_homer = { type: "homing_player", reload: 1, size: 3, speed: 4, spread: 0.11, spreadv: 0.8, damage: 0.18, time: 120, };
 shoots.p_squarer = { type: "square", reload: 20, size: 13, speed: 4, spread: 0.045, damage: 2, time: 160, };
 shoots.p_square = { type: "square", reload: 15, size: 14, speed: 3.6, spread: 0.02, damage: 1.3, time: 200, };
 // shotgun path
-shoots.p_shotgun = { type: "basic", reload: 50, size: 7.5, speed: 5, spread: 0.11, spreadv: 0.2, damage: 1.3, time: 120, };
-shoots.p_shootgun = { type: "square", reload: 60, size: 8, speed: 5.5, spread: 0.13, spreadv: 0.25, damage: 0.8, time: 111, };
+shoots.p_shotgun = { type: "basic", reload: 50, size: 7, speed: 4.5, spread: 0.13, spreadv: 0.25, damage: 1.15, time: 120, };
+shoots.p_shootgun = { type: "square", reload: 60, size: 7.5, speed: 4, spread: 0.16, spreadv: 0.3, damage: 0.7, time: 111, };
 // auto path
 shoots.p_auto = { type: "basic", reload: 25, size: 8, speed: 4.2, spread: 0.05, damage: 2.25, time: 190, x: 0.4, auto: true, target_type: "enemy", };
 shoots.p_autooo = { type: "basic", reload: 40, size: 9, speed: 4.4, spread: 0.045, damage: 1.25, time: 200, auto: true, target_type: "enemy", };
@@ -46,19 +48,19 @@ shoots.p_sniperscatter_scatter = { type: "square", reload: 15, size: 8, speed: 5
 shoots.p_sniperauto_sniper = { type: "triangle", reload: 50, size: 9.5, speed: 9, spread: 0.025, damage: 4, time: 300, };
 shoots.p_sniperauto_auto = { type: "basic", reload: 40, size: 7, speed: 4, spread: 0.05, damage: 1, time: 190, x: 0.6, auto: true, target_type: "enemy", };
 // big path
-shoots.p_big = { type: "basic", reload: 60, size: 14, speed: 3.75, spread: 0.05, damage: 7, time: 400, };
-shoots.p_large = { type: "basic", reload: 75, size: 20, speed: 3.2, spread: 0.05, damage: 9.5, time: 700, };
+shoots.p_big = { type: "basic", reload: 60, size: 14, speed: 3.75, spread: 0.05, damage: 7.5, time: 400, };
+shoots.p_large = { type: "basic", reload: 75, size: 20, speed: 3.2, spread: 0.05, damage: 10, time: 700, };
 shoots.p_toolarge = { type: "basic", reload: 100, size: 30, speed: 2.7, spread: 0.1, damage: 15, time: 1000, };
 shoots.p_stacker1 = { type: "basic", reload: 75, size: 7.5, speed: 4.9, spread: 0.05, damage: 3, time: 260, };
 shoots.p_stacker2 = { type: "basic", reload: 75, size: 15, speed: 3.75, spread: 0.05, damage: 5.5, time: 390, };
 shoots.p_launcher = { type: "launcher", reload: 70, size: 16, speed: 3, spread: 0.04, damage: 4.5, time: 200, };
 shoots.p_launcher_small = { type: "basic", reload: 30, size: 8, speed: 4, spread: 0.04, damage: 1.8, time: 250, };
 shoots.p_bigauto_big = { type: "bigauto", reload: 75, size: 16, speed: 3, spread: 0.055, damage: 5, time: 240, };
-shoots.p_bigauto_small = { type: "basic", reload: 30, size: 6, speed: 5, spread: 0.04, damage: 1, time: 400, };
+shoots.p_bigauto_small = { type: "basic", reload: 25, size: 6, speed: 5, spread: 0.04, damage: 0.8, time: 400, };
 // line path
 shoots.p_liner = { type: "line1", reload: 40, size: 30, speed: 6, spread: 0.03, damage: 5, time: 360, };
 shoots.p_liner2 = { type: "line2", reload: 25, size: 27, speed: 5.5, spread: 0.04, damage: 1.6, time: 360, };
-shoots.p_planer = { type: "plane1", reload: 25, size: 30, speed: 5, spread: 0.035, damage: 2.5, time: 360, };
+shoots.p_planer = { type: "plane1", reload: 25, size: 30, speed: 9, friction: 0.015, spread: 0.035, damage: 2.5, time: 360, };
 // placer path
 shoots.p_placer = { type: "tower_placer", reload: 40, size: 10.5, speed: 0, x: 0.6, damage: 5.5, time: 120, };
 shoots.p_placer_big = { type: "tower_placer", reload: 60, size: 15, speed: 0, x: 0.1, damage: 6, time: 240, };

@@ -116,60 +116,6 @@ if ("tutorial") {
 
 }
 
-if ("tutorialstar") {
-
-  waves_info.tutorialstar = {
-    name: "Tutorial ★",
-    key: "tutorialstar",
-    description: "★★★",
-    map: "tutorial",
-    bosses: 1,
-    rounds: 10,
-    moveshoot_flipped: true,
-  };
-
-  waves.tutorialstar = [
-    0,
-    { type: "basic", number: 1, },
-    { type: "basic", number: 2, interval: 300, },
-    { type: "basic", number: 3, interval: 240, },
-    { type: "basic", number: 3, interval: 10, },
-    { type: "slow", number: 1, },
-    { type: "ram", number: 1, },
-    { type: "ram", number: 3, interval: 10, },
-    [ // 8
-      { type: "basic", number: 1, },
-      { type: "slow", number: 1, },
-      { type: "ram", number: 1, },
-    ],
-    { type: "basic", number: 6, interval: 30, },
-    { type: "boss_tutorial", number: 1, boss: true, },
-  ];
-
-  waves_text.tutorialstar = {
-    [0]: [
-      { message: "Welcome to the tutorial!", delay: 0, color: C.message_text_tutorial, },
-      { message: "Use the arrow keys to shoot and click to move.", delay: 10, color: C.message_text_tutorial, },
-      { message: "There's nothing suspicious with the above text!", delay: 20, color: C.message_text_tutorial, },
-    ],
-    [1]: [
-      { message: "Why is this happening?", delay: 0, },
-      { message: "Good luck!", delay: 20, },
-    ],
-    [10]: [
-      { message: "The final round...", delay: 0, },
-      { message: "Well done! ★★★", delay: 0, after: true, },
-    ],
-  };
-
-  waves_points.tutorialstar = {
-    points: [ 0, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, ],
-    time: [ 0, 5, 10, 15, 15, 10, 5, 13, 20, 30, 10, ],
-    ratings: [ 1, 0.9, 0.8, 0.7, 0.5, 0.35, 0.25, 0.15, 0.1, 0.05, 0.025, 0 ],
-  };
-
-}
-
 if ("tutorialplus") {
 
   waves_info.tutorialplus = {
@@ -212,6 +158,61 @@ if ("tutorialplus") {
     points: [ 0, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, ],
     time: [ 0, 5, 20, 30, 30, 30, 15, 36, 40, 60, 30, ],
     ratings: [ 1, 0.95, 0.9, 0.8, 0.65, 0.55, 0.45, 0.3, 0.2, 0.1, 0.05, 0 ],
+  };
+
+}
+
+if ("tutorialstar") {
+
+  waves_info.tutorialstar = {
+    name: "Tutorial ★",
+    key: "tutorialstar",
+    description: "★★★",
+    map: "tutorial",
+    bosses: 1,
+    rounds: 10,
+    disallow_upgrades: ["auto", "autooo", "placer", "placerbig", "rammer", "bigauto"],
+    moveshoot_flipped: true,
+  };
+
+  waves.tutorialstar = [
+    0,
+    { type: "basic", number: 1, },
+    { type: "basic", number: 2, interval: 300, },
+    { type: "basic", number: 3, interval: 240, },
+    { type: "basic", number: 3, interval: 10, },
+    { type: "slow", number: 1, },
+    { type: "ram", number: 1, },
+    { type: "ram", number: 3, interval: 10, },
+    [ // 8
+      { type: "basic", number: 1, },
+      { type: "slow", number: 1, },
+      { type: "ram", number: 1, },
+    ],
+    { type: "basic", number: 6, interval: 30, },
+    { type: "boss_tutorial", number: 1, boss: true, },
+  ];
+
+  waves_text.tutorialstar = {
+    [0]: [
+      { message: "Welcome to the tutorial!", delay: 0, color: C.message_text_tutorial, },
+      { message: "Use the arrow keys to shoot and click to move.", delay: 10, color: C.message_text_tutorial, },
+      { message: "There's nothing suspicious with the above text!", delay: 20, color: C.message_text_tutorial, },
+    ],
+    [1]: [
+      { message: "Why is this happening?", delay: 0, },
+      { message: "Good luck!", delay: 20, },
+    ],
+    [10]: [
+      { message: "The final round...", delay: 0, },
+      { message: "Well done! ★★★", delay: 0, after: true, },
+    ],
+  };
+
+  waves_points.tutorialstar = {
+    points: [ 0, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1.5, ],
+    time: [ 0, 5, 10, 15, 15, 10, 5, 13, 20, 30, 10, ],
+    ratings: [ 1, 0.9, 0.8, 0.7, 0.5, 0.35, 0.25, 0.15, 0.1, 0.05, 0.025, 0 ],
   };
 
 }

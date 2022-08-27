@@ -93,6 +93,14 @@ kbd {
   white-space: nowrap;
 }
 
+hr {
+  border-top: 2px solid #AAAAAA;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  margin: 30px 20px;
+}
+
 .hidden {
   display: none;
 }

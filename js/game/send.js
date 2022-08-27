@@ -100,15 +100,15 @@ export const end_game = function(finished = false) {
     }
   });
   */
+  const waveinfo = waves_info[wavename];
+  const newpoints = Math.round(player.points);
   // update score
   const playertype = player.current_upgrade;
   firebase.get(`/scores/${username}/${wavename}/${playertype}/`, function(entry) {
     if (entry == null || entry.points == null) {
       entry = { points: 0, };
     }
-    const waveinfo = waves_info[wavename];
     const oldpoints = entry.points;
-    const newpoints = Math.round(player.points);
     if (newpoints >= oldpoints) {
       firebase.set(`/scores/${username}/${wavename}/${playertype}/`, {
         points: newpoints,
@@ -117,14 +117,14 @@ export const end_game = function(finished = false) {
       }); 
     }
   });
-  // update best score
+  // disallow some upgrades
+  if (waveinfo.disallow_upgrades != null && waveinfo.disallow_upgrades.includes(playertype)) return;
+  // else update best score (allowed)
   firebase.get(`/scores/${username}/${wavename}/best/`, function(entry) {
     if (entry == null || entry.points == null) {
       entry = { points: 0, };
     }
-    const waveinfo = waves_info[wavename];
     const oldpoints = entry.points;
-    const newpoints = Math.round(player.points);
     if (newpoints >= oldpoints) {
       // check if player exists or not
       firebase.get(`/users/${username}/players`, function(players) {
@@ -157,7 +157,7 @@ export const next_wave = function() {
       send_wave(wave);
     }
   } else if (typeof the_wave === "number") {
-    // do nothing, wave 0
+    // do nothing, it's wave 0
   } else {
     send_wave(the_wave);
   }
@@ -192,7 +192,7 @@ export const end_wave = function() {
     )
   );
   const p = player.add_points("clear", points);
-  send_message(`You passed the round and gained ${p} points!`, /* (points === Math.round(wp.points[send.wave] * config.game.clear_wave_time_add)) ? C.message_text_green : */ C.message_text_aqua, -1, 45);
+  send_message(`You passed the round and gained ${p} points!`, C.message_text_aqua, -1, 45);
   // calculate bonus health points
   if (player.wave_health_lost < config.game.player_health * 1000000) {
     const bonus_ratio = 1 / Math.pow(1 + player.wave_health_lost / config.game.player_health, 0.75);
@@ -201,14 +201,15 @@ export const end_wave = function() {
     const bonus_coins = Math.round(point_multiplier * bonus_ratio *
       config.game.clear_wave_without_losing_health_coins);
     player.add_points("bonus", bonus_points);
-    // drop 10 coins too
+    // drop some bonus coins too
     for (let index = 0; index < bonus_coins; index++) {
       const i = new Thing(Enemy.random_location(1));
       i.make(make.item_normal);
       i.create();
     }
     const lost_health = (player.wave_health_lost * config.game.health_mult);
-    send_message(`You lost ${lost_health % 1 !== 0 ? lost_health.toFixed(2) : Math.round(lost_health)} health for the round and gained ${bonus_points} points!`, C.message_text_gold, -1, 55);
+    const nice_round_number = Math.abs(Math.round(lost_health) - lost_health) <= Number.MIN_VALUE;
+    send_message(`You lost ${nice_round_number ? lost_health.toFixed(2) : Math.round(lost_health)} health for the round and gained ${bonus_points} points!`, C.message_text_gold, -1, 55);
   }
   // save the game
   gamesave.save();
@@ -225,7 +226,9 @@ export const send_wave = function(wave) {
 }
 
 export const level_total_points = function(wave_name) {
+  // the level doesn't exist!
   if (waves_info[wave_name] == null) return -1;
+  // if already calculated before, just return the value (it wouldn't change)
   if (waves_info[wave_name].total_points != null) return waves_info[wave_name].total_points;
   let total_points = 0;
   function calculate_enemy_points(wave) {
@@ -261,7 +264,7 @@ export const level_total_points = function(wave_name) {
     total_points += Math.round(point_constant_2 * wave_point_multiplier);
     total_points += Math.round(config.game.item_points_mult * Math.round(config.game.clear_wave_without_losing_health_coins * wave_point_multiplier));
   }
-  // memo and return
+  // memoize, return
   waves_info[wave_name].total_points = total_points;
   return total_points;
 }
@@ -270,12 +273,12 @@ export const get_rating_number = function(wave_name, points) {
   const total = level_total_points(wave_name);
   if (total === -1) return wave_ratings.length - 1;
   if (total === 0) return 0;
+  points = points || 0;
   if (points === 0) return 12;
-  const ratio = (points || 0) / total;
   const ratings = waves_points[wave_name].ratings;
   for (let i = 0; i < ratings.length; i++) {
     if (ratings[i] == null) continue;
-    if (ratio >= ratings[i]) {
+    if (points - ratings[i] * total >= -Number.MIN_VALUE) {
       return i;
     }
   }

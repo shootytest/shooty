@@ -166,17 +166,6 @@ make.bullet_heptagon = {
   ],
 };
 
-make.bullet_bigauto = {
-  parent: ["bullet_auto"],
-  shapes: [
-    { type: "circle", body: true, },
-    { type: "circle_fade", r: "shootsize*1", color: C.player_bullet, },
-  ],
-  shoots: [
-    { parent: shoots.p_bigauto_small, },
-  ],
-};
-
 make.bullet_lineline = {
   parent: ["bullet"],
   shapes: [
@@ -284,6 +273,30 @@ make.bullet_launcher = {
   ],
   shoots: [
     { parent: shoots.p_launcher_small, color: C.bright_blue, },
+  ],
+};
+
+make.bullet_bigauto = {
+  parent: ["bullet_auto"],
+  shooting: true,
+  keep_children: true,
+  rotation_controller: "autotarget_player",
+  shapes: [
+    { type: "circle", body: true, },
+    { type: "circle_fade", r: "shootsize*1", color: C.player_bullet, },
+  ],
+  shoots: [
+    { parent: shoots.p_bigauto_small, },
+  ],
+};
+
+make.bullet_homing_player = {
+  parent: ["bullet"],
+  movement_controller: "homing",
+  rotation_controller: "homing_player",
+  shapes: [
+    { type: "circle", x: 0, y: 0, body: true, },
+    { type: "line", x: 0, y: 0, x2: 1, y2: 0, },
   ],
 };
 

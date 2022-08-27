@@ -207,14 +207,14 @@ player_make.scatterspam = {
   ],
 };
 
-player_make.flamethrower = {
+player_make.spammer = {
   shapes: [
     { type: "circle", x: 0, y: 0, body: true, },
     { type: "circle_fade", r: "shootsize*1", color: C.player_bullet, },
   ],
   shoots: [
     "delete",
-    { parent: shoots.p_flamethrower, },
+    { parent: shoots.p_spammer, },
   ],
 };
 
