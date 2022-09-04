@@ -160,12 +160,12 @@ upgrades.spammer = {
 
 upgrades.flamethrower = {
   key: "flamethrower",
-  name: "Spammer",
+  name: "Flamethrower",
   desc: "Temporary thingy. Not yet.",
   cost: 1400,
   connections: [],
-  x: -6,
-  y: -2,
+  x: -9,
+  y: -3,
 };
 
 upgrades.squarer = {

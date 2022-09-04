@@ -339,6 +339,23 @@ make.bullet_amongus = {
   ],
 };
 
+make.bullet_enemy_amongus = {
+  parent: ["bullet_tower"],
+  keep_children: true,
+  always_shoot: true,
+  rotation_controller: "autotarget_enemy",  
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 0.8, h: 0.6, body: true, color: C.transparent, },
+    { type: "rectangle", x: 0.15, y: 0, w: 0.6, h: 0.6, },
+    { type: "rectangle", x: -0.65, y: -0.4, w: 0.2, h: 0.2, },
+    { type: "rectangle", x: -0.65, y: 0.4, w: 0.2, h: 0.2, },
+    { type: "rectangle", x: 0.35, y: 0.2, w: 0.2, h: 0.4, },
+  ],
+  shoots: [
+    { parent: shoots.e_amongus, rotation: 0, },
+  ],
+};
+
 // #enemies
 
 make.enemy = {
@@ -1297,8 +1314,34 @@ make.enemy_z_amongus = {
     damage: 0.008,
   },
   items: [
-    { type: "normal", number: 1, },
+    { type: "normal", number: 4, },
     { type: "big", number: 1, },
+  ],
+};
+
+make.enemy_boss_z_amongus = {
+  parent: ["enemy"],
+  name: "Boss: Among Us",
+  size: 50,
+  always_shoot: true,
+  shapes: [
+    { type: "rectangle", x: 0, y: 0, w: 0.8, h: 0.6, body: true, color: C.transparent, },
+    { type: "rectangle", x: 0.15, y: 0, w: 0.6, h: 0.6, },
+    { type: "rectangle", x: -0.65, y: -0.4, w: 0.2, h: 0.2, },
+    { type: "rectangle", x: -0.65, y: 0.4, w: 0.2, h: 0.2, },
+    { type: "rectangle", x: 0.35, y: 0.2, w: 0.2, h: 0.4, },
+  ],
+  shoots: [
+    { parent: shoots.e_amongus_boss, rotation: 0, },
+  ],
+  health: {
+    capacity: 30,
+    damage: 0.008,
+  },
+  items: [
+    { type: "normal", number: 9, },
+    { type: "big", number: 2, },
+    { type: "large", number: 1, },
   ],
 };
 

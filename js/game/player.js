@@ -111,14 +111,13 @@ export class Player extends Thing {
     // if outside the map, then go back to origin
     if (mapmaker.check_outside_map(this.position)) {
       this.position = Vector.create();
+      Body.setPosition(this.body, Vector.create());
     }
+
   }
 
   tick_player_test() {
     // nothing for now
-    add_key_listener("t", () => {
-      Body.setPosition(this.body, camera.mouse_position);
-    });
   }
 
   tick_death() {
@@ -267,8 +266,15 @@ export class Player extends Thing {
 export const player = new Player();
 
 if (get_account_username() === "dev") {
+
   // debug, TODO remove
   // window.player = player;
+
+  // teleport hack
+  add_key_listener("t", () => {
+    Body.setPosition(player.body, camera.mouse_position);
+  });
+
 }
 
 // tie firebase

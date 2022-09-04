@@ -461,7 +461,7 @@ if ("tutorialold") {
     { type: "basic", number: 3, interval: 60, },
     { type: "ram", number: 2, interval: 100, },
     { type: "slow", number: 2, interval: 60, },
-    { type: "strong", number: 1, boss: true, },
+    { type: "strong", number: 1, }, // boss
     { type: "fast", number: 2, interval: 60, },
     [ // 7
       { type: "basic", number: 1, },
@@ -478,25 +478,25 @@ if ("tutorialold") {
       { type: "basic", number: 8, interval: 20, },
       { type: "ram", number: 2, interval: 180, delay: 10, },
     ],
-    { type: "boss_tutorial", number: 1, boss: true, },
+    { type: "boss_tutorial", number: 1, }, // boss
     [ // 11
       { type: "slow", number: 3, interval: 180, },
       { type: "fast", number: 3, interval: 180, },
       { type: "ram", number: 3, interval: 180, },
     ],
     [ // 12
-      { type: "oct", number: 1, boss: true, },
+      { type: "oct", number: 1, }, // boss
       { type: "oct", number: 3, delay: 30, interval: 30, },
     ],
     [ // 13
-      { type: "strong", number: 1, boss: true, },
+      { type: "strong", number: 1, }, // boss
       { type: "ramshoot", number: 5, delay: 60, interval: 10, },
     ],
     [ // 14
       { type: "small", number: 5, },
       { type: "fast", number: 2, },
     ],
-    { type: "boss_tutorial_2", number: 1, boss: true, },
+    { type: "boss_tutorial_2", number: 1, }, // boss
   ];
 
   waves_text.tutorialold = {
@@ -739,6 +739,44 @@ if ("fourrounds") {
     points: [ 0, 1, 1, 1, 1.5, ],
     time: [ 0, 15, 20, 15, 25, ],
     ratings: [ 1, 0.95, 0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.3, 0.1, 0.05, 0 ],
+  };
+
+}
+
+if ("susrounds") {
+
+  waves_info.susrounds = {
+    name: "Sus Rounds",
+    key: "susrounds",
+    description: "This level has only sus rounds!",
+    map: "empty",
+    bosses: 0,
+    rounds: 3,
+  };
+
+  waves.susrounds = [
+    0,
+    { type: "z_amongus", number: 1, boss: true, }, // S
+    { type: "z_amongus", number: 3, interval: 200, }, // U
+    { type: "boss_z_amongus", number: 1, boss: true, }, // S
+  ];
+
+  waves_text.susrounds = {
+    [0]: [
+      { message: "ඞ", delay: 0, },
+    ],
+    [1]: [
+      { message: "                   ", delay: 0, },
+    ],
+    [2]: [
+      { message: "Nice ඞ!", delay: 0, after: true, },
+    ],
+  };
+
+  waves_points.susrounds = {
+    points: [ 0, 1, 1, 1, ],
+    time: [ 0, 30, 50, 60, ],
+    ratings: [ 1, 0.95, 0.9, 0.8, 0.7, 0.6, 0.5, 0.3, 0.2, 0.1, 0.05, 0 ],
   };
 
 }

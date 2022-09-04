@@ -51,8 +51,8 @@ shoots.p_sniperauto_auto = { type: "basic", reload: 40, size: 7, speed: 4, sprea
 shoots.p_big = { type: "basic", reload: 60, size: 14, speed: 3.75, spread: 0.05, damage: 7.5, time: 400, };
 shoots.p_large = { type: "basic", reload: 75, size: 20, speed: 3.2, spread: 0.05, damage: 10, time: 700, };
 shoots.p_toolarge = { type: "basic", reload: 100, size: 30, speed: 2.7, spread: 0.1, damage: 15, time: 1000, };
-shoots.p_stacker1 = { type: "basic", reload: 75, size: 7.5, speed: 4.9, spread: 0.05, damage: 3, time: 260, };
-shoots.p_stacker2 = { type: "basic", reload: 75, size: 15, speed: 3.75, spread: 0.05, damage: 5.5, time: 390, };
+shoots.p_stacker1 = { type: "basic", reload: 37.5, size: 7.5, speed: 3.75, spread: 0.03, damage: 1.8, time: 260, };
+shoots.p_stacker2 = { type: "basic", reload: 75, size: 15, speed: 3.75, spread: 0.03, damage: 5.5, time: 390, };
 shoots.p_launcher = { type: "launcher", reload: 70, size: 16, speed: 3, spread: 0.04, damage: 4.5, time: 200, };
 shoots.p_launcher_small = { type: "basic", reload: 30, size: 8, speed: 4, spread: 0.04, damage: 1.8, time: 250, };
 shoots.p_bigauto_big = { type: "bigauto", reload: 75, size: 16, speed: 3, spread: 0.055, damage: 5, time: 240, };
@@ -114,6 +114,7 @@ shoots.e_homing_3 = { type: "homing", reload: 60 * 2, size: 9.5, speed: 7.5, dam
 shoots.e_homing_4 = { type: "homing", reload: 60 * 2.5, size: 9, speed: 7.5, damage: 0.8, options: { homing_amount: 0.05, speed_death: 5, } };
 shoots.e_amongus = { type: "amongus", reload: 60 * 0.5, size: 18, speed: 4, damage: 1, time: 120, };
 shoots.e_amongus_bullet = { type: "square", reload: 60 * 0.1, size: 7.5, speed: 6, damage: 0.25, time: 360, };
+shoots.e_amongus_boss = { type: "enemy_amongus", reload: 60 * 1.5, size: 30, speed: 4, spreadv: 1, friction: 0.05, damage: 3, time: 200, };
 
 // bosses!
 shoots.e_boss_basic = { type: "basic", reload: 60 * 0.75, size: 36, speed: 5, damage: 1.5, time: 400, };

@@ -100,6 +100,7 @@ worlds.test = {
       y: 50,
       lines: [
         { key: "threerounds", },
+        { key: "susrounds", },
       ],
       conditions: [
         { type: "level", level: "oneround", rating: 7, },
@@ -125,6 +126,15 @@ worlds.test = {
       y: -30,
       conditions: [
         { type: "level", level: "threerounds", rating: 8, },
+      ],
+    },
+    susrounds: {
+      key: "susrounds",
+      char: "ඞ",
+      x: 250,
+      y: 400,
+      conditions: [
+        { type: "level", level: "tworounds", rating: 5, },
       ],
     },
     level0test: {
@@ -156,7 +166,7 @@ worlds.test = {
       y: 400,
       conditions: [
         { type: "level", level: "tutorialold", rating: 7, },
-        { type: "level", level: "tutorialold", rounds: 10, },
+        { type: "level", level: "tutorialold", rounds: 9, },
       ],
     },
   },

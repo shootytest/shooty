@@ -136,6 +136,10 @@ export class Thing {
   }
 
   make(o) {
+
+    if (o == null) {
+      return;
+    }
         
     // inheritance first
     if (o.hasOwnProperty("parent")) {
