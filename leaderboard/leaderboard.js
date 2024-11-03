@@ -133,7 +133,7 @@ function init(entries) {
           <th>Rank</th>
           <th>Username</th>
           <th>Score</th>
-          <th>Rating</th>
+          <th>Grade</th>
           <th title="number of rounds fully completed">Rounds</th>
           <th title="player type used">Used</th>
         </tr>
