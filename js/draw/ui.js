@@ -75,15 +75,15 @@ export const ui = {
 
 export const lerp = function(a, b, s) {
   return a * (1 - s) + b * s;
-}
+};
 
 export const bounce = function(time, period) {
   return Math.abs(period - time % (period * 2)) / period;
-}
+};
 
 const check_click = function() {
   return check_keys(config.controls.click);
-}
+};
 
 export const init_ui = function() {
   // nothing for now!
@@ -93,7 +93,7 @@ export const init_ui = function() {
   if (get_account_username() === "dev") {
     window.ui = ui;
   }
-}
+};
 
 const init_ui_firebase = function() {
   firebase.listen(`/users/${get_account_username()}/players`, function(players) {
@@ -105,11 +105,11 @@ const init_ui_firebase = function() {
       if (!ui.unlocked_upgrades.includes(type)) ui.unlocked_upgrades.push(type);
     }
   });
-}
+};
 
 export const game_is_paused = function() {
   return ui.paused || ui.shop_overlay || ui.nothing_overlay || ui.inventory_overlay || ui.end_overlay || ui.popup.show;
-}
+};
 
 export const close_all_overlays = function() {
   ui.paused = false;
@@ -118,7 +118,7 @@ export const close_all_overlays = function() {
   ui.inventory_overlay = false;
   if (!send.game_ended) ui.end_overlay = false;
   ui.popup.show = false;
-}
+};
 
 const tick_ui_before = function() {
   if (check_click()) {
@@ -135,7 +135,7 @@ const tick_ui_before = function() {
     ui.new_rclick = false;
     ui.old_rclick = false;
   }
-}
+};
 
 export const draw_ui_before = function(ctx) {
   tick_ui_before();

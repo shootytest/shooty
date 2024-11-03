@@ -11,7 +11,7 @@ const use_type = parameters.get("use") || "best";
 const div_main = document.getElementById("main");
 const L = waves_info[level];
 
-const username = get_account_username();
+const username = parameters.get("username") || get_account_username();
 
 function index(HIDE) {
   div_main.innerHTML = `
@@ -28,7 +28,7 @@ function index(HIDE) {
       </thead>
       <tbody id="list-tbody"></tbody>
     </table>
-  `
+  `;
   root_var.style.setProperty("--hover-color", "#000000AA");
   const tbody_list = document.getElementById("list-tbody");
   for (const world_key of world_list) {
